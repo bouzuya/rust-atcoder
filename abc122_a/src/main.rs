@@ -23,7 +23,7 @@ fn solve(a: String) -> &'static str {
         "C" => "G",
         "G" => "C",
         "T" => "A",
-        _ => panic!("invalid")
+        _ => unreachable!()
     }
 }
 
