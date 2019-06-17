@@ -19,15 +19,13 @@ fn main() {
 }
 
 fn solve(s: String) -> String {
-    let mut chars: Vec<char> = s.chars().collect();
-    for i in 0..chars.len() {
-        chars[i] = match chars[i] {
+    s.chars()
+        .map(|c| match c {
             '1' => '9',
             '9' => '1',
             _ => unreachable!(),
-        }
-    }
-    chars.into_iter().collect()
+        })
+        .collect()
 }
 
 #[test]
