@@ -14,16 +14,13 @@ fn main() {
     let stdin = std::io::stdin();
     let mut stdin_lock = stdin.lock();
     let mut buf: Vec<u8> = Vec::new();
-    let r = read(&mut stdin_lock, &mut buf, b'\n');
-    println!("{}", solve(r));
-}
-
-fn solve(r: u16) -> String {
-    if r < 1200 {
-        "ABC".to_owned()
+    let r: u16 = read(&mut stdin_lock, &mut buf, b'\n');
+    let ans = if r < 1200 {
+        "ABC"
     } else if r < 2800 {
-        "ARC".to_owned()
+        "ARC"
     } else {
-        "AGC".to_owned()
-    }
+        "AGC"
+    };
+    println!("{}", ans);
 }
