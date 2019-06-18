@@ -18,8 +18,10 @@ fn main() {
     println!("{}", solve(k));
 }
 
-fn solve(a: i32) -> i32 {
-    (a / 2) * (a / 2 + if a % 2 == 0 { 0 } else { 1 })
+fn solve(k: i32) -> i32 {
+    let a = k / 2;
+    let b = k - a;
+    a * b
 }
 
 #[test]
