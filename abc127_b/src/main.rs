@@ -16,10 +16,10 @@ fn main() {
     let mut buf: Vec<u8> = Vec::new();
     let r = read::<i32>(&mut stdin_lock, &mut buf, b' ');
     let d = read::<i32>(&mut stdin_lock, &mut buf, b' ');
-    let x = read::<i32>(&mut stdin_lock, &mut buf, b'\n');
-    let mut ans: i32 = x;
+    let x_2000 = read::<i32>(&mut stdin_lock, &mut buf, b'\n');
+    let mut x = x_2000;
     for _ in 0..10 {
-        ans = r * ans - d;
-        println!("{}", ans);
+        x = r * x - d;
+        println!("{}", x);
     }
 }
