@@ -24,19 +24,13 @@ fn main() {
     let mut buf: Vec<u8> = Vec::new();
     let n: i32 = read(&mut stdin_lock, &mut buf, b'\n');
     let mut ts: Vec<Restaurant> = Vec::new();
-    for i in 0..(n - 1) {
+    for i in 0..n {
         ts.push(Restaurant {
             i: i + 1,
             s: read(&mut stdin_lock, &mut buf, b' '),
             p: read(&mut stdin_lock, &mut buf, b'\n'),
         });
     }
-    ts.push(Restaurant {
-        i: n,
-        s: read(&mut stdin_lock, &mut buf, b' '),
-        p: read(&mut stdin_lock, &mut buf, b'\n'),
-    });
-
     ts.sort_by(|a, b| match a.s.cmp(&b.s) {
         Ordering::Less => Ordering::Less,
         Ordering::Greater => Ordering::Greater,
