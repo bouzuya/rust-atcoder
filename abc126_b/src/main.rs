@@ -14,23 +14,16 @@ fn main() {
     let stdin = std::io::stdin();
     let mut stdin_lock = stdin.lock();
     let mut buf: Vec<u8> = Vec::new();
-    let s: String = read(&mut stdin_lock, &mut buf, b'\n');
-    let cs: Vec<char> = s.chars().collect();
-    let s1: String = vec![cs[0], cs[1]].into_iter().collect();
-    let s2: String = vec![cs[2], cs[3]].into_iter().collect();
-    let u1: u8 = s1.parse().unwrap();
-    let u2: u8 = s2.parse().unwrap();
-    if 1 <= u1 && u1 <= 12 {
-        if 1 <= u2 && u2 <= 12 {
-            println!("AMBIGUOUS");
-        } else {
-            println!("MMYY");
-        }
-    } else {
-        if 1 <= u2 && u2 <= 12 {
-            println!("YYMM");
-        } else {
-            println!("NA");
-        }
-    }
+    let s: u16 = read(&mut stdin_lock, &mut buf, b'\n');
+    let u1: u16 = s / 100;
+    let u2: u16 = s % 100;
+    let ym = 1 <= u2 && u2 <= 12;
+    let my = 1 <= u1 && u1 <= 12;
+    let ans = match (ym, my) {
+        (true, true) => "AMBIGUOUS",
+        (true, false) => "YYMM",
+        (false, true) => "MMYY",
+        (false, false) => "NA",
+    };
+    println!("{}", ans);
 }
