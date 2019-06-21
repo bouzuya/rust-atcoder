@@ -1,5 +1,3 @@
-use std::cmp::Ordering;
-
 fn read<T: std::str::FromStr>(
     stdin_lock: &mut std::io::StdinLock,
     buf: &mut Vec<u8>,
@@ -16,18 +14,14 @@ fn main() {
     let stdin = std::io::stdin();
     let mut stdin_lock = stdin.lock();
     let mut buf: Vec<u8> = Vec::new();
-    let n: usize = read(&mut stdin_lock, &mut buf, b'\n');
+    let n = read::<usize>(&mut stdin_lock, &mut buf, b'\n');
     let mut ts = vec![("".to_owned(), 0, 0); n];
     for i in 0..n {
         ts[i].0 = read(&mut stdin_lock, &mut buf, b' ');
-        ts[i].1 = read(&mut stdin_lock, &mut buf, b'\n');
+        ts[i].1 = -1 * read::<i32>(&mut stdin_lock, &mut buf, b'\n');
         ts[i].2 = i + 1;
     }
-    ts.sort_by(|a, b| match a.0.cmp(&b.0) {
-        Ordering::Less => Ordering::Less,
-        Ordering::Greater => Ordering::Greater,
-        Ordering::Equal => b.1.cmp(&a.1),
-    });
+    ts.sort();
     for t in ts.iter() {
         println!("{}", t.2);
     }
