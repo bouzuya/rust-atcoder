@@ -22,17 +22,11 @@ fn main() {
     hs[n - 1] = read(&mut stdin_lock, &mut buf, b'\n');
 
     let mut ans = 0;
+    let mut max_h = 0;
     for i in 0..n {
-        let hi = hs[i];
-        let mut b = true;
-        for j in 0..i {
-            if hs[j] > hi {
-                b = false;
-                break;
-            }
-        }
-        if b {
+        if hs[i] >= max_h {
             ans += 1;
+            max_h = hs[i];
         }
     }
     println!("{}", ans);
