@@ -22,10 +22,7 @@ fn main() {
     let mut count = 0;
     for i in cs.into_iter() {
         count = match i {
-            'A' => count + 1,
-            'C' => count + 1,
-            'G' => count + 1,
-            'T' => count + 1,
+            'A' | 'C' | 'G' | 'T' => count + 1,
             _ => 0,
         };
         ans = max(ans, count);
