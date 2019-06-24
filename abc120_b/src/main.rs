@@ -1,3 +1,5 @@
+use std::cmp::max;
+
 fn read<T: std::str::FromStr>(
     stdin_lock: &mut std::io::StdinLock,
     buf: &mut Vec<u8>,
@@ -16,19 +18,12 @@ fn main() {
     let mut buf: Vec<u8> = Vec::new();
     let a: i32 = read(&mut stdin_lock, &mut buf, b' ');
     let b: i32 = read(&mut stdin_lock, &mut buf, b' ');
-    let k: i32 = read(&mut stdin_lock, &mut buf, b'\n');
+    let k: usize = read(&mut stdin_lock, &mut buf, b'\n');
 
-    let mut count = 0;
-    let mut ans = 0;
-    for i in 0..b {
-        let n = b - i;
-        if a % n == 0 && b % n == 0 {
-            count += 1;
-            if count == k {
-                ans = n;
-                break;
-            }
-        }
-    }
+    let ans = (0..(max(a, b) + 1))
+        .rev()
+        .filter(|n| ((a % n) == 0) && ((b % n) == 0))
+        .nth(k - 1)
+        .unwrap();
     println!("{}", ans);
 }
