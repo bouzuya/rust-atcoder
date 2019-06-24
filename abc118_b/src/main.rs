@@ -16,23 +16,16 @@ fn main() {
     let mut buf: Vec<u8> = Vec::new();
     let n: usize = read(&mut stdin_lock, &mut buf, b' ');
     let m: usize = read(&mut stdin_lock, &mut buf, b'\n');
-    let mut bits: u32 = 0xffffffff;
+    let mut bv = vec![0; m];
     for _ in 0..n {
         let k: u8 = read(&mut stdin_lock, &mut buf, b' ');
-        let mut mask: u32 = 0;
         for _ in 0..(k - 1) {
-            let a: u8 = read(&mut stdin_lock, &mut buf, b' ');
-            mask |= 1 << (a - 1);
+            let a: usize = read(&mut stdin_lock, &mut buf, b' ');
+            bv[a - 1] += 1;
         }
-        let a: u8 = read(&mut stdin_lock, &mut buf, b'\n');
-        mask |= 1 << (a - 1);
-        bits &= mask;
+        let a: usize = read(&mut stdin_lock, &mut buf, b'\n');
+        bv[a - 1] += 1;
     }
-    let mut ans = 0;
-    for i in 0..m {
-        if ((bits >> i) & 1) == 1 {
-            ans += 1;
-        }
-    }
+    let ans = bv.iter().filter(|x| **x == n).count();
     println!("{}", ans);
 }
