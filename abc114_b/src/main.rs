@@ -1,4 +1,5 @@
 use std::cmp::min;
+use std::iter::Iterator;
 
 fn read<T: std::str::FromStr>(
     stdin_lock: &mut std::io::StdinLock,
@@ -18,10 +19,9 @@ fn main() {
     let mut buf: Vec<u8> = Vec::new();
     let s: String = read(&mut stdin_lock, &mut buf, b'\n');
     let mut ans = 999;
-    let cs: Vec<char> = s.chars().collect();
     let l = 3;
-    for i in 0..(cs.len() - l + 1) {
-        let t: String = cs.iter().skip(i).take(l).collect();
+    for i in 0..(s.len() - l + 1) {
+        let t: String = s.chars().skip(i).take(l).collect();
         let x: i32 = t.parse().unwrap();
         ans = min(ans, (x - 753).abs());
     }
