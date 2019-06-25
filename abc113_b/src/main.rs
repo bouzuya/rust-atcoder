@@ -23,11 +23,10 @@ fn main() {
     }
     hv[n - 1] = read(&mut stdin_lock, &mut buf, b'\n');
 
-    let mut min_b = 100000000;
+    let mut min_b = (a * 1000 - (t * 1000 - hv[0] * 6)).abs();
     let mut ans = 0;
-    for i in 0..n {
-        let h = hv[i];
-        let b = (a * 1000 - (t * 1000 - h * 6)).abs();
+    for i in 1..n {
+        let b = (a * 1000 - (t * 1000 - hv[i] * 6)).abs();
         if b < min_b {
             min_b = b;
             ans = i + 1;
