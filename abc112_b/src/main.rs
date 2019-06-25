@@ -22,9 +22,9 @@ fn main() {
         ctv[i].1 = read(&mut stdin_lock, &mut buf, b'\n');
     }
 
-    ctv.sort();
     ctv.iter()
         .filter(|&&(_, t1)| t1 <= t)
-        .nth(0)
-        .map_or_else(|| println!("TLE"), |&(c, _)| println!("{}", c));
+        .map(|&(c, _)| c)
+        .min()
+        .map_or_else(|| println!("TLE"), |c| println!("{}", c));
 }
