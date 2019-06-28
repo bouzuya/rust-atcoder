@@ -22,14 +22,8 @@ fn main() {
     let cs: Vec<char> = s.chars().collect();
     let mut ans = 0;
     for i in 1..n {
-        let mut set1 = HashSet::new();
-        let mut set2 = HashSet::new();
-        for j in 0..i {
-            set1.insert(cs[j]);
-        }
-        for j in i..n {
-            set2.insert(cs[j]);
-        }
+        let set1: HashSet<_> = cs[0..i].iter().collect();
+        let set2: HashSet<_> = cs[i..n].iter().collect();
         ans = max(ans, set1.intersection(&set2).count());
     }
     println!("{}", ans);
