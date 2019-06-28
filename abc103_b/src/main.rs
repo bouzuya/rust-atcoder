@@ -17,18 +17,20 @@ fn main() {
     let s: String = read(&mut stdin_lock, &mut buf, b'\n');
     let t: String = read(&mut stdin_lock, &mut buf, b'\n');
     let sc: Vec<char> = s.chars().collect();
+    let tc: Vec<char> = t.chars().collect();
     let mut ans = false;
-    for i in 0..sc.len() {
-        let mut tc: Vec<char> = Vec::new();
-        for j in i..sc.len() {
-            tc.push(sc[j]);
+    let n = sc.len();
+    for i in 0..n {
+        let mut eq = true;
+        for j in 0..n {
+            if sc[(i + j) % n] != tc[j] {
+                eq = false;
+                break;
+            }
         }
-        for j in 0..i {
-            tc.push(sc[j]);
-        }
-        let t2: String = tc.into_iter().collect();
-        if t2 == t {
+        if eq {
             ans = true;
+            break;
         }
     }
     println!("{}", if ans { "Yes" } else { "No" });
