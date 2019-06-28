@@ -15,12 +15,11 @@ fn main() {
     let mut stdin_lock = stdin.lock();
     let mut buf: Vec<u8> = Vec::new();
     let n: i32 = read(&mut stdin_lock, &mut buf, b'\n');
-    let ns: String = format!("{}", n);
-    let ncs: Vec<char> = ns.chars().collect();
+    let mut m: i32 = n;
     let mut sn: i32 = 0;
-    for &c in ncs.iter() {
-        let x: i32 = format!("{}", c).parse().unwrap();
-        sn += x;
+    while m > 0 {
+        sn += m % 10;
+        m /= 10;
     }
     let ans = if n % sn == 0 { "Yes" } else { "No" };
     println!("{}", ans);
