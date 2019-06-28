@@ -16,6 +16,10 @@ fn main() {
     let mut buf: Vec<u8> = Vec::new();
     let d: u32 = read(&mut stdin_lock, &mut buf, b' ');
     let n: i32 = read(&mut stdin_lock, &mut buf, b'\n');
-    let ans = 100i32.pow(d) * n;
+    let ans = if n == 100 {
+        100i32.pow(d) * 101
+    } else {
+        100i32.pow(d) * n
+    };
     println!("{}", ans);
 }
