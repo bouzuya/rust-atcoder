@@ -33,7 +33,7 @@ fn main() {
         };
     }
 
-    let max_key = map.keys().max_by_key(|&k| map.get(k).unwrap()).unwrap();
-    let ans = max(*map.get(max_key).unwrap(), 0);
+    let max_value = map.values().max().unwrap();
+    let ans = max(*max_value, 0);
     println!("{}", ans);
 }
