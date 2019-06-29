@@ -16,10 +16,6 @@ fn main() {
     let mut buf: Vec<u8> = Vec::new();
     let _: usize = read(&mut stdin_lock, &mut buf, b'\n');
     let s: String = read(&mut stdin_lock, &mut buf, b'\n');
-    let ans = if s.chars().filter(|&c| c == 'Y').count() > 0 {
-        "Four"
-    } else {
-        "Three"
-    };
+    let ans = if s.contains("Y") { "Four" } else { "Three" };
     println!("{}", ans);
 }
