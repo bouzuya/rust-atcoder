@@ -16,13 +16,12 @@ fn main() {
     let mut buf: Vec<u8> = Vec::new();
     let a: i32 = read(&mut stdin_lock, &mut buf, b' ');
     let b: i32 = read(&mut stdin_lock, &mut buf, b'\n');
-    let mut ans = 0;
-    for i in a..b + 1 {
-        let s: String = format!("{}", i);
-        let t: String = s.chars().rev().collect();
-        if s == t {
-            ans += 1;
-        }
-    }
+    let ans = (a..b + 1)
+        .filter(|i| {
+            let s: String = format!("{}", i);
+            let t: String = s.chars().rev().collect();
+            s == t
+        })
+        .count();
     println!("{}", ans);
 }
