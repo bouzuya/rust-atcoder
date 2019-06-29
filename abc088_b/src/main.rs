@@ -16,20 +16,15 @@ fn main() {
     let mut buf: Vec<u8> = Vec::new();
     let n: usize = read(&mut stdin_lock, &mut buf, b'\n');
     let mut av = vec![0; n];
-    for i in 0..n - 1{
-    av[i] = read(&mut stdin_lock, &mut buf, b' ');
+    for i in 0..n - 1 {
+        av[i] = read(&mut stdin_lock, &mut buf, b' ');
     }
     av[n - 1] = read(&mut stdin_lock, &mut buf, b'\n');
 
     av.sort_by(|a, b| b.cmp(a));
-    let mut sum_a = 0;
-    let mut sum_b = 0;
+    let mut ans = 0;
     for i in 0..n {
-        if i % 2 == 0 {
-            sum_a += av[i];
-        } else {
-            sum_b += av[i];
-        }
+        ans += (if i % 2 == 0 { 1 } else { -1 }) * av[i];
     }
-    println!("{}", sum_a - sum_b);
+    println!("{}", ans);
 }
