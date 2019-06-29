@@ -25,9 +25,15 @@ fn main() {
     }
     av[m - 1] = read(&mut stdin_lock, &mut buf, b'\n');
 
-    let i = av.iter().position(|&a| a > x).unwrap();
-    let count_a1 = av[0..i].iter().count();
-    let count_a2 = av[i..m].iter().count();
-    let ans = min(count_a1, count_a2);
+    let mut cost1 = 0;
+    let mut cost2 = 0;
+    for i in 0..m {
+        if x < av[i] {
+            cost1 += 1;
+        } else {
+            cost2 += 1;
+        }
+    }
+    let ans = min(cost1, cost2);
     println!("{}", ans);
 }
