@@ -19,11 +19,10 @@ fn main() {
     let a: i32 = read(&mut stdin_lock, &mut buf, b' ');
     let b: i32 = read(&mut stdin_lock, &mut buf, b' ');
     let k: i32 = read(&mut stdin_lock, &mut buf, b'\n');
-    let l = max(a, min(a + k - 1, b));
-    for i in a..l + 1 {
+    for i in a..min(a + k - 1, b) + 1 {
         println!("{}", i);
     }
-    for i in min(max(l + 1, b - k + 1), b + 1)..(b + 1) {
+    for i in max(a + k, b - k + 1)..(b + 1) {
         println!("{}", i);
     }
 }
