@@ -1,5 +1,3 @@
-use std::cmp::min;
-
 fn read<T: std::str::FromStr>(
     stdin_lock: &mut std::io::StdinLock,
     buf: &mut Vec<u8>,
@@ -16,64 +14,20 @@ fn main() {
     let stdin = std::io::stdin();
     let mut stdin_lock = stdin.lock();
     let mut buf: Vec<u8> = Vec::new();
-    let s: String = read(&mut stdin_lock, &mut buf, b'\n');
-    let cv = s.chars().collect::<Vec<_>>();
+    let s_rev: String = read::<String>(&mut stdin_lock, &mut buf, b'\n')
+        .chars()
+        .rev()
+        .collect();
+    let pv: Vec<String> = ["dream", "dreamer", "erase", "eraser"]
+        .iter()
+        .map(|t| t.chars().rev().collect())
+        .collect();
     let mut ans = true;
-    let mut i = 0;
-    let l = cv.len();
-    while i < l {
-        match cv[i] {
-            'd' => {
-                if cv[i..min(i + 5, l)].iter().map(|&c| c).collect::<Vec<_>>()
-                    != "dream".chars().collect::<Vec<_>>()
-                {
-                    ans = false;
-                    break;
-                }
-                i += 5;
-                if i >= l {
-                    break;
-                }
-                match cv[i] {
-                    'd' => continue,
-                    'e' => {
-                        let t = cv[i..min(i + 3, l)].iter().map(|&c| c).collect::<Vec<_>>();
-                        if t == "er".chars().collect::<Vec<_>>() {
-                            break;
-                        } else if t == "era".chars().collect::<Vec<_>>() {
-                            continue;
-                        } else if t == "erd".chars().collect::<Vec<_>>()
-                            || t == "ere".chars().collect::<Vec<_>>()
-                        {
-                            i += 2;
-                            continue;
-                        } else {
-                            ans = false;
-                            break;
-                        }
-                    }
-                    _ => {
-                        ans = false;
-                        break;
-                    }
-                }
-            }
-            'e' => {
-                if cv[i..min(i + 5, l)].iter().map(|&c| c).collect::<Vec<_>>()
-                    != "erase".chars().collect::<Vec<_>>()
-                {
-                    ans = false;
-                    break;
-                }
-                i += 5;
-                if i >= l {
-                    break;
-                }
-                if cv[i] == 'r' {
-                    i += 1;
-                }
-            }
-            _ => {
+    let mut s = &s_rev[..];
+    while s.len() > 0 {
+        match pv.iter().find(|&p| s.starts_with(p)) {
+            Some(p) => s = &s[p.len()..],
+            None => {
                 ans = false;
                 break;
             }
