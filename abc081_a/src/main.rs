@@ -15,11 +15,6 @@ fn main() {
     let mut stdin_lock = stdin.lock();
     let mut buf: Vec<u8> = Vec::new();
     let s: String = read(&mut stdin_lock, &mut buf, b'\n');
-    let ans = s
-        .chars()
-        .collect::<Vec<_>>()
-        .iter()
-        .filter(|&&c| c == '1')
-        .count();
+    let ans = s.chars().filter(|&c| c == '1').count();
     println!("{}", ans);
 }
