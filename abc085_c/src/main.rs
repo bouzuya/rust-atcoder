@@ -17,12 +17,8 @@ fn main() {
     let n: i32 = read(&mut stdin_lock, &mut buf, b' ');
     let y: i32 = read(&mut stdin_lock, &mut buf, b'\n');
     for a in 0..n + 1 {
-        let ya = 10000 * a;
-        if ya > y {
-            continue;
-        }
         for b in 0..(n - a) + 1 {
-            if ya + 5000 * b + 1000 * (n - a - b) == y {
+            if 10000 * a + 5000 * b + 1000 * (n - a - b) == y {
                 println!("{} {} {}", a, b, (n - a - b));
                 return;
             }
