@@ -15,22 +15,12 @@ fn main() {
     let mut stdin_lock = stdin.lock();
     let mut buf: Vec<u8> = Vec::new();
     let n: usize = read(&mut stdin_lock, &mut buf, b'\n');
-    let mut av = vec![0i32; n];
+    let mut av = vec![0u32; n];
     for i in 0..n - 1 {
         av[i] = read(&mut stdin_lock, &mut buf, b' ');
     }
     av[n - 1] = read(&mut stdin_lock, &mut buf, b'\n');
 
-    let mut ans = 0;
-    loop {
-        if av.iter().all(|a| a % 2 == 0) {
-            for i in 0..n {
-                av[i] /= 2;
-            }
-            ans += 1;
-        } else {
-            break;
-        }
-    }
+    let ans = av.iter().map(|a| a.trailing_zeros()).min().unwrap();
     println!("{}", ans);
 }
