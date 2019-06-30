@@ -24,7 +24,9 @@ fn main() {
     while i < l {
         match cv[i] {
             'd' => {
-                if cv[i..min(i + 5, l)].iter().collect::<String>() != "dream" {
+                if cv[i..min(i + 5, l)].iter().map(|&c| c).collect::<Vec<_>>()
+                    != "dream".chars().collect::<Vec<_>>()
+                {
                     ans = false;
                     break;
                 }
@@ -35,12 +37,14 @@ fn main() {
                 match cv[i] {
                     'd' => continue,
                     'e' => {
-                        let t = cv[i..min(i + 3, l)].iter().collect::<String>();
-                        if t == "er" {
+                        let t = cv[i..min(i + 3, l)].iter().map(|&c| c).collect::<Vec<_>>();
+                        if t == "er".chars().collect::<Vec<_>>() {
                             break;
-                        } else if t == "era" {
+                        } else if t == "era".chars().collect::<Vec<_>>() {
                             continue;
-                        } else if t == "erd" || t == "ere" {
+                        } else if t == "erd".chars().collect::<Vec<_>>()
+                            || t == "ere".chars().collect::<Vec<_>>()
+                        {
                             i += 2;
                             continue;
                         } else {
@@ -55,7 +59,9 @@ fn main() {
                 }
             }
             'e' => {
-                if cv[i..min(i + 5, l)].iter().collect::<String>() != "erase".chars() {
+                if cv[i..min(i + 5, l)].iter().map(|&c| c).collect::<Vec<_>>()
+                    != "erase".chars().collect::<Vec<_>>()
+                {
                     ans = false;
                     break;
                 }
