@@ -24,8 +24,8 @@ fn main() {
         let vi: i64 = read(&mut stdin_lock, &mut buf, b'\n');
         for j in 1..w + 1 {
             ans[i][j] = max(
-                max(ans[i - 1][j], ans[i][j - 1]),
-                if j < wi { 0 } else { ans[i - 1][j - wi] + vi },
+                ans[i - 1][j],
+                if j < wi { 0i64 } else { ans[i - 1][j - wi] + vi },
             );
         }
     }
