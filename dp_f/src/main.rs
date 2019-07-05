@@ -46,5 +46,5 @@ fn main() {
             j -= 1;
         }
     }
-    println!("{}", ac.iter().rev().collect::<String>());
+    println!("{}", ac.into_iter().rev().collect::<String>());
 }
