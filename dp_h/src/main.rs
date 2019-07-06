@@ -16,7 +16,7 @@ fn main() {
     let mut buf: Vec<u8> = Vec::new();
     let h: usize = read(&mut stdin_lock, &mut buf, b' ');
     let w: usize = read(&mut stdin_lock, &mut buf, b'\n');
-    let mut g = vec![vec!['#'; w + 2]; h + 2];
+    let mut g = vec![vec!['#'; w + 1]; h + 1];
     for i in 1..h + 1 {
         let line: String = read(&mut stdin_lock, &mut buf, b'\n');
         for (jz, c) in line.chars().enumerate() {
@@ -24,7 +24,7 @@ fn main() {
         }
     }
 
-    let mut tbl = vec![vec![0i32; w + 2]; h + 2];
+    let mut tbl = vec![vec![0i32; w + 1]; h + 1];
     for i in 1..h + 1 {
         for j in 1..w + 1 {
             if i == 1 && j == 1 {
