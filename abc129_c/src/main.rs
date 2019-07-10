@@ -25,16 +25,8 @@ fn main() {
     tbl[0] = 1;
     tbl[1] = tbl[0];
     for i in 2..n + 1 {
-        let a = if av[i - 1] {
-            (tbl[i - 1]) % 1_000_000_007
-        } else {
-            0
-        };
-        let b = if av[i - 2] {
-            (tbl[i - 2]) % 1_000_000_007
-        } else {
-            0
-        };
+        let a = if av[i - 1] { tbl[i - 1] } else { 0 };
+        let b = if av[i - 2] { tbl[i - 2] } else { 0 };
         tbl[i] = (a + b) % 1_000_000_007;
     }
     println!("{}", tbl[n]);
