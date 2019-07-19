@@ -18,13 +18,13 @@ fn main() {
     let k: i32 = read(&mut stdin_lock, &mut buf, b'\n');
     let mut ans = 0f64;
     for i in 1..n + 1 {
-        let mut p = 1f64;
+        let mut j = 0;
         let mut s = 1;
         while s * i < k {
             s *= 2;
-            p /= 2f64;
+            j += 1;
         }
-        ans += p / f64::from(n);
+        ans += 1.0 / (f64::from(1 << j) * f64::from(n));
     }
     println!("{:.12}", ans);
 }
