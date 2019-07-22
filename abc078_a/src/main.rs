@@ -14,8 +14,8 @@ fn main() {
     let stdin = std::io::stdin();
     let mut stdin_lock = stdin.lock();
     let mut buf: Vec<u8> = Vec::new();
-    let x: char = read(&mut stdin_lock, &mut buf, b' ');
-    let y: char = read(&mut stdin_lock, &mut buf, b'\n');
+    let x: String = read(&mut stdin_lock, &mut buf, b' ');
+    let y: String = read(&mut stdin_lock, &mut buf, b'\n');
 
     let ans = if x < y {
         "<"
