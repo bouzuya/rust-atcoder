@@ -1,3 +1,5 @@
+use std::cmp::min;
+
 fn read<T: std::str::FromStr>(
     stdin_lock: &mut std::io::StdinLock,
     buf: &mut Vec<u8>,
@@ -26,19 +28,12 @@ fn main() {
     }
     bv[n - 1] = read(&mut stdin_lock, &mut buf, b'\n');
 
-    let mut cv = vec![0i64; n + 1];
+    let mut ans = 0i64;
     for i in 0..n {
-        let j = n - i - 1;
-        let p = if bv[j] >= av[j + 1] - cv[j + 1] {
-            av[j + 1] - cv[j + 1]
-        } else {
-            bv[j]
-        };
-        let c = if bv[j] - p >= av[j] { av[j] } else { bv[j] - p };
-        cv[j + 1] += p;
-        cv[j] += c;
+        let l = min(av[i], bv[i]);
+        let r = min(av[i + 1], bv[i] - l);
+        av[i + 1] -= r;
+        ans += l + r;
     }
-
-    let ans: i64 = cv.into_iter().sum();
     println!("{}", ans);
 }
