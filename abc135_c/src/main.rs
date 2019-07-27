@@ -1,3 +1,5 @@
+use std::cmp::max;
+
 fn read<T: std::str::FromStr>(
     stdin_lock: &mut std::io::StdinLock,
     buf: &mut Vec<u8>,
@@ -32,13 +34,13 @@ fn main() {
         cv[j] += if bv[j] - cv[j] >= av[j + 1] {
             av[j + 1]
         } else {
-            bv[j] - cv[j]
+            max(0, bv[j] - cv[j])
         };
-        if bv[j] - cv[j] >= av[j] {
-            cv[j] += av[j];
+        cv[j] += if bv[j] - cv[j] >= av[j] {
+            av[j]
         } else {
-            cv[j] += bv[j] - cv[j];
-        }
+            max(0, bv[j] - cv[j])
+        };
     }
 
     let ans: i64 = cv.into_iter().sum();
