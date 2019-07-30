@@ -18,13 +18,18 @@ fn main() {
     let mut buf: Vec<u8> = Vec::new();
     let n: i64 = read(&mut stdin_lock, &mut buf, b' ');
     let m: usize = read(&mut stdin_lock, &mut buf, b'\n');
-    let mut l: i64 = read(&mut stdin_lock, &mut buf, b' ');
-    let mut r: i64 = read(&mut stdin_lock, &mut buf, b'\n');
-    for _ in 1..m {
-        l = max(l, read(&mut stdin_lock, &mut buf, b' '));
-        r = min(r, read(&mut stdin_lock, &mut buf, b'\n'));
+    let mut lrv = vec![(0i64, 0i64); m];
+    for i in 0..m {
+        lrv[i].0 = read(&mut stdin_lock, &mut buf, b' ');
+        lrv[i].1 = read(&mut stdin_lock, &mut buf, b'\n');
     }
 
-    let ans = max(0, min(r, n) - l + 1);
+    let mut l: i64 = 1;
+    let mut r: i64 = n;
+    for i in 0..m {
+        l = max(l, lrv[i].0);
+        r = min(r, lrv[i].1);
+    }
+    let ans = max(0, r - l + 1);
     println!("{}", ans);
 }
