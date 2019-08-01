@@ -1,3 +1,4 @@
+use std::cmp::min;
 use std::collections::{BinaryHeap, HashSet};
 
 fn read<T: std::str::FromStr>(
@@ -17,20 +18,19 @@ fn main() {
     let mut stdin_lock = stdin.lock();
     let mut buf: Vec<u8> = Vec::new();
     let s: String = read(&mut stdin_lock, &mut buf, b'\n');
-    let k_len: usize = read(&mut stdin_lock, &mut buf, b'\n');
-    let cv: Vec<char> = s.chars().collect();
+    let k: usize = read(&mut stdin_lock, &mut buf, b'\n');
     let mut heap = BinaryHeap::new();
     let mut set = HashSet::new();
 
-    for i in 0..cv.len() {
-        for j in i + 1..cv.len() + 1 {
+    for i in 0..s.len() {
+        for j in i + 1..min(s.len() + 1, i + k + 1) {
             let t = &s[i..j];
             if set.contains(t) {
                 continue;
             }
             set.insert(t);
             heap.push(t);
-            if heap.len() > k_len {
+            if heap.len() > k {
                 if t >= heap.pop().unwrap() {
                     break;
                 }
@@ -38,6 +38,6 @@ fn main() {
         }
     }
 
-    let ans = heap.into_sorted_vec()[k_len - 1];
+    let ans = heap.iter().max().unwrap();
     println!("{}", ans);
 }
