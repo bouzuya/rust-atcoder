@@ -25,10 +25,10 @@ fn main() {
         cv[i].2 = read(&mut stdin_lock, &mut buf, b'\n');
     }
 
-    cv.sort_by(|(_, p1, y1, _), (_, p2, y2, _)| match p1.cmp(p2) {
+    cv.sort_by(|&(_, p1, y1, _), &(_, p2, y2, _)| match p1.cmp(&p2) {
         Ordering::Less => Ordering::Less,
         Ordering::Greater => Ordering::Greater,
-        Ordering::Equal => y1.cmp(y2),
+        Ordering::Equal => y1.cmp(&y2),
     });
     let mut j = 1;
     cv[0].3 = 1;
@@ -36,7 +36,7 @@ fn main() {
         j = if cv[i - 1].1 == cv[i].1 { j + 1 } else { 1 };
         cv[i].3 = j;
     }
-    cv.sort_by(|(i1, _, _, _), (i2, _, _, _)| i1.cmp(i2));
+    cv.sort_by(|&(i1, _, _, _), &(i2, _, _, _)| i1.cmp(&i2));
 
     for i in 0..m {
         println!("{:06}{:06}", cv[i].1, cv[i].3);
