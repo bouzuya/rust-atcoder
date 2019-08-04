@@ -21,18 +21,16 @@ fn main() {
     }
     hv[n - 1] = read(&mut stdin_lock, &mut buf, b'\n');
 
-    hv.reverse();
-
     let mut ans = true;
     let mut p = hv[0];
     for i in 0..n {
-        if hv[i] <= p {
+        if hv[i] == p {
             continue;
-        } else if hv[i] > p + 1 {
+        } else if hv[i] > p {
+            p = hv[i] - 1;
+        } else {
             ans = false;
             break;
-        } else {
-            p = hv[i] - 1;
         }
     }
     println!("{}", if ans { "Yes" } else { "No" });
