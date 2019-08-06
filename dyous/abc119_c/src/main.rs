@@ -10,19 +10,63 @@ fn read<T: std::str::FromStr>(
     s.parse().unwrap_or_else(|_| panic!("read"))
 }
 
-fn dfs(lv: &Vec<i32>, n: usize, a: i32, b: i32, c: i32, i: usize, x: i32, y: i32, z: i32) -> i32 {
+fn dfs(
+    lv: &Vec<i32>,
+    n: usize,
+    a: i32,
+    b: i32,
+    c: i32,
+    i: usize,
+    m: i32,
+    x: i32,
+    y: i32,
+    z: i32,
+) -> i32 {
     if i == n {
         return if x == 0 || y == 0 || z == 0 {
-            a + b + c
+            a + b + c // inf
         } else {
-            (x - a).abs() + (y - b).abs() + (z - c).abs() - 30
+            m + (x - a).abs() + (y - b).abs() + (z - c).abs()
         };
     }
     return vec![
-        dfs(lv, n, a, b, c, i + 1, x, y, z),
-        dfs(lv, n, a, b, c, i + 1, x + lv[i], y, z) + 10,
-        dfs(lv, n, a, b, c, i + 1, x, y + lv[i], z) + 10,
-        dfs(lv, n, a, b, c, i + 1, x, y, z + lv[i]) + 10,
+        dfs(lv, n, a, b, c, i + 1, m, x, y, z),
+        dfs(
+            lv,
+            n,
+            a,
+            b,
+            c,
+            i + 1,
+            m + if x == 0 { 0 } else { 10 },
+            x + lv[i],
+            y,
+            z,
+        ),
+        dfs(
+            lv,
+            n,
+            a,
+            b,
+            c,
+            i + 1,
+            m + if y == 0 { 0 } else { 10 },
+            x,
+            y + lv[i],
+            z,
+        ),
+        dfs(
+            lv,
+            n,
+            a,
+            b,
+            c,
+            i + 1,
+            m + if z == 0 { 0 } else { 10 },
+            x,
+            y,
+            z + lv[i],
+        ),
     ]
     .into_iter()
     .min()
@@ -42,6 +86,6 @@ fn main() {
         lv[i] = read(&mut stdin_lock, &mut buf, b'\n');
     }
 
-    let ans = dfs(&lv, n, a, b, c, 0, 0, 0, 0);
+    let ans = dfs(&lv, n, a, b, c, 0, 0, 0, 0, 0);
     println!("{}", ans);
 }
