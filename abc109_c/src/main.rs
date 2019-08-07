@@ -1,5 +1,3 @@
-use std::cmp::min;
-
 fn read<T: std::str::FromStr>(
     stdin_lock: &mut std::io::StdinLock,
     buf: &mut Vec<u8>,
@@ -41,10 +39,7 @@ fn main() {
 
     let mut ans = (x - xv[0]).abs();
     for i in 1..n {
-        ans = min(ans, (x - xv[i]).abs());
-    }
-    for i in 1..n {
-        ans = gcd(ans, xv[i] - xv[i - 1]);
+        ans = gcd(ans, (x - xv[i]).abs());
     }
     println!("{}", ans);
 }
