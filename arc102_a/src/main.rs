@@ -17,12 +17,12 @@ fn main() {
     let n: usize = read(&mut stdin_lock, &mut buf, b' ');
     let k: usize = read(&mut stdin_lock, &mut buf, b'\n');
 
-    let mut rv = vec![0i32; k];
+    let mut rv = vec![0i64; k];
     for x in 1..n + 1 {
         rv[x % k] += 1;
     }
 
-    let mut ans = 0;
+    let mut ans = 0i64;
     for a in 0..k {
         let bc = (k - a) % k;
         if (bc + bc) % k == 0 {
