@@ -24,11 +24,6 @@ fn main() {
     }
     xv[n - 1] = read(&mut stdin_lock, &mut buf, b'\n');
 
-    let mut yv = vec![0i64; n];
-    for i in 0..n {
-        yv[i] = (xv[i] - xv[0]).abs();
-    }
-
     let mut ans = xv[0].abs() + (xv[n - 1] - xv[0]).abs();
     for i in 0..n - k + 1 {
         ans = min(
