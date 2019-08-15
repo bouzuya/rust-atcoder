@@ -30,7 +30,7 @@ fn main() {
             for i in 0..n {
                 let (xi, yi, hi) = xyhv[i];
                 h = hi + (cx - xi).abs() + (cy - yi).abs();
-                if h > 0 {
+                if h > 0 && hi > 0 {
                     break;
                 }
             }
