@@ -24,8 +24,8 @@ fn main() {
     }
     vv[n - 1] = read(&mut stdin_lock, &mut buf, b'\n');
 
-    let mut me = vec![(0usize, 0i32); 100_000];
-    let mut mo = vec![(0usize, 0i32); 100_000];
+    let mut me = vec![(0usize, 0i32); 100_000 + 1];
+    let mut mo = vec![(0usize, 0i32); 100_000 + 1];
     for i in 0..n {
         if i % 2 == 0 {
             me[vv[i]].0 = vv[i];
