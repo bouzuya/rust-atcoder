@@ -15,21 +15,25 @@ fn main() {
     let mut stdin_lock = stdin.lock();
     let mut buf: Vec<u8> = Vec::new();
     let n: usize = read(&mut stdin_lock, &mut buf, b'\n');
-    let mut av = vec![0i32; n];
+    let mut av = vec![0i64; n];
     for i in 0..n - 1 {
         av[i] = read(&mut stdin_lock, &mut buf, b' ');
     }
     av[n - 1] = read(&mut stdin_lock, &mut buf, b'\n');
 
-    let mut bv = vec![0i32; n];
+    let mut bv = vec![0i64; n];
     for i in 0..n {
-        bv[i] = av[i] - (i as i32 + 1);
+        bv[i] = av[i] - (i as i64 + 1);
     }
     bv.sort();
-    let m = bv[n / 2];
-    let mut ans = 0i32;
+    let m = if n % 2 == 0 {
+        (bv[n / 2 - 1] + bv[n / 2]) / 2
+    } else {
+        bv[n / 2]
+    };
+    let mut ans = 0i64;
     for i in 0..n {
-        ans += (av[i] - (m + (i as i32 + 1))).abs();
+        ans += (av[i] - (m + (i as i64 + 1))).abs();
     }
     println!("{}", ans);
 }
