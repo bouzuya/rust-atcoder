@@ -17,6 +17,6 @@ fn main() {
     let n: i32 = read(&mut stdin_lock, &mut buf, b' ');
     let k: i32 = read(&mut stdin_lock, &mut buf, b'\n');
     let _: String = read(&mut stdin_lock, &mut buf, b'\n');
-    let ans = (n - 1) / (k - 1) + if ((n - 1) % (k - 1)) == 0 { 0 } else { 1 };
+    let ans = (n - 1) / (k - 1) + if ((n - k) % (k - 1)) == 0 { 0 } else { 1 };
     println!("{}", ans);
 }
