@@ -1,4 +1,3 @@
-use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 
 fn read<T: std::str::FromStr>(
@@ -27,7 +26,7 @@ fn main() {
 
     let mut min_a_heap = BinaryHeap::new();
     for i in 0..n {
-        min_a_heap.push((Reverse(abv[i].0), abv[i].1));
+        min_a_heap.push((m as i32 - abv[i].0, abv[i].1));
     }
     let mut max_b_heap = BinaryHeap::new();
     let mut ans = 0;
@@ -35,8 +34,8 @@ fn main() {
         loop {
             match min_a_heap.peek() {
                 None => break,
-                Some(&(Reverse(a), b)) => {
-                    if a > (i + 1) as i32 {
+                Some(&(ra, b)) => {
+                    if m as i32 - ra > (i + 1) as i32 {
                         break;
                     }
                     min_a_heap.pop();
