@@ -23,26 +23,28 @@ fn main() {
         aav[i][n - 2] = read(&mut stdin_lock, &mut buf, b'\n');
     }
 
-    // for i in 0..n {
-    //     for j in 0..n - 1 {
-    //         print!("{} ", aav[i][j]);
-    //     }
-    //     println!();
-    // }
-
-    let mut iv = vec![0usize; n];
+    let mut iv = vec![(0usize, 0usize); n];
+    for i in 0..n {
+        iv[i].1 = i;
+    }
     let mut ans = 1;
     loop {
         let mut c = false;
         let mut h = false;
+        iv.sort();
         for i in 0..n {
-            if iv[i] != n - 1 {
+            let (x, p) = iv[i];
+            if x < n - 1 {
                 c = true;
-                let j = aav[i][iv[i]] - 1;
-                if i == aav[j][iv[j]] - 1 {
-                    h = true;
-                    iv[i] += 1;
-                    iv[j] += 1;
+                let q = aav[p][x] - 1;
+                for j in 0..n {
+                    let (y, qj) = iv[j];
+                    if qj == q && y < n - 1 && aav[qj][y] - 1 == p {
+                        h = true;
+                        iv[i].0 += 1;
+                        iv[j].0 += 1;
+                        break;
+                    }
                 }
             }
         }
