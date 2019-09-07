@@ -35,24 +35,29 @@ fn main() {
     let mut lh = BinaryHeap::new();
     let mut rh = BinaryHeap::new();
     let mut c = 1;
+    let mut s = 0;
+    let mut e = 0;
     let mut d = cv[0];
     for i in 1..n {
         if cv[i] != d {
             if d == 'L' {
-                lh.push(c);
+                lh.push((c, s, e));
             } else {
-                rh.push(c);
+                rh.push((c, e, s));
             }
             c = 1;
+            s = i;
+            e = i;
             d = cv[i];
         } else {
             c += 1;
+            e = i;
         }
     }
     if d == 'L' {
-        lh.push(c);
+        lh.push((c, s, n - 1));
     } else {
-        rh.push(c);
+        rh.push((c, n - 1, s));
     }
 
     let mut lmax = lc;
@@ -60,18 +65,42 @@ fn main() {
         if rh.is_empty() {
             break;
         }
-        lmax += rh.pop().unwrap();
+        lmax += rh.pop().unwrap().0;
     }
-    lmax -= rh.len() as i32 + if cv[0] == 'L' { 1 } else { 0 } + if !rh.is_empty() && cv[n - 1] == 'R' { -1 } else { 0 };
+    lmax -= rh.len() as i32 + if cv[0] == 'L' { 1 } else { 0 };
+    let mut h = false;
+    loop {
+        match rh.pop() {
+            Some(x) => {
+                if x.1 == n - 1 {
+                    h = true
+                }
+            }
+            None => break,
+        }
+    }
+    lmax += if h { 1 } else { 0 };
 
     let mut rmax = rc;
     for _ in 0..k {
         if lh.is_empty() {
             break;
         }
-        rmax += lh.pop().unwrap();
+        rmax += lh.pop().unwrap().0;
     }
-    rmax -= lh.len() as i32 + if !lh.is_empty() && cv[0] == 'L' { -1 } else { 0 } + if cv[n - 1] == 'R' { 1 } else { 0 };
+    rmax -= lh.len() as i32 + if cv[n - 1] == 'R' { 1 } else { 0 };
+    let mut h = false;
+    loop {
+        match lh.pop() {
+            Some(x) => {
+                if x.1 == 0 {
+                    h = true
+                }
+            }
+            None => break,
+        }
+    }
+    rmax += if h { 1 } else { 0 };
 
     println!("{}", max(lmax, rmax));
 }
