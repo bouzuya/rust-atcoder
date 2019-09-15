@@ -30,9 +30,13 @@ fn main() {
     }
 
     let mut ans = 0;
+    let mut s = 0;
     let mut c = 0;
     for i in 0..n - 1 {
-        if iv[i] + 1 == iv[i + 1] {
+        if iv[i] + 1 == iv[i + 1] && iv[s] != (i + 1) as i32 {
+            if c == 0 {
+                s = i;
+            }
             c = if c == 0 { 2 } else { c + 1 };
         } else {
             c = 0;
