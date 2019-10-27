@@ -27,7 +27,7 @@ fn main() {
             break;
         }
         if m % a == 0 {
-            ans = min(ans, (n / (a * j) - 1) + ((a * j) - 1));
+            ans = min(ans, (n / a.pow(j) - 1) + (a.pow(j) - 1));
             m /= a;
             j += 1;
         } else {
