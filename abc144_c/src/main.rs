@@ -18,32 +18,13 @@ fn main() {
     let mut buf: Vec<u8> = Vec::new();
     let n: i64 = read(&mut stdin_lock, &mut buf, b'\n');
 
-    let mut av: Vec<i64> = Vec::new();
-    let mut m = n;
-    let mut a = 2;
-    let mut j = 1;
-    loop {
+    let mut ans = n - 1;
+    for a in 2..n {
         if a * a > n {
             break;
         }
-        if m % a == 0 {
-            av.push(a.pow(j));
-            m /= a;
-            j += 1;
-        } else {
-            a += 1;
-            j = 1;
-        }
-    }
-    let mut ans = n - 1;
-    for i in 0..av.len() {
-        let a = av[i];
-        ans = min(ans, (n / a - 1) + (a - 1));
-        for j in 0..av.len() {
-            let a = av[i] * av[j];
-            if n % a == 0 {
-                ans = min(ans, (n / a - 1) + (a - 1));
-            }
+        if n % a == 0 {
+            ans = min(ans, (n / a - 1) + (a - 1));
         }
     }
     println!("{}", ans);
