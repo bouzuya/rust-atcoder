@@ -21,15 +21,18 @@ fn main() {
     let mut ans = n - 1;
     let mut m = n;
     let mut a = 2;
+    let mut j = 1;
     loop {
         if a * a > n {
             break;
         }
         if m % a == 0 {
-            ans = min(ans, (n / a - 1) + (a - 1));
+            ans = min(ans, (n / (a * j) - 1) + ((a * j) - 1));
             m /= a;
+            j += 1;
         } else {
             a += 1;
+            j = 1;
         }
     }
     println!("{}", ans);
