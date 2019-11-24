@@ -21,7 +21,7 @@ fn main() {
     let x: i64 = read(&mut stdin_lock, &mut buf, b'\n');
 
     let mut ans = 0;
-    let max_n = x / a;
+    let max_n = min(1_000_000_000, x / a);
     for i in 0..max_n {
         let n = max_n - i;
         let mut d = 0;
@@ -30,9 +30,8 @@ fn main() {
             d += 1;
             m /= 10;
         }
-        let o = a * n + b * d;
-        if o <= x {
-            ans = min(1_000_000_000, n);
+        if a * n + b * d <= x {
+            ans = n;
             break;
         }
     }
