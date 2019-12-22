@@ -1,0 +1,7 @@
+[package]
+name = "abc148_e"
+version = "0.1.0"
+authors = ["bouzuya <m@bouzuya.net>"]
+edition = "2015"
+
+[dependencies]
