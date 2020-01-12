@@ -27,17 +27,18 @@ fn main() {
         }
     }
 
-    // for y in 0..h {
-    //     for x in 0..w {
-    //         print!("{}", if rv[y * w + x] { "." } else { "#" });
-    //     }
-    //     println!();
-    // }
-
     let mut start = (0, 0);
-    for i in 0..w * h {
-        if rv[i] {
-            start = (i / w, i % w);
+    for y in 0..h {
+        let mut found = false;
+        for x in 0..w {
+            let i = y * w + x;
+            if rv[i] {
+                start = (x, y);
+                found = true;
+                break;
+            }
+        }
+        if found {
             break;
         }
     }
