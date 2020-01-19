@@ -15,11 +15,9 @@ fn main() {
     let stdin = std::io::stdin();
     let mut stdin_lock = stdin.lock();
     let mut buf: Vec<u8> = Vec::new();
-    let a: u8 = read(&mut stdin_lock, &mut buf, b' ');
-    let b: u8 = read(&mut stdin_lock, &mut buf, b'\n');
-    let av = vec![char::from(0x30 + a); b as usize];
-    let bv = vec![char::from(0x30 + b); a as usize];
-    let s: String = av.into_iter().collect();
-    let t: String = bv.into_iter().collect();
+    let a: usize = read(&mut stdin_lock, &mut buf, b' ');
+    let b: usize = read(&mut stdin_lock, &mut buf, b'\n');
+    let s: String = a.to_string().repeat(b);
+    let t: String = b.to_string().repeat(a);
     println!("{}", min(s, t));
 }
