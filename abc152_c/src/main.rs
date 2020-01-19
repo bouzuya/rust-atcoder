@@ -23,18 +23,14 @@ fn main() {
     }
     pv[n - 1] = read(&mut stdin_lock, &mut buf, b'\n');
 
-    let mut rv = vec![0u32; n];
-    let mut minp = pv[0];
-    for i in 0..pv.len() {
-        minp = min(minp, pv[i]);
-        rv[i] = minp;
-    }
-
     let mut ans = 0;
+    let mut mp = pv[0];
     for i in 0..pv.len() {
-        if pv[i] <= rv[i] {
+        if pv[i] <= mp {
             ans += 1;
         }
+        mp = min(mp, pv[i]);
     }
+
     println!("{}", ans);
 }
