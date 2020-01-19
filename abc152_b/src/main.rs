@@ -17,7 +17,7 @@ fn main() {
     let mut buf: Vec<u8> = Vec::new();
     let a: u8 = read(&mut stdin_lock, &mut buf, b' ');
     let b: u8 = read(&mut stdin_lock, &mut buf, b'\n');
-    let s: String = vec![('0' as u8 + a) as char; b as usize].into_iter().collect();
-    let t: String = vec![('0' as u8 + b) as char; a as usize].into_iter().collect();
+    let s: String = (0..b).map(|_| ('0' as u8 + a) as char).collect();
+    let t: String = (0..a).map(|_| ('0' as u8 + b) as char).collect();
     println!("{}", min(s, t));
 }
