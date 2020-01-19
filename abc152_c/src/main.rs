@@ -12,12 +12,29 @@ fn read<T: std::str::FromStr>(
 
 fn main() {
     use std::cmp::min;
+
     let stdin = std::io::stdin();
     let mut stdin_lock = stdin.lock();
     let mut buf: Vec<u8> = Vec::new();
-    let a: usize = read(&mut stdin_lock, &mut buf, b' ');
-    let b: usize = read(&mut stdin_lock, &mut buf, b'\n');
-    let s: String = a.to_string().repeat(b);
-    let t: String = b.to_string().repeat(a);
-    println!("{}", min(s, t));
+    let n: usize = read(&mut stdin_lock, &mut buf, b'\n');
+    let mut pv = vec![0u32; n];
+    for i in 0..n - 1 {
+        pv[i] = read(&mut stdin_lock, &mut buf, b' ');
+    }
+    pv[n - 1] = read(&mut stdin_lock, &mut buf, b'\n');
+
+    let mut rv = vec![0u32; n];
+    let mut minp = pv[0];
+    for i in 0..pv.len() {
+        minp = min(minp, pv[i]);
+        rv[i] = minp;
+    }
+
+    let mut ans = 0;
+    for i in 0..pv.len() {
+        if pv[i] <= rv[i] {
+            ans += 1;
+        }
+    }
+    println!("{}", ans);
 }
