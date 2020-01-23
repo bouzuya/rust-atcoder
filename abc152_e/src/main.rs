@@ -39,7 +39,7 @@ impl ops::Add<ModU64> for ModU64 {
     type Output = ModU64;
 
     fn add(self, rhs: ModU64) -> Self::Output {
-        Self((self.0 + rhs.0) % MODP)
+        ModU64((self.0 + rhs.0) % MODP)
     }
 }
 
@@ -47,7 +47,7 @@ impl ops::Mul<ModU64> for ModU64 {
     type Output = ModU64;
 
     fn mul(self, rhs: ModU64) -> Self::Output {
-        Self(self.0 % MODP * rhs.0 % MODP)
+        ModU64(self.0 % MODP * rhs.0 % MODP)
     }
 }
 
@@ -92,7 +92,7 @@ fn main() {
         let mut j = av[i];
         while j != 1 {
             let p = pv[j as usize];
-            apv[i].entry(p).and_modify(|e| *e += 1).or_insert(1);
+            *apv[i].entry(p).or_insert(0) += 1;
             j /= p;
         }
     }
@@ -100,7 +100,11 @@ fn main() {
     let mut l: HashMap<u64, u64> = HashMap::new();
     for a in apv.iter() {
         for (&k, &v) in a.iter() {
-            l.entry(k).and_modify(|e| *e = max(*e, v)).or_insert(v);
+            if let Some(lv) = l.get_mut(&k) {
+                *lv = max(*lv, v);
+                continue;
+            }
+            l.insert(k, v);
         }
     }
 
