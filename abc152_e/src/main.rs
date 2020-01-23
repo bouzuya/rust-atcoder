@@ -1,4 +1,5 @@
 use std::convert::From;
+use std::fmt;
 use std::ops;
 
 fn read<T: std::str::FromStr>(
@@ -43,6 +44,12 @@ impl ModU64 {
 impl From<u64> for ModU64 {
     fn from(x: u64) -> Self {
         ModU64::new(x)
+    }
+}
+
+impl fmt::Display for ModU64 {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.0)
     }
 }
 
@@ -130,5 +137,5 @@ fn main() {
         let b = lcm / a.into();
         ans = ans + b;
     }
-    println!("{}", ans.0);
+    println!("{}", ans);
 }
