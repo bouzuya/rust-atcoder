@@ -19,9 +19,5 @@ fn main() {
     let h: usize = read(&mut stdin_lock, &mut buf, b' ');
     let a: usize = read(&mut stdin_lock, &mut buf, b'\n');
 
-    let mut ans = 0;
-    while ans * a < h {
-        ans += 1;
-    }
-    println!("{}", ans);
+    println!("{}", (h + a - 1) / a);
 }
