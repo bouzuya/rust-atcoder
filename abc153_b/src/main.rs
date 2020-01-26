@@ -24,11 +24,6 @@ fn main() {
     }
     av[n - 1] = read(&mut stdin_lock, &mut buf, b'\n');
 
-    let mut sum_a = 0;
-    for a in av {
-        sum_a += a;
-    }
-
-    let ans = if h <= sum_a { "Yes" } else { "No" };
+    let ans = if h <= av.iter().sum() { "Yes" } else { "No" };
     println!("{}", ans);
 }
