@@ -24,11 +24,7 @@ fn main() {
     }
     hv[n - 1] = read(&mut stdin_lock, &mut buf, b'\n');
 
-    hv.sort_by(|a, b| b.cmp(&a));
-
-    let mut ans = 0;
-    for i in k..n {
-        ans += hv[i];
-    }
+    hv.sort();
+    let ans = hv.iter().take(n.saturating_sub(k)).sum::<usize>();
     println!("{}", ans);
 }
