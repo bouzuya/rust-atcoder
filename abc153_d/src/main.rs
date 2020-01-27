@@ -10,6 +10,14 @@ fn read<T: std::str::FromStr>(
     s.parse().unwrap_or_else(|_| panic!("read"))
 }
 
+fn f(h: usize) -> usize {
+    if h == 1 {
+        1
+    } else {
+        1 + 2 * f(h / 2)
+    }
+}
+
 fn main() {
     let stdin = std::io::stdin();
     let mut stdin_lock = stdin.lock();
@@ -18,13 +26,5 @@ fn main() {
     // input
     let h: usize = read(&mut stdin_lock, &mut buf, b' ');
 
-    let mut ans = 1u64;
-    let mut x = h;
-    let mut b = 1;
-    while x > 1 {
-        b *= 2;
-        x /= 2;
-        ans += b;
-    }
-    println!("{}", ans);
+    println!("{}", f(h));
 }
