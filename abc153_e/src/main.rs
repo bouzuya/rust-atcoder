@@ -11,8 +11,6 @@ fn read<T: std::str::FromStr>(
 }
 
 fn main() {
-    use std::cmp::min;
-
     let stdin = std::io::stdin();
     let mut stdin_lock = stdin.lock();
     let mut buf: Vec<u8> = Vec::new();
@@ -26,17 +24,14 @@ fn main() {
         abv[i].1 = read(&mut stdin_lock, &mut buf, b'\n');
     }
 
-    abv.sort();
-
-    // 体力減少が x 以上のうち最も魔力の消耗が少ないものを選ぶ
-    let mut tbl = vec![0usize; h + 1]; // tbl[hp] = min_mp;
-    for i in 1..h + 1 {
-        let mut min_mp = usize::max_value();
-        for j in 0..n {
-            let (a, b) = abv[j];
-            min_mp = min(min_mp, if i > a { tbl[i - a] + b } else { b });
-        }
-        tbl[i] = min_mp;
+    let mut tbl = vec![usize::max_value(); h + 1];
+    tbl[0] = 0;
+    for hp in 1..h + 1 {
+        tbl[hp] = abv
+            .iter()
+            .map(|&(a, b)| if hp > a { tbl[hp - a] + b } else { b })
+            .min()
+            .unwrap();
     }
 
     println!("{}", tbl[h]);
