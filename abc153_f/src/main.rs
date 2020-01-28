@@ -31,7 +31,8 @@ fn main() {
     let mut i = 0;
     while i < n {
         let (x, h) = xhv[i];
-        let c = h / a;
+        let c = (h + a - 1) / a;
+        let damage = c * a;
         let mut streak = true;
         let mut next_i = i + 1;
         for j in i + 1..xhv.len() {
@@ -39,7 +40,7 @@ fn main() {
             if jx > x + 2 * d {
                 break;
             }
-            xhv[j].1 = if jh < c * a { 0 } else { jh - c * a };
+            xhv[j].1 = jh.saturating_sub(damage);
             if streak && xhv[j].1 > 0 {
                 streak = false;
                 next_i = j;
