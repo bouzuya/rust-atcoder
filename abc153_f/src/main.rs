@@ -10,6 +10,25 @@ fn read<T: std::str::FromStr>(
     s.parse().unwrap_or_else(|_| panic!("read"))
 }
 
+fn upper_bound(v: &Vec<(usize, usize)>, x: &usize) -> usize {
+    use std::cmp::Ordering;
+
+    let mut l = 0;
+    let mut h = v.len();
+    while h > l {
+        let m = l + (h - l) / 2;
+        match v[m].0.cmp(x) {
+            Ordering::Less | Ordering::Equal => {
+                l = m + 1;
+            }
+            Ordering::Greater => {
+                h = m;
+            }
+        }
+    }
+    l
+}
+
 fn main() {
     let stdin = std::io::stdin();
     let mut stdin_lock = stdin.lock();
@@ -27,27 +46,16 @@ fn main() {
 
     xhv.sort();
 
-    let mut ans = 0;
-    let mut i = 0;
-    while i < n {
+    let mut counts = vec![0; xhv.len() + 1];
+    let mut count = 0;
+    for i in 0..xhv.len() {
+        count -= counts[i];
         let (x, h) = xhv[i];
-        let c = (h + a - 1) / a;
-        let damage = c * a;
-        let mut streak = true;
-        let mut next_i = i + 1;
-        for j in i + 1..xhv.len() {
-            let (jx, jh) = xhv[j];
-            if jx > x + 2 * d {
-                break;
-            }
-            xhv[j].1 = jh.saturating_sub(damage);
-            if streak && xhv[j].1 > 0 {
-                streak = false;
-                next_i = j;
-            }
+        if count * a < h {
+            let c = ((h - (count * a)) + a - 1) / a;
+            count += c;
+            counts[upper_bound(&xhv, &(x + 2 * d))] += c;
         }
-        i = next_i;
-        ans += c;
     }
-    println!("{}", ans);
+    println!("{}", counts.iter().sum::<usize>());
 }
