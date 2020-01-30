@@ -5,16 +5,14 @@
 ## Note
 
 ```
-$ rustup override set 1.15.1
-```
-
-[kmyk/online-judge-tools](https://github.com/kmyk/online-judge-tools)
-
-```
-$ # oj l # ...
-$ oj d https://atcoder.jp/contests/abc096/tasks/abc096_a
-$ oj t -c 'cargo run'
-$ oj s https://atcoder.jp/contests/abc096/tasks/abc096_a src/main.rs
+$ # See cargo-atcoder README
+$ # https://github.com/tanakh/cargo-atcoder
+$ contest_name=...
+$ cargo atcoder new ${contest_name}
+$ cd ${contest_name}
+$ # edit src/bin/a.rs
+$ cargo atcoder test a # optional
+$ cargo atcoder submit a
 ```
 
 ## related projects
