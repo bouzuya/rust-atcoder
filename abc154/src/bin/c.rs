@@ -1,12 +1,18 @@
 use proconio::input;
-use std::collections::HashSet;
 
 fn main() {
     input! {
         n: usize,
-        av: [usize; n]
+        mut av: [usize; n]
     };
-    let set: HashSet<usize> = av.into_iter().collect();
-    let ans = if set.len() == n { "YES" } else { "NO" };
+    av.sort();
+    let mut same = false;
+    for i in 1..n {
+        if av[i - 1] == av[i] {
+            same = true;
+            break;
+        }
+    }
+    let ans = if !same { "YES" } else { "NO" };
     println!("{}", ans);
 }
