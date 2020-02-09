@@ -6,13 +6,7 @@ fn main() {
         n: usize,
         av: [usize; n]
     };
-    let mut set = HashSet::new();
-    for a in av {
-        if set.contains(&a) {
-            println!("NO");
-            return;
-        }
-        set.insert(a);
-    }
-    println!("YES");
+    let set: HashSet<usize> = av.into_iter().collect();
+    let ans = if set.len() == n { "YES" } else { "NO" };
+    println!("{}", ans);
 }
