@@ -1,4 +1,5 @@
 use proconio::input;
+use std::cmp::max;
 
 fn main() {
     input! {
@@ -6,16 +7,15 @@ fn main() {
         k: usize,
         pv: [usize; n]
     };
-    let mut sum = 0;
-    for i in 0..k {
-        sum += pv[i] + 1;
+    let mut sv = vec![0usize; n + 1];
+    sv[0] = 0;
+    for i in 0..pv.len() {
+        sv[i + 1] = sv[i] + pv[i] + 1; // 整数で扱うため / 2 を最後にまとめる
     }
-    let mut max_sum = sum;
-    for i in k..pv.len() {
-        sum += pv[i] + 1;
-        sum -= pv[i - k] + 1;
-        max_sum = std::cmp::max(max_sum, sum);
+    let mut ms = 0;
+    for i in 0..pv.len() {
+        ms = max(ms, sv[i + 1] - sv[(i + 1).saturating_sub(k)]);
     }
-    let ans = max_sum as f64 / 2f64;
+    let ans = ms as f64 / 2f64;
     println!("{:.12}", ans);
 }
