@@ -1,35 +1,45 @@
 use proconio::input;
 use proconio::marker::Bytes;
 
+fn c(n: usize, k: usize) -> usize {
+    return if k > n {
+        0
+    } else if k == 1 {
+        n
+    } else if k == 2 {
+        n * (n - 1) / 2
+    } else if k == 3 {
+        n * (n - 1) * (n - 2) / 6
+    } else {
+        unreachable!()
+    };
+}
+
+fn f(s: &Vec<usize>, i: usize, k: usize, l: bool) -> usize {
+    if k == 0 {
+        return 1;
+    }
+    if i == s.len() {
+        return 0;
+    }
+    if l {
+        return c(s.len() - i, k) * 9usize.pow(k as u32);
+    }
+    if s[i] == 0 {
+        return f(s, i + 1, k, false);
+    }
+    return f(s, i + 1, k, true) // 0xxxxx
+        + f(s, i + 1, k - 1, true) * (s[i] - 1) // (1-(d-1))xxxxx
+        + f(s, i + 1, k - 1, false) // dxxxxx
+        ;
+}
+
 fn main() {
     input! {
         mut s: Bytes,
         nzc: usize
     };
-    for i in 0..s.len() {
-        s[i] -= b'0';
-    }
-    let mut dp = vec![vec![vec![0usize; 2]; nzc + 1]; s.len() + 1];
-    dp[0][0][0] = 1;
-    for i in 0..s.len() {
-        let d = s[i];
-        for j in 0..=nzc {
-            for k in 0..=1 {
-                for l in 0..=9 {
-                    let ni = i + 1;
-                    let nj = if l != 0 { j + 1 } else { j };
-                    let nk = if k == 0 && l < d { 1 } else { k };
-                    if nj > nzc {
-                        continue;
-                    }
-                    if k == 0 && l > d {
-                        continue;
-                    }
-                    dp[ni][nj][nk] += dp[i][j][k];
-                }
-            }
-        }
-    }
-    let ans = dp[s.len()][nzc][0] + dp[s.len()][nzc][1];
+    let bs = s.into_iter().map(|b| (b - b'0') as usize).collect();
+    let ans = f(&bs, 0, nzc, false);
     println!("{}", ans);
 }
