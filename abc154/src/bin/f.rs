@@ -1,58 +1,115 @@
+use competition::{ModCombin, ModI64};
 use proconio::input;
 
-pub struct ModCombin {
-    factv: Vec<usize>,
-    finvv: Vec<usize>,
-    modp: usize,
-}
+mod competition {
+    #[derive(Debug, Copy, Clone, Eq, PartialEq)]
+    pub struct ModI64(i64);
 
-impl ModCombin {
-    pub fn new(max: usize, modp: usize) -> Self {
-        let mut factv = vec![0usize; max + 1];
-        let mut finvv = vec![0usize; max + 1];
-        factv[0] = 1;
-        for i in 1..=max {
-            factv[i] = (factv[i - 1] * i) % modp;
+    const MODP: i64 = 1_000_000_007;
+
+    impl ModI64 {
+        pub fn inv(self) -> Self {
+            self.pow(MODP as u32 - 2)
         }
-        finvv[max] = Self::inv(factv[max], modp);
-        for i in (1..=max).rev() {
-            finvv[i - 1] = (finvv[i] * i) % modp;
+
+        pub fn new(x: i64) -> Self {
+            Self(x % MODP)
         }
-        Self { factv, finvv, modp }
-    }
 
-    pub fn combination(&self, n: usize, r: usize) -> usize {
-        if n < r {
-            return 0;
-        }
-        ((((self.factv[n] * self.finvv[r]) % self.modp) * self.finvv[n - r]) % self.modp)
-    }
-
-    // private
-    fn inv(n: usize, modp: usize) -> usize {
-        Self::pow(n, (modp - 2) as u32, modp)
-    }
-
-    // private
-    fn pow(n: usize, mut x: u32, modp: usize) -> usize {
-        let mut b = n;
-        let mut a = 1usize;
-        while x > 1 {
-            if x & 1 == 1 {
-                a = (a * b) % modp;
+        pub fn pow(self, exp: u32) -> Self {
+            let mut b: ModI64 = self;
+            let mut a: ModI64 = 1i64.into();
+            let mut x = exp;
+            while x > 1 {
+                if x & 1 == 1 {
+                    a = a * b;
+                }
+                x = x / 2;
+                b = b * b;
             }
-            x = x / 2;
-            b = (b * b) % modp;
+            if x == 1 {
+                a = a * b;
+            }
+            a
         }
-        if x == 1 {
-            a = (a * b) % modp;
+    }
+
+    impl From<i64> for ModI64 {
+        fn from(x: i64) -> Self {
+            ModI64::new(x)
         }
-        a
+    }
+
+    impl std::fmt::Display for ModI64 {
+        fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+            write!(f, "{}", self.0)
+        }
+    }
+
+    impl std::ops::Add<ModI64> for ModI64 {
+        type Output = ModI64;
+
+        fn add(self, rhs: ModI64) -> Self::Output {
+            (self.0 + rhs.0).into()
+        }
+    }
+
+    impl std::ops::Sub<ModI64> for ModI64 {
+        type Output = ModI64;
+
+        fn sub(self, rhs: ModI64) -> Self::Output {
+            let x = self.0 - rhs.0;
+            (if x.is_negative() { MODP + x } else { x }).into()
+        }
+    }
+
+    impl std::ops::Mul<ModI64> for ModI64 {
+        type Output = ModI64;
+
+        fn mul(self, rhs: ModI64) -> Self::Output {
+            (self.0 * rhs.0).into()
+        }
+    }
+
+    impl std::ops::Div<ModI64> for ModI64 {
+        type Output = ModI64;
+
+        fn div(self, rhs: ModI64) -> Self::Output {
+            self * rhs.inv()
+        }
+    }
+
+    pub struct ModCombin {
+        factv: Vec<ModI64>,
+        finvv: Vec<ModI64>,
+    }
+
+    impl ModCombin {
+        pub fn new(max: usize) -> Self {
+            let mut factv: Vec<ModI64> = vec![0.into(); max + 1];
+            let mut finvv: Vec<ModI64> = vec![0.into(); max + 1];
+            factv[0] = 1.into();
+            for i in 1..=max {
+                factv[i] = factv[i - 1] * (i as i64).into();
+            }
+            finvv[max] = factv[max].inv();
+            for i in (1..=max).rev() {
+                finvv[i - 1] = finvv[i] * (i as i64).into();
+            }
+            Self { factv, finvv }
+        }
+
+        pub fn combination(&self, n: usize, r: usize) -> ModI64 {
+            if n < r {
+                return 0.into();
+            }
+            self.factv[n] * self.finvv[r] * self.finvv[n - r]
+        }
     }
 }
 
-fn g(mc: &ModCombin, r: usize, c: usize) -> usize {
-    return (mc.modp + mc.combination((r + 1) + (c + 1), r + 1) - 1) % mc.modp;
+fn g(mc: &competition::ModCombin, r: usize, c: usize) -> ModI64 {
+    mc.combination((r + 1) + (c + 1), r + 1) - 1.into()
 }
 
 fn main() {
@@ -62,10 +119,7 @@ fn main() {
         r2: usize,
         c2: usize
     };
-    let modp = 1_000_000_007;
-    let mc = ModCombin::new(2_000_005, modp);
-    let ans = (modp + modp + g(&mc, r2, c2) - g(&mc, r1 - 1, c2) - g(&mc, r2, c1 - 1)
-        + g(&mc, r1 - 1, c1 - 1))
-        % modp;
+    let mc = ModCombin::new(2_000_005);
+    let ans = g(&mc, r2, c2) - g(&mc, r1 - 1, c2) - g(&mc, r2, c1 - 1) + g(&mc, r1 - 1, c1 - 1);
     println!("{}", ans);
 }
