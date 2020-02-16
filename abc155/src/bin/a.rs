@@ -6,7 +6,7 @@ fn main() {
         b: usize,
         c: usize,
     };
-    let ans = if (a == b && b != c) || (a == c && a != b) || (b == c && a != b) {
+    let ans = if (a == b && b != c) || (b == c && c != a) || (c == a && a != b) {
         "Yes"
     } else {
         "No"
