@@ -1,15 +1,11 @@
 use proconio::input;
 
 fn main() {
+    let n = 3;
     input! {
-        a: usize,
-        b: usize,
-        c: usize,
+        abc: [usize; n]
     };
-    let ans = if (a == b && b != c) || (b == c && c != a) || (c == a && a != b) {
-        "Yes"
-    } else {
-        "No"
-    };
+    let set: std::collections::HashSet<usize> = abc.into_iter().collect();
+    let ans = if set.len() == n - 1 { "Yes" } else { "No" };
     println!("{}", ans);
 }
