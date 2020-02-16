@@ -5,12 +5,14 @@ fn main() {
         n: usize,
         av: [usize; n]
     };
-    let mut ok = true;
-    for a in av {
-        if a % 2 == 0 && (a % 3 != 0 && a % 5 != 0) {
-            ok = false;
-        }
-    }
-    let ans = if ok { "APPROVED" } else { "DENIED" };
+    let ans = if av
+        .iter()
+        .filter(|&a| a % 2 == 0)
+        .all(|a| a % 3 == 0 || a % 5 == 0)
+    {
+        "APPROVED"
+    } else {
+        "DENIED"
+    };
     println!("{}", ans);
 }
