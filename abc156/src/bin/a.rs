@@ -5,6 +5,6 @@ fn main() {
         n: usize,
         r: usize
     };
-    let ans = if n >= 10 { r } else { r + (100 * (10 - n)) };
+    let ans = r + 100 * 10usize.saturating_sub(n);
     println!("{}", ans);
 }
