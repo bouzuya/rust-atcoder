@@ -2,17 +2,15 @@ use proconio::input;
 
 fn main() {
     input! {
-        mut n: usize,
+        n: usize,
         k: usize,
     };
-    let mut ans = 0;
+    let mut c = 0;
     let mut x = n;
-    while x > 1 {
+    while x > 0 {
         x /= k;
-        ans += 1;
+        c += 1;
     }
-    if x == 1 {
-        ans += 1;
-    }
+    let ans = c;
     println!("{}", ans);
 }
