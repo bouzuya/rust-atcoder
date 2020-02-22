@@ -5,13 +5,9 @@ fn main() {
         n: usize,
         xv: [i32; n],
     };
-    let mut ans = 1_000_000;
-    for i in 0..=100 {
-        let mut s = 0;
-        for &x in xv.iter() {
-            s += (x - i).pow(2);
-        }
-        ans = std::cmp::min(ans, s);
-    }
+    let ans = (1..=100)
+        .map(|p| xv.iter().map(|x| (x - p).pow(2)).sum::<i32>())
+        .min()
+        .unwrap();
     println!("{}", ans);
 }
