@@ -1,49 +1,47 @@
 use proconio::input;
+use proconio::marker::Usize1;
 
 fn main() {
     input! {
         n: usize,
         m: usize,
         k: usize,
-        abv: [(usize, usize); m],
-        cdv: [(usize, usize); k],
+        abv: [(Usize1, Usize1); m],
+        cdv: [(Usize1, Usize1); k],
     };
-    let mut cv = T::new(n);
-    for &(a, b) in abv.iter() {
-        cv.unite(a - 1, b - 1);
-    }
 
-    let mut fv = vec![vec![]; n];
+    let mut fcv = vec![0usize; n];
+    let mut uf = UnionFind::new(n);
     for &(a, b) in abv.iter() {
-        fv[a - 1].push(b - 1);
-        fv[b - 1].push(a - 1);
+        fcv[a] += 1;
+        fcv[b] += 1;
+        uf.unite(a, b);
     }
 
     let mut bv = vec![vec![]; n];
     for &(c, d) in cdv.iter() {
-        bv[c - 1].push(d - 1);
-        bv[d - 1].push(c - 1);
+        bv[c].push(d);
+        bv[d].push(c);
     }
 
     for i in 0..n {
-        let r = cv.root(i);
-        let a = cv.size(i)
-            - fv[i].len()
+        let a = uf.size(i)
+            - fcv[i]
             - 1
             - bv[i]
                 .iter()
-                .filter(|&&b| r == cv.root(b))
+                .filter(|&&b| uf.same(i, b))
                 .fold(0, |acc, _| acc + 1);
         println!("{}{}", a, if i == n - 1 { "\n" } else { " " });
     }
 }
 
-struct T {
+struct UnionFind {
     p: Vec<usize>,
     s: Vec<usize>,
 }
 
-impl T {
+impl UnionFind {
     fn new(n: usize) -> Self {
         let mut p = vec![0; n];
         for i in 0..n {
@@ -60,6 +58,12 @@ impl T {
             self.p[x] = self.root(self.p[x]);
             self.p[x]
         }
+    }
+
+    fn same(&mut self, x: usize, y: usize) -> bool {
+        let rx = self.root(x);
+        let ry = self.root(y);
+        rx == ry
     }
 
     fn size(&mut self, x: usize) -> usize {
