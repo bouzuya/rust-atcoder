@@ -4,7 +4,7 @@ fn main() {
     input! {
         n: usize,
         m: usize,
-        scv: [(usize, usize); m]
+        scv: [(usize, char); m]
     };
 
     for i in 0..10usize.pow(n as u32) {
@@ -12,11 +12,8 @@ fn main() {
         if s.len() != n {
             continue;
         }
-        let cv: Vec<char> = s.chars().collect();
-        if scv
-            .iter()
-            .all(|&(si, ci)| cv[si - 1] as u8 == ci as u8 + b'0')
-        {
+        let cv = s.chars().collect::<Vec<char>>();
+        if scv.iter().all(|&(si, ci)| cv[si - 1] == ci) {
             println!("{}", s);
             return;
         }
