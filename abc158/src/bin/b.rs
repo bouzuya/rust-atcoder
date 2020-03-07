@@ -6,11 +6,6 @@ fn main() {
         a: usize,
         b: usize
     };
-    let m = n % (a + b);
-    let ans = if b == 0 {
-        n
-    } else {
-        a * (n / (a + b)) + std::cmp::min(a, m)
-    };
+    let ans = a * (n / (a + b)) + std::cmp::min(a, n % (a + b));
     println!("{}", ans);
 }
