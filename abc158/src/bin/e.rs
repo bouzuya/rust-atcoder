@@ -21,21 +21,16 @@ fn main() {
         }
         println!("{}", ans);
     } else {
-        let mut ans = 0;
-        let mut cv = vec![0; p];
+        let mut ans = 0_usize;
+        let mut cv = vec![0_usize; p];
         cv[0] = 1;
-        let mut r = 0;
-        let mut b = 1;
+        let mut r = 0_usize;
+        let mut b = 1_usize;
         for d in dv.iter().rev() {
             r = (r + ((d * b) % p)) % p;
             b = (b * 10) % p;
+            ans += cv[r];
             cv[r] += 1;
-        }
-        for c in cv {
-            if c == 0 {
-                continue;
-            }
-            ans += c * (c - 1) / 2
         }
         println!("{}", ans);
     }
