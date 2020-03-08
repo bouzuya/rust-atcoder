@@ -7,39 +7,32 @@ fn main() {
         s: Chars,
         q: usize,
     }
-    let mut r = false;
-    let mut d = VecDeque::from(s);
+    let mut rev = false;
+    let mut deq = VecDeque::from(s);
     for _ in 0..q {
         input! { t: usize }
         match t {
-            1 => r = !r,
+            1 => rev = !rev,
             2 => {
                 input! { f: usize, c: char }
-                match f {
-                    1 => {
-                        if !r {
-                            d.push_front(c)
-                        } else {
-                            d.push_back(c)
-                        }
-                    }
-                    2 => {
-                        if !r {
-                            d.push_back(c)
-                        } else {
-                            d.push_front(c)
-                        }
-                    }
+                let to_push_front = match f {
+                    1 => !rev,
+                    2 => rev,
                     _ => unreachable!(),
+                };
+                if to_push_front {
+                    deq.push_front(c)
+                } else {
+                    deq.push_back(c)
                 }
             }
             _ => unreachable!(),
         }
     }
-    let ans: String = if !r {
-        d.iter().collect()
+    let ans: String = if !rev {
+        deq.iter().collect()
     } else {
-        d.iter().rev().collect()
+        deq.iter().rev().collect()
     };
     println!("{}", ans);
 }
