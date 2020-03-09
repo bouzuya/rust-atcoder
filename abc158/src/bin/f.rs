@@ -1,3 +1,5 @@
+use self::lower_bound::*;
+use self::segment_tree::SegmentTree;
 use proconio::input;
 
 fn main() {
@@ -7,11 +9,21 @@ fn main() {
     };
     xdv.sort();
 
+    let mut st = SegmentTree::new(n);
+    for i in 0..n {
+        st.update(i, i);
+    }
+    for l in (0..n).rev() {
+        let r = lower_bound(&xdv, &(xdv[l].0 + xdv[l].1, 0));
+        let i = st.query(l..r);
+        st.update(l, i);
+    }
+
     let mod_p = 998244353;
     let mut dp = vec![0usize; n + 1];
     dp[n] = 1;
     for i in (0..n).rev() {
-        let j = f(&xdv, i);
+        let j = st.query(i..i + 1);
         dp[i] = (dp[i + 1] + dp[j + 1]) % mod_p;
     }
 
@@ -19,13 +31,72 @@ fn main() {
     println!("{}", ans);
 }
 
-fn f(xdv: &Vec<(i64, i64)>, i: usize) -> usize {
-    let r_x = xdv[i].0 + xdv[i].1;
-    let mut r_i = i;
-    for j in i + 1..xdv.len() {
-        if xdv[j].0 < r_x {
-            r_i = std::cmp::max(r_i, f(xdv, j));
+mod lower_bound {
+    pub fn lower_bound<T>(s: &[T], x: &T) -> usize
+    where
+        T: std::cmp::Ord,
+    {
+        lower_bound_by(s, |i| i.cmp(x))
+    }
+
+    pub fn lower_bound_by<T, F>(s: &[T], f: F) -> usize
+    where
+        F: Fn(&T) -> std::cmp::Ordering,
+    {
+        use std::cmp::Ordering::Less;
+        let mut b = 0;
+        let mut l = s.len();
+        while l > 1 {
+            let h = l / 2;
+            let m = b + h;
+            b = if f(&s[m]) != Less { b } else { m };
+            l -= h;
+        }
+        b + if f(&s[b]) != Less { 0 } else { 1 }
+    }
+}
+
+mod segment_tree {
+    pub struct SegmentTree {
+        dv: Vec<usize>,
+    }
+
+    impl SegmentTree {
+        pub fn new(n: usize) -> Self {
+            let dv = vec![0usize; n.next_power_of_two() * 2];
+            Self { dv }
+        }
+
+        pub fn query(&self, range: std::ops::Range<usize>) -> usize {
+            self.q(&range, 0, 0..(self.dv.len() / 2))
+        }
+
+        pub fn update(&mut self, i: usize, v: usize) {
+            let mut j = i + (self.dv.len() / 2) - 1;
+            self.dv[j] = v;
+            while j > 0 {
+                j = (j - 1) >> 1;
+                let l = self.dv[j * 2 + 1];
+                let r = self.dv[j * 2 + 2];
+
+                let v = std::cmp::max(l, r);
+
+                self.dv[j] = v;
+            }
+        }
+
+        fn q(&self, rq: &std::ops::Range<usize>, i: usize, ri: std::ops::Range<usize>) -> usize {
+            if rq.end <= ri.start || ri.end <= rq.start {
+                0
+            } else if rq.start <= ri.start && ri.end <= rq.end {
+                self.dv[i]
+            } else {
+                let m = ri.start + (ri.end - ri.start) / 2;
+                let l = self.q(&rq, i * 2 + 1, ri.start..m);
+                let r = self.q(&rq, i * 2 + 2, m..ri.end);
+
+                std::cmp::max(l, r)
+            }
         }
     }
-    r_i
 }
