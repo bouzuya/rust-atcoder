@@ -14,9 +14,10 @@ fn main() {
         st.update(i, i);
     }
     for l in (0..n).rev() {
-        let r = lower_bound(&xdv, &(xdv[l].0 + xdv[l].1, 0));
-        let i = st.query(l..r);
-        st.update(l, i);
+        let l_xd = xdv[l].0 + xdv[l].1;
+        let r = lower_bound_by(&xdv, |&(x, _)| x.cmp(&l_xd));
+        let r_i = st.query(l..r);
+        st.update(l, r_i);
     }
 
     let mod_p = 998244353;
@@ -53,6 +54,14 @@ mod lower_bound {
             l -= h;
         }
         b + if f(&s[b]) != Less { 0 } else { 1 }
+    }
+
+    pub fn lower_bound_by_key<T, K, F>(s: &[T], k: &K, f: F) -> usize
+    where
+        K: std::cmp::Ord,
+        F: Fn(&T) -> K,
+    {
+        lower_bound_by(s, |i| f(i).cmp(&k))
     }
 }
 
