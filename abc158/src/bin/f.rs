@@ -1,6 +1,14 @@
-use self::lower_bound::*;
-use self::segment_tree::SegmentTree;
+use self::mod_u32::ModU32;
 use proconio::input;
+use std::collections::BTreeSet;
+
+fn dfs(dv: &Vec<Vec<usize>>, i: usize) -> ModU32 {
+    let mut r = ModU32::new(1);
+    for &j in dv[i].iter() {
+        r *= ModU32::new(1) + dfs(dv, j);
+    }
+    r
+}
 
 fn main() {
     input! {
@@ -9,103 +17,189 @@ fn main() {
     };
     xdv.sort();
 
-    let mut st = SegmentTree::new(n);
-    for i in 0..n {
-        st.update(i, i);
-    }
-    for l in (0..n).rev() {
-        let l_xd = xdv[l].0 + xdv[l].1;
-        let r = lower_bound_by(&xdv, |&(x, _)| x.cmp(&l_xd));
-        let r_i = st.query(l..r);
-        st.update(l, r_i);
-    }
-
-    let mod_p = 998244353;
-    let mut dp = vec![0usize; n + 1];
-    dp[n] = 1;
+    let mut dv = vec![vec![]; n];
+    let mut bs: BTreeSet<usize> = BTreeSet::new();
     for i in (0..n).rev() {
-        let j = st.query(i..i + 1);
-        dp[i] = (dp[i + 1] + dp[j + 1]) % mod_p;
+        let r = xdv[i].0 + xdv[i].1;
+        while let Some(&j) = bs.iter().next() {
+            if xdv[j].0 >= r {
+                break;
+            }
+            dv[i].push(j);
+            bs.remove(&j);
+        }
+        bs.insert(i);
     }
 
-    let ans = dp[0];
+    let mut u = ModU32::new(1);
+    for r in bs {
+        u *= ModU32::new(1) + dfs(&dv, r);
+    }
+    let ans: usize = u.into();
     println!("{}", ans);
 }
 
-mod lower_bound {
-    pub fn lower_bound<T>(s: &[T], x: &T) -> usize
-    where
-        T: std::cmp::Ord,
-    {
-        lower_bound_by(s, |i| i.cmp(x))
-    }
+mod mod_u32 {
+    #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+    pub struct ModU32(u32);
 
-    pub fn lower_bound_by<T, F>(s: &[T], f: F) -> usize
-    where
-        F: Fn(&T) -> std::cmp::Ordering,
-    {
-        use std::cmp::Ordering::Less;
-        let mut b = 0;
-        let mut l = s.len();
-        while l > 1 {
-            let h = l / 2;
-            let m = b + h;
-            b = if f(&s[m]) != Less { b } else { m };
-            l -= h;
-        }
-        b + if f(&s[b]) != Less { 0 } else { 1 }
-    }
+    const MODP: u32 = 998_244_353;
 
-    pub fn lower_bound_by_key<T, K, F>(s: &[T], k: &K, f: F) -> usize
-    where
-        K: std::cmp::Ord,
-        F: Fn(&T) -> K,
-    {
-        lower_bound_by(s, |i| f(i).cmp(&k))
-    }
-}
-
-mod segment_tree {
-    pub struct SegmentTree {
-        dv: Vec<usize>,
-    }
-
-    impl SegmentTree {
-        pub fn new(n: usize) -> Self {
-            let dv = vec![0usize; n.next_power_of_two() * 2];
-            Self { dv }
+    impl ModU32 {
+        pub fn inv(self) -> Self {
+            if self.0 == 0 {
+                panic!()
+            };
+            self.pow(MODP - 2)
         }
 
-        pub fn query(&self, range: std::ops::Range<usize>) -> usize {
-            self.q(&range, 0, 0..(self.dv.len() / 2))
+        pub fn new(x: u64) -> Self {
+            Self((x % (MODP as u64)) as u32)
         }
 
-        pub fn update(&mut self, i: usize, v: usize) {
-            let mut j = i + (self.dv.len() / 2) - 1;
-            self.dv[j] = v;
-            while j > 0 {
-                j = (j - 1) >> 1;
-                let l = self.dv[j * 2 + 1];
-                let r = self.dv[j * 2 + 2];
-
-                let v = std::cmp::max(l, r);
-
-                self.dv[j] = v;
+        pub fn pow(self, exp: u32) -> Self {
+            let mut b: ModU32 = self;
+            let mut a: ModU32 = Self::new(1);
+            let mut x = exp;
+            while x > 1 {
+                if x & 1 == 1 {
+                    a *= b;
+                }
+                x /= 2;
+                b *= b;
             }
+            if x == 1 {
+                a *= b;
+            }
+            a
         }
+    }
 
-        fn q(&self, rq: &std::ops::Range<usize>, i: usize, ri: std::ops::Range<usize>) -> usize {
-            if rq.end <= ri.start || ri.end <= rq.start {
-                0
-            } else if rq.start <= ri.start && ri.end <= rq.end {
-                self.dv[i]
+    impl From<i32> for ModU32 {
+        fn from(x: i32) -> Self {
+            ModU32::from(x as i64)
+        }
+    }
+
+    impl From<i64> for ModU32 {
+        fn from(x: i64) -> Self {
+            let n = x % (MODP as i64);
+            ModU32::new(if n.is_negative() { MODP as i64 + n } else { n } as u64)
+        }
+    }
+
+    impl From<u32> for ModU32 {
+        fn from(x: u32) -> Self {
+            ModU32::from(x as u64)
+        }
+    }
+
+    impl From<u64> for ModU32 {
+        fn from(x: u64) -> Self {
+            ModU32::new(x)
+        }
+    }
+
+    impl From<usize> for ModU32 {
+        fn from(x: usize) -> Self {
+            ModU32::from(x as u64)
+        }
+    }
+
+    impl Into<i32> for ModU32 {
+        fn into(self) -> i32 {
+            self.0 as i32
+        }
+    }
+
+    impl Into<i64> for ModU32 {
+        fn into(self) -> i64 {
+            self.0 as i64
+        }
+    }
+
+    impl Into<u32> for ModU32 {
+        fn into(self) -> u32 {
+            self.0
+        }
+    }
+
+    impl Into<u64> for ModU32 {
+        fn into(self) -> u64 {
+            self.0 as u64
+        }
+    }
+
+    impl Into<usize> for ModU32 {
+        fn into(self) -> usize {
+            self.0 as usize
+        }
+    }
+
+    impl std::fmt::Display for ModU32 {
+        fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+            write!(f, "{}", self.0)
+        }
+    }
+
+    impl std::ops::Add<ModU32> for ModU32 {
+        type Output = ModU32;
+
+        fn add(self, rhs: ModU32) -> Self::Output {
+            (self.0 as u64 + rhs.0 as u64).into()
+        }
+    }
+
+    impl std::ops::AddAssign<ModU32> for ModU32 {
+        fn add_assign(&mut self, rhs: ModU32) {
+            self.0 = (*self + rhs).0
+        }
+    }
+
+    impl std::ops::Sub<ModU32> for ModU32 {
+        type Output = ModU32;
+
+        fn sub(self, rhs: ModU32) -> Self::Output {
+            (if self.0 < rhs.0 {
+                self.0 + (MODP - rhs.0)
             } else {
-                let m = ri.start + (ri.end - ri.start) / 2;
-                let l = self.q(&rq, i * 2 + 1, ri.start..m);
-                let r = self.q(&rq, i * 2 + 2, m..ri.end);
+                self.0 - rhs.0
+            })
+            .into()
+        }
+    }
 
-                std::cmp::max(l, r)
-            }
+    impl std::ops::SubAssign<ModU32> for ModU32 {
+        fn sub_assign(&mut self, rhs: ModU32) {
+            self.0 = (*self - rhs).0
+        }
+    }
+
+    impl std::ops::Mul<ModU32> for ModU32 {
+        type Output = ModU32;
+
+        fn mul(self, rhs: ModU32) -> Self::Output {
+            Self::new((self.0 as u64) * (rhs.0 as u64))
+        }
+    }
+
+    impl std::ops::MulAssign<ModU32> for ModU32 {
+        fn mul_assign(&mut self, rhs: ModU32) {
+            self.0 = (*self * rhs).0
+        }
+    }
+
+    impl std::ops::Div<ModU32> for ModU32 {
+        type Output = ModU32;
+
+        fn div(self, rhs: ModU32) -> Self::Output {
+            self * rhs.inv()
+        }
+    }
+
+    impl std::ops::DivAssign<ModU32> for ModU32 {
+        fn div_assign(&mut self, rhs: ModU32) {
+            self.0 = (*self / rhs).0
         }
     }
 }
