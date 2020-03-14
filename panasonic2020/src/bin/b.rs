@@ -5,9 +5,6 @@ fn main() {
         h: usize,
         w: usize,
     };
-    if h == 1 || w == 1 {
-        println!("{}", 1);
-    } else {
-        println!("{}", h * (w / 2) + if w % 2 == 0 { 0 } else { (h + 1) / 2 });
-    }
+    let ans = if h == 1 || w == 1 { 1 } else { (h * w + 1) / 2 };
+    println!("{}", ans);
 }
