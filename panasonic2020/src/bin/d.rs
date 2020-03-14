@@ -1,15 +1,14 @@
 use proconio::input;
 
-fn f(cv: Vec<char>, n: usize, max_char: u8) {
-    if cv.len() == n {
-        let s: String = cv.iter().collect();
+fn f(s: &mut String, n: usize, max_char: u8) {
+    if s.len() == n {
         println!("{}", s);
         return;
     }
     for c in b'a'..=max_char {
-        let mut t = cv.clone();
-        t.push(c as char);
-        f(t, n, max_char + if c == max_char { 1 } else { 0 });
+        s.push(c as char);
+        f(s, n, max_char + if c == max_char { 1 } else { 0 });
+        s.pop();
     }
 }
 
@@ -17,5 +16,5 @@ fn main() {
     input! {
         n: usize
     };
-    f(vec![], n, b'a');
+    f(&mut String::new(), n, b'a');
 }
