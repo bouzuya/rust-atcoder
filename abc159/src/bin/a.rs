@@ -5,6 +5,6 @@ fn main() {
         n: usize,
         m: usize,
     };
-    let ans = ((n + m) * (n + m - 1)) / 2 - m * n;
+    let ans = n * n.saturating_sub(1) / 2 + m * m.saturating_sub(1) / 2;
     println!("{}", ans);
 }
