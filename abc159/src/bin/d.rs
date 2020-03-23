@@ -1,34 +1,23 @@
 use proconio::input;
+use std::collections::BTreeMap;
+
+fn nc2(n: i64) -> i64 {
+    n * (n - 1) / 2
+}
 
 fn main() {
     input! {
         n: usize,
-        av: [usize; n],
+        av: [i64; n],
     };
-    let mut cv = vec![0usize; n + 1];
-    for &a in av.iter() {
-        cv[a] += 1;
-    }
 
-    let mut sum = 0;
-    let mut xv = vec![0usize; n + 1];
-    for a in 0..cv.len() {
-        if cv[a] < 2 {
-            continue;
-        }
-        // nCr
-        let x = cv[a] * (cv[a] - 1) / 2;
-        xv[a] = x;
-        sum += x;
+    let mut bm = BTreeMap::new();
+    for a in av.iter() {
+        *bm.entry(a).or_insert(0) += 1_i64;
     }
-
-    for &a in av.iter() {
-        let ans = sum - xv[a]
-            + if cv[a] < 2 {
-                0
-            } else {
-                (cv[a] - 1) * (cv[a] - 2) / 2
-            };
+    let sum = bm.iter().fold(0, |acc, (_, &v)| acc + nc2(v));
+    for v in av.iter().map(|a| bm[a]) {
+        let ans = sum - nc2(v) + nc2(v - 1);
         println!("{}", ans);
     }
 }
