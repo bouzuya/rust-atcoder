@@ -6,6 +6,6 @@ fn main() {
         k: usize
     };
     let x = n % k;
-    let ans = std::cmp::min(x, if k > x { k - x } else { x - k });
+    let ans = std::cmp::min(x, k - x);
     println!("{}", ans);
 }
