@@ -1,10 +1,8 @@
 use proconio::input;
-use std::collections::BTreeSet;
 
 fn divisors(n: i64) -> Vec<i64> {
     let mut dv = vec![];
-    dv.push(1);
-    for i in 2..n {
+    for i in 1.. {
         if i * i > n {
             break;
         }
@@ -15,17 +13,12 @@ fn divisors(n: i64) -> Vec<i64> {
             }
         }
     }
-    dv.push(n);
     dv
 }
 
 fn main() {
-    input! {
-        n: i64
-    };
-
-    let mut set = BTreeSet::new();
-
+    input! { n: i64 };
+    let mut ans = 0;
     for &k in divisors(n).iter() {
         if k == 1 {
             continue;
@@ -35,16 +28,9 @@ fn main() {
             m /= k;
         }
         if m % k == 1 {
-            set.insert(k);
+            ans += 1;
         }
     }
-
-    for &k in divisors(n - 1).iter() {
-        if k == 1 {
-            continue;
-        }
-        set.insert(k);
-    }
-
-    println!("{}", set.len());
+    ans += divisors(n - 1).len() - 1;
+    println!("{}", ans);
 }
