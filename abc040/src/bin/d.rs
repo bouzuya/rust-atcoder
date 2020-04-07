@@ -2,36 +2,37 @@ use self::union_find::UnionFind;
 use proconio::input;
 use proconio::marker::Usize1;
 
+enum D {
+    E { a: usize, b: usize, y: isize },
+    Q { i: usize, v: usize, w: isize },
+}
+
 fn main() {
     input! {
         n: usize,
         m: usize,
-        mut abyv: [(Usize1, Usize1, usize); m], // a -> b, y
+        mut abyv: [(Usize1, Usize1, isize); m],
         q: usize,
-        vwv: [(Usize1, usize); q],
+        vwv: [(Usize1, isize); q],
     };
 
-    let mut dv = vec![];
-    for (a, b, y) in abyv {
-        dv.push((y, (0, a, b)));
-    }
-    for (i, &(v, y)) in vwv.iter().enumerate() {
-        dv.push((y, (1, v, i)));
-    }
-    dv.sort_by(|a, b| b.cmp(&a));
+    // 道路と人をまとめて、年の降順、年が同じとき人が前にくるよう並べる
+    let mut dv: Vec<D> = abyv
+        .iter()
+        .map(|&(a, b, y)| D::E { a, b, y })
+        .chain(vwv.iter().enumerate().map(|(i, &(v, w))| D::Q { i, v, w }))
+        .collect();
+    dv.sort_by_key(|d| match d {
+        D::E { a: _, b: _, y } => (-y, 1),
+        D::Q { i: _, v: _, w } => (-w, 0),
+    });
 
     let mut av = vec![0_usize; q];
     let mut uf = UnionFind::new(n);
-    for (_, d) in dv {
+    for d in dv {
         match d {
-            (0, a, b) => {
-                uf.unite(a, b);
-            }
-            (1, v, i) => {
-                let root = uf.root(v);
-                av[i] = uf.size(root);
-            }
-            (_, _, _) => unreachable!(),
+            D::E { a, b, y: _ } => uf.unite(a, b),
+            D::Q { i, v, w: _ } => av[i] = uf.size(v),
         }
     }
 
