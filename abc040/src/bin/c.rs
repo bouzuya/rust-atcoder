@@ -5,13 +5,18 @@ fn main() {
         n: usize,
         av: [isize; n],
     };
-    let mut dp = vec![1_000_000_000_000_isize; n];
+    let inf = 1_000_000_000_000_isize;
+    let mut dp = vec![inf; n];
     dp[0] = 0;
-    for i in 0..n - 1 {
-        dp[i + 1] = std::cmp::min(dp[i + 1], dp[i] + (av[i + 1] - av[i]).abs());
-        if i + 2 < n {
-            dp[i + 2] = std::cmp::min(dp[i + 2], dp[i] + (av[i + 2] - av[i]).abs());
-        }
+    dp[1] = (av[1] - av[0]).abs();
+    for i in 2..n {
+        dp[i] = std::cmp::min(
+            dp[i],
+            std::cmp::min(
+                dp[i - 1] + (av[i] - av[i - 1]).abs(),
+                dp[i - 2] + (av[i] - av[i - 2]).abs(),
+            ),
+        );
     }
     let ans = dp[n - 1];
     println!("{}", ans);
