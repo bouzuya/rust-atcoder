@@ -3,7 +3,6 @@ use proconio::input;
 
 fn is_ok(c1: char, c2: char, c3: char, c4: char) -> bool {
     match (c1, c2, c3, c4) {
-        (_, _, _, '_') => false,
         (_, 'A', 'G', 'C') => false,
         (_, 'A', 'C', 'G') => false,
         ('A', 'G', _, 'C') => false,
@@ -17,10 +16,10 @@ fn main() {
     input! {
         n: usize
     };
-    let chars = "_ACGT";
+    let chars = "ACGT";
     let mut dp =
         vec![vec![vec![vec![ModU32::new(0); chars.len()]; chars.len()]; chars.len()]; n + 1];
-    dp[0][0][0][0] = ModU32::new(1);
+    dp[0][3][3][3] = ModU32::new(1);
     for i in 0..n {
         for (i_c1, c1) in chars.chars().enumerate() {
             for (i_c2, c2) in chars.chars().enumerate() {
