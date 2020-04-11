@@ -1,17 +1,21 @@
 use self::mod_u32::ModU32;
 use proconio::input;
 
-fn gcd(m: usize, n: usize) -> usize {
-    if m < n {
-        gcd(n, m)
-    } else {
-        let r = m % n;
-        if r == 0 {
-            n
-        } else {
-            gcd(n, r)
+fn factors(n: usize) -> Vec<usize> {
+    let mut dv = vec![];
+    for i in 1.. {
+        if i * i > n {
+            break;
+        }
+        if n % i == 0 {
+            dv.push(i);
+            if n / i != i {
+                dv.push(n / i);
+            }
         }
     }
+    dv.sort();
+    dv
 }
 
 fn main() {
@@ -19,16 +23,25 @@ fn main() {
         n: usize,
         k: usize,
     };
-    if k > 1_000 {
-        return;
-    }
+    let m1 = ModU32::new(1);
+    let m2 = ModU32::new(2);
+    let mk = ModU32::new(k as u64);
     let mut ans = ModU32::new(0);
-    for i in 1..=k {
-        let a_1 = i;
-        let l = (n - a_1) / k + 1;
-        let a_n = a_1 + (l - 1) * k;
-        let s = (a_1 + a_n) * l / 2;
-        ans += ModU32::new((s * k / gcd(i, k)) as u64)
+    let kfs = factors(k);
+    let mut sumv = vec![ModU32::new(0); kfs.len()];
+    for (i, &f) in kfs.iter().enumerate().rev() {
+        let mf = ModU32::new(f as u64);
+        let a1 = m1;
+        let an = ModU32::new((n / f) as u64);
+        let mut sum = an * (a1 + an) * mf / m2;
+        for j in i + 1..kfs.len() {
+            if kfs[j] % f != 0 {
+                continue;
+            }
+            sum -= sumv[j];
+        }
+        sumv[i] = sum;
+        ans += sum * mk / mf;
     }
     println!("{}", ans);
 }
