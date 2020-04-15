@@ -6,8 +6,8 @@ fn main() {
         av: [isize; n],
     };
 
-    let inf = 1_000_000_000_000_000_005_isize;
-    let mut dp = vec![vec![-inf; n + 1]; n + 1];
+    let inf = std::i64::MAX as isize / 2;
+    let mut dp = vec![vec![-inf; (n + 1) / 2 + 2]; n + 1];
     dp[0][0] = 0;
     dp[1][0] = 0;
     dp[1][1] = av[0];
