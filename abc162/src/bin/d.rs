@@ -7,61 +7,31 @@ fn main() {
         s: Chars,
     };
 
-    let mut rcv = vec![n; n]; // rcv[i] は i 以降の r の個数
-    let mut gcv = vec![n; n];
-    let mut bcv = vec![n; n];
-
-    let mut rc = 0;
-    let mut gc = 0;
-    let mut bc = 0;
-    for i in (0..n).rev() {
-        match s[i] {
-            'R' => rc += 1,
-            'G' => gc += 1,
-            'B' => bc += 1,
+    let iv: Vec<usize> = s
+        .iter()
+        .map(|&c| match c {
+            'R' => 0,
+            'G' => 1,
+            'B' => 2,
             _ => unreachable!(),
-        }
-        rcv[i] = rc;
-        gcv[i] = gc;
-        bcv[i] = bc;
+        })
+        .collect();
+    let mut cv = vec![0_usize; 3];
+    for &i in iv.iter() {
+        cv[i] += 1;
     }
-
-    // println!("{:?}", rcv);
-    // println!("{:?}", gcv);
-    // println!("{:?}", bcv);
-
-    let mut ans = 0_usize;
-    for i in 0..n - 2 {
-        for j in i + 1..n - 1 {
-            if s[i] == s[j] {
-                continue;
-            }
-            if (s[i] == 'G' && s[j] == 'B') || (s[i] == 'B' && s[j] == 'G') {
-                ans += rcv[j + 1]
-                    - if j + (j - i) < n && s[j + (j - i)] == 'R' {
-                        1
-                    } else {
-                        0
-                    };
-            } else if (s[i] == 'R' && s[j] == 'B') || (s[i] == 'B' && s[j] == 'R') {
-                ans += gcv[j + 1]
-                    - if j + (j - i) < n && s[j + (j - i)] == 'G' {
-                        1
-                    } else {
-                        0
-                    };
-            } else if (s[i] == 'R' && s[j] == 'G') || (s[i] == 'G' && s[j] == 'R') {
-                ans += bcv[j + 1]
-                    - if j + (j - i) < n && s[j + (j - i)] == 'B' {
-                        1
-                    } else {
-                        0
-                    };
-            } else {
-                unreachable!();
+    // (全体) R の個数 * G の個数 * B の個数
+    let u = cv.iter().fold(1_usize, |acc, &c| acc * c);
+    // 全体から部分 j - i = k - j を取り除く (j - i != k - j を求める)
+    let mut a = 0;
+    for i in 0..n {
+        for j in i + 1..n {
+            let k = 2 * j - i;
+            if k < n && (iv[i] != iv[j]) && (iv[i] != iv[k]) && (iv[j] != iv[k]) {
+                a += 1;
             }
         }
     }
-
+    let ans = u - a;
     println!("{}", ans);
 }
