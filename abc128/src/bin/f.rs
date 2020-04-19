@@ -8,9 +8,9 @@ fn main() {
     // a <= b は終了できないため a > b
     // 0 < b < a <= n - 1
     // c = a - b とする
-    let mut ans = 0; // a = n - 1, b = * のとき
+    let mut ans = 0_i64; // a = n - 1, b = * のとき
     for c in 1..=n - 1 {
-        let mut sum = 0;
+        let mut sum = 0_i64;
         let mut set = std::collections::BTreeSet::new();
         for x in 0.. {
             let l = x * c;
@@ -27,8 +27,8 @@ fn main() {
                 break;
             }
             sum += sv[l] + sv[r];
+            ans = std::cmp::max(ans, sum);
         }
-        ans = std::cmp::max(ans, sum);
     }
     println!("{}", ans);
 }
