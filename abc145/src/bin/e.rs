@@ -6,13 +6,13 @@ fn main() {
         t: i64,
         mut abv: [(i64, i64); n],
     };
-    abv.sort_by_key(|(a, b)| (-b, -a));
-    let mut dp = vec![vec![0_i64; (t as usize - 1) + 1]; (n - 1) + 1];
+    abv.sort();
+    let mut dp = vec![vec![0_i64; t as usize + 1]; n + 1];
     dp[0][0] = 0;
-    for i in 1..=(n - 1) {
+    for i in 1..=n {
         dp[i][0] = 0;
-        for j in 1..=(t as usize - 1) {
-            let (a, b) = abv[i];
+        for j in 1..=t as usize {
+            let (a, b) = abv[i - 1];
             dp[i][j] = std::cmp::max(
                 dp[i - 1][j],
                 std::cmp::max(
@@ -26,6 +26,9 @@ fn main() {
             );
         }
     }
-    let ans = abv[0].1 + dp[n - 1][t as usize - 1];
+    let ans = (1..=n)
+        .map(|i| dp[i - 1][t as usize - 1] + abv[i - 1].1)
+        .max()
+        .unwrap();
     println!("{}", ans);
 }
