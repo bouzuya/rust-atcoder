@@ -9,7 +9,8 @@ fn main() {
     let m = n - k;
     // m 個残してΣmax(0, h[i+1] - h[i]) を最小にする
     let inf = 1_000_000_000_000_000_000_usize;
-    let mut dp = vec![vec![inf; n + 1]; n + 1];
+    // dp[i][j] ... i 番目までを見て i 番目を残し、 j 個を残したときの最小値
+    let mut dp = vec![vec![inf; m + 1]; n + 1];
     dp[0][0] = 0;
     for i in 0..n {
         for j in 0..m {
