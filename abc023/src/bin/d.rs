@@ -19,12 +19,12 @@ fn main() {
     };
     let mut ng = 0_usize;
     let mut ok = 1_000_000_000_usize + 1_000_000_000_usize * (n - 1);
-    while ng < ok {
+    while ok - ng > 1 {
         let m = (ng + ok) / 2;
         if is_ok(&hss, m) {
             ok = m;
         } else {
-            ng = m + 1;
+            ng = m;
         }
     }
     let ans = ok;
