@@ -1,5 +1,9 @@
 use proconio::input;
 
+fn f(h: i64, s: i64) -> i64 {
+    (h + s - 1) / s
+}
+
 fn main() {
     input! {
         a: i64,
@@ -7,17 +11,6 @@ fn main() {
         c: i64,
         d: i64,
     };
-    let mut hpt = a;
-    let mut hpa = c;
-    for i in 0.. {
-        if hpt <= 0 || hpa <= 0 {
-            break;
-        }
-        if i % 2 == 0 {
-            hpa -= b;
-        } else {
-            hpt -= d;
-        }
-    }
-    println!("{}", if hpt > 0 { "Yes" } else { "No" });
+    let ans = if f(c, b) <= f(a, d) { "Yes" } else { "No" };
+    println!("{}", ans);
 }
