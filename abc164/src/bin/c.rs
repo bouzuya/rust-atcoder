@@ -5,10 +5,10 @@ fn main() {
         n: usize,
         ss: [String; n],
     };
-    let mut set = std::collections::BTreeSet::new();
-    for s in ss {
-        set.insert(s.clone());
-    }
-    let ans = set.len();
+    let ans = ss
+        .iter()
+        .map(|s| s)
+        .collect::<std::collections::BTreeSet<_>>()
+        .len();
     println!("{}", ans);
 }
