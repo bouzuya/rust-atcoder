@@ -3,12 +3,10 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        ss: [String; n],
+        mut ss: [String; n],
     };
-    let ans = ss
-        .iter()
-        .map(|s| s)
-        .collect::<std::collections::BTreeSet<_>>()
-        .len();
+    ss.sort();
+    ss.dedup();
+    let ans = ss.len();
     println!("{}", ans);
 }
