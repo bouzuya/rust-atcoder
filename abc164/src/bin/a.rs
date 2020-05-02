@@ -5,6 +5,6 @@ fn main() {
         s: usize,
         w: usize,
     };
-    let ans = if s > w { "safe" } else { "unsafe" };
+    let ans = if s <= w { "unsafe" } else { "safe" };
     println!("{}", ans);
 }
