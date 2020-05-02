@@ -6,12 +6,7 @@ fn main() {
         a: usize,
         b: usize,
     };
-    let mut ok = false;
-    for i in a..=b {
-        if i % k == 0 {
-            ok = true;
-        }
-    }
-    let ans = if ok { "OK" } else { "NG" };
+    // b / k * k は b 以下で最大の k の倍数
+    let ans = if a <= b / k * k { "OK" } else { "NG" };
     println!("{}", ans);
 }
