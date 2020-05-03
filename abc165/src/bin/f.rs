@@ -2,48 +2,36 @@ use proconio::input;
 use proconio::marker::Usize1;
 use superslice::*;
 
-enum Op {
-    Add,
-    Replace(usize, u64),
-}
-
 fn dfs(
     ls: &mut Vec<usize>,
     lis: &mut Vec<u64>,
-    stack: &mut Vec<Op>,
     es: &Vec<Vec<usize>>,
     ais: &Vec<u64>,
     u: usize,
     p: usize,
 ) {
+    let a = ais[u];
+    let b = if *(lis.last().unwrap_or(&0)) < a {
+        lis.push(a);
+        None
+    } else {
+        let i = lis[..].lower_bound(&a);
+        let x = lis[i];
+        lis[i] = a;
+        Some((i, x))
+    };
+    ls[u] = lis.len();
     for &v in es[u].iter() {
         if v == p {
             continue;
         }
-
-        let a = ais[v];
-        let &last_a = lis.last().unwrap();
-        if last_a < a {
-            lis.push(a);
-            stack.push(Op::Add);
-        } else {
-            let i = lis[..].lower_bound(&a);
-            let b = lis[i];
-            lis[i] = a;
-            stack.push(Op::Replace(i, b));
+        dfs(ls, lis, es, ais, v, u);
+    }
+    match b {
+        None => {
+            lis.pop();
         }
-        ls[v] = lis.len();
-
-        dfs(ls, lis, stack, es, ais, v, u);
-
-        match stack.pop().unwrap() {
-            Op::Add => {
-                lis.pop();
-            }
-            Op::Replace(i, b) => {
-                lis[i] = b;
-            }
-        }
+        Some((i, x)) => lis[i] = x,
     }
 }
 
@@ -61,12 +49,7 @@ fn main() {
     }
 
     let mut ls = vec![0_usize; n];
-    let mut lis = vec![];
-    let mut stack = vec![];
-    ls[0] = 1;
-    stack.push(Op::Add);
-    lis.push(ais[0]);
-    dfs(&mut ls, &mut lis, &mut stack, &es, &ais, 0, 0);
+    dfs(&mut ls, &mut vec![], &es, &ais, 0, 0);
 
     for l in ls {
         println!("{}", l);
