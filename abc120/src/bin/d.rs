@@ -2,13 +2,6 @@ use self::union_find::UnionFind;
 use proconio::input;
 use proconio::marker::Usize1;
 
-fn f(n: usize) -> usize {
-    if n < 2 {
-        return 0;
-    }
-    n * (n - 1) / 2
-}
-
 fn main() {
     input! {
         n: usize,
@@ -17,18 +10,13 @@ fn main() {
     };
     let mut ans = vec![0_usize; ab.len() + 1];
     let mut uf = UnionFind::new(n);
-    ans[0] = f(n);
+    ans[0] = n * (n - 1) / 2;
     for (i, &(a, b)) in ab.iter().rev().enumerate() {
         let s_a = uf.size(a);
         let s_b = uf.size(b);
-        let o = if uf.root(a) == uf.root(b) {
-            f(s_a)
-        } else {
-            f(s_a) + f(s_b)
-        };
+        let is_same = uf.root(a) == uf.root(b);
+        ans[i + 1] = ans[i] - if is_same { 0 } else { s_a * s_b };
         uf.unite(a, b);
-        let s_ab = uf.size(a);
-        ans[i + 1] = ans[i] + o - f(s_ab);
     }
     for &a in ans.iter().rev().skip(1) {
         println!("{}", a);
