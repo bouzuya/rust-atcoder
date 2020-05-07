@@ -8,16 +8,23 @@ fn main() {
         m: usize,
         ab: [(Usize1, Usize1); m],
     };
-    let mut ans = vec![0_usize; ab.len() + 1];
-    let mut uf = UnionFind::new(n);
-    ans[0] = n * (n - 1) / 2;
-    for (i, &(a, b)) in ab.iter().rev().enumerate() {
-        let s_a = uf.size(a);
-        let s_b = uf.size(b);
-        let is_same = uf.root(a) == uf.root(b);
-        ans[i + 1] = ans[i] - if is_same { 0 } else { s_a * s_b };
-        uf.unite(a, b);
-    }
+    let ans_0 = n * (n - 1) / 2;
+    let ans = std::iter::once(ans_0)
+        .chain(
+            ab.iter()
+                .rev()
+                .scan((ans_0, UnionFind::new(n)), |acc, &(a, b)| {
+                    let ans = &mut acc.0;
+                    let uf = &mut acc.1;
+                    let s_a = uf.size(a);
+                    let s_b = uf.size(b);
+                    let is_same = uf.root(a) == uf.root(b);
+                    uf.unite(a, b);
+                    *ans -= if is_same { 0 } else { s_a * s_b };
+                    Some(*ans)
+                }),
+        )
+        .collect::<Vec<_>>();
     for &a in ans.iter().rev().skip(1) {
         println!("{}", a);
     }
