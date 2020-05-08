@@ -6,29 +6,26 @@ fn main() {
         s: Chars,
         t: Chars,
     };
-    let mut ok_index = None;
-    for i in (0..s.len()).rev() {
-        if (0..t.len())
-            .rev()
-            .all(|j| i + j < s.len() && (s[i + j] == '?' || t[j] == s[i + j]))
-        {
-            ok_index = Some(i);
-            break;
-        }
-    }
-    match ok_index {
+    let index = s
+        .windows(t.len())
+        .enumerate()
+        .filter(|(_, s)| {
+            s.iter()
+                .zip(t.iter())
+                .all(|(&c1, &c2)| c1 == '?' || c1 == c2)
+        })
+        .map(|(i, _)| i)
+        .max();
+    match index {
         None => println!("UNRESTORABLE"),
         Some(i) => {
-            let mut s2 = s
+            let ans = s[..i]
                 .iter()
+                .chain(t.iter())
+                .chain(s[i + t.len()..].iter())
                 .map(|&c| if c == '?' { 'a' } else { c })
-                .collect::<Vec<char>>();
-            let mut j = i;
-            for &c in t.iter() {
-                s2[j] = c;
-                j += 1;
-            }
-            println!("{}", s2.iter().collect::<String>());
+                .collect::<String>();
+            println!("{}", ans);
         }
     }
 }
