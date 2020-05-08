@@ -1,16 +1,9 @@
 use proconio::input;
-use superslice::*;
 
 fn l(s: &Vec<i64>, x: i64) -> usize {
-    let i = s.lower_bound(&x);
-    if i >= s.len() {
-        i - 1
-    } else {
-        if s[i] == x {
-            i
-        } else {
-            i.saturating_sub(1)
-        }
+    match s.binary_search(&x) {
+        Ok(i) => i,
+        Err(i) => i.saturating_sub(1),
     }
 }
 
@@ -26,15 +19,9 @@ fn test_l() {
 }
 
 fn r(s: &Vec<i64>, x: i64) -> usize {
-    let i = s.upper_bound(&x);
-    if i >= s.len() {
-        i - 1
-    } else {
-        if s[i.saturating_sub(1)] == x {
-            i.saturating_sub(1)
-        } else {
-            i
-        }
+    match s.binary_search(&x) {
+        Ok(i) => i,
+        Err(i) => std::cmp::min(i, s.len() - 1),
     }
 }
 
