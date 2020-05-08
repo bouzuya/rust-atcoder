@@ -5,13 +5,6 @@ fn main() {
         n: usize,
         k: usize,
     };
-    let mut ans = 1;
-    for _ in 0..n {
-        if ans < k {
-            ans *= 2;
-        } else {
-            ans += k;
-        }
-    }
+    let ans = (0..n).fold(1, |acc, _| std::cmp::min(acc * 2, acc + k));
     println!("{}", ans);
 }
