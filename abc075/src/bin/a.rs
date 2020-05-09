@@ -10,8 +10,10 @@ fn main() {
         c
     } else if a == c {
         b
-    } else {
+    } else if b == c {
         a
+    } else {
+        unreachable!()
     };
     println!("{}", ans);
 }
