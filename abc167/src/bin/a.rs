@@ -6,11 +6,6 @@ fn main() {
         s: Chars,
         t: Chars,
     };
-    let mut ans = true;
-    for i in 0..s.len() {
-        if s[i] != t[i] {
-            ans = false;
-        }
-    }
-    println!("{}", if ans { "Yes" } else { "No" });
+    let ans = if s[..] == t[..s.len()] { "Yes" } else { "No" };
+    println!("{}", ans);
 }
