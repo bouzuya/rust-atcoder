@@ -19,18 +19,17 @@ fn main() {
     let inf = 1_000_000_000_000_i64;
     let mut ans = inf;
     for bits in 0..2_usize.pow(n as u32) {
-        let mut sa = vec![0_i64; m];
-        let mut sc = 0;
-        for i in 0..n {
-            if (bits >> i) & 1 == 1 {
-                sc += c[i];
-                for (j, &a_ij) in a[i].iter().enumerate() {
-                    sa[j] += a_ij;
-                }
-            }
-        }
-
-        if sa.iter().filter(|&&sa_ij| sa_ij >= x).count() == m {
+        let (sc, sa) = c
+            .iter()
+            .zip(a.iter())
+            .zip((0..n).map(|i| (bits >> i) & 1 == 1))
+            .filter(|&(_, b)| b)
+            .map(|(p, _)| p)
+            .fold((0, vec![0_i64; m]), |(sc, mut sa), (c_i, a_i)| {
+                a_i.iter().enumerate().for_each(|(j, &a_ij)| sa[j] += a_ij);
+                (sc + c_i, sa)
+            });
+        if sa.iter().all(|&sa_j| sa_j >= x) {
             ans = std::cmp::min(ans, sc);
         }
     }
