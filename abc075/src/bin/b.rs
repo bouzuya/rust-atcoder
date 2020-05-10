@@ -15,49 +15,14 @@ fn main() {
                 ans[y][x] = -1;
             } else {
                 let mut c = 0;
-                if y > 0 {
-                    let ny = y - 1;
-                    if x > 0 {
-                        let nx = x - 1;
-                        c += if s[ny][nx] == '#' { 1 } else { 0 };
-                    }
-                    {
-                        let nx = x;
-                        c += if s[ny][nx] == '#' { 1 } else { 0 };
-                    }
-                    if x < w - 1 {
-                        let nx = x + 1;
-                        c += if s[ny][nx] == '#' { 1 } else { 0 };
-                    }
-                }
-                {
-                    let ny = y;
-                    if x > 0 {
-                        let nx = x - 1;
-                        c += if s[ny][nx] == '#' { 1 } else { 0 };
-                    }
-                    {
-                        let nx = x;
-                        c += if s[ny][nx] == '#' { 1 } else { 0 };
-                    }
-                    if x < w - 1 {
-                        let nx = x + 1;
-                        c += if s[ny][nx] == '#' { 1 } else { 0 };
-                    }
-                }
-                if y < h - 1 {
-                    let ny = y + 1;
-                    if x > 0 {
-                        let nx = x - 1;
-                        c += if s[ny][nx] == '#' { 1 } else { 0 };
-                    }
-                    {
-                        let nx = x;
-                        c += if s[ny][nx] == '#' { 1 } else { 0 };
-                    }
-                    if x < w - 1 {
-                        let nx = x + 1;
-                        c += if s[ny][nx] == '#' { 1 } else { 0 };
+                let d = vec![-1, 0, 1];
+                for &dy_i in d.iter() {
+                    for &dx_i in d.iter() {
+                        let (nx, ny) = (x as i64 + dx_i, y as i64 + dy_i);
+                        if (0..w as i64).contains(&nx) && (0..h as i64).contains(&ny) {
+                            let (nx, ny) = (nx as usize, ny as usize);
+                            c += if s[ny][nx] == '#' { 1 } else { 0 };
+                        }
                     }
                 }
                 ans[y][x] = c;
