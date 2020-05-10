@@ -7,13 +7,9 @@ fn main() {
         c: i64,
         k: i64,
     };
-
-    let mut rk = k;
-    let na = std::cmp::min(rk, a);
-    rk -= na;
-    let nb = std::cmp::min(rk, b);
-    rk -= nb;
-    let nc = std::cmp::min(rk, c);
-    let ans = na - nc;
+    let x_a = std::cmp::min(k, a);
+    let x_b = std::cmp::min(k - x_a, b);
+    let x_c = std::cmp::min(k - x_a - x_b, c);
+    let ans = 1 * x_a + 0 * x_b + -1 * x_c;
     println!("{}", ans);
 }
