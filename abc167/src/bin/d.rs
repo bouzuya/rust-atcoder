@@ -8,43 +8,27 @@ fn main() {
         a: [Usize1; n],
     };
 
+    // k <= n (k <= 2*10^5 と十分小さいので愚直に探索する)
     if k <= n {
-        let mut ca = 0;
-        for _ in 0..k {
-            ca = a[ca];
-        }
-        println!("{}", ca + 1);
+        println!("{}", (0..k).fold(0, |c, _| a[c]) + 1);
         return;
     }
 
-    let mut c = vec![0; n];
-    let mut ca = 0;
-    loop {
-        c[ca] += 1;
-        if c[ca] == 3 {
-            break;
+    // k > n (k 回移動した先は cycle の中にある)
+    let (start, cycle) = {
+        let mut i = vec![None; n];
+        let mut ci = 0;
+        let mut ca = 0;
+        while let None = i[ca] {
+            i[ca] = Some(ci);
+            ci += 1;
+            ca = a[ca];
         }
-        ca = a[ca];
-    }
-    let mut start_count = 0;
-    let mut loop_count = 0;
-    for &c_i in c.iter() {
-        match c_i {
-            0 => {}
-            1 => start_count += 1,
-            2 => loop_count += 1,
-            3 => loop_count += 1,
-            _ => unreachable!(),
+        match i[ca] {
+            Some(i_i) => (i_i, ci - i_i),
+            None => unreachable!(),
         }
-    }
-    let mut ca = 0;
-    for _ in 0..start_count {
-        ca = a[ca];
-    }
-    let rk = (k - start_count) % loop_count;
-    for _ in 0..rk {
-        ca = a[ca];
-    }
-    let ans = ca + 1;
+    };
+    let ans = (0..(k - start) % cycle).fold((0..start).fold(0, |c, _| a[c]), |c, _| a[c]) + 1;
     println!("{}", ans);
 }
