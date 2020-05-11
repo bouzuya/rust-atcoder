@@ -1,3 +1,5 @@
+// 別解 https://atcoder.jp/contests/abc167/submissions/13117364
+
 use proconio::input;
 use proconio::marker::Usize1;
 
@@ -8,27 +10,23 @@ fn main() {
         a: [Usize1; n],
     };
 
-    // k <= n (k <= 2*10^5 と十分小さいので愚直に探索する)
-    if k <= n {
-        println!("{}", (0..k).fold(0, |c, _| a[c]) + 1);
-        return;
+    let kn = k.next_power_of_two().trailing_zeros() as usize;
+    let mut tbl = vec![vec![n; n]; kn + 1];
+    for j in 0..n {
+        tbl[0][j] = a[j];
+    }
+    for i in 1..=kn {
+        for j in 0..n {
+            tbl[i][j] = tbl[i - 1][tbl[i - 1][j]];
+        }
     }
 
-    // k > n (k 回移動した先は cycle の中にある)
-    let (start, cycle) = {
-        let mut i = vec![None; n];
-        let mut ci = 0;
-        let mut ca = 0;
-        while let None = i[ca] {
-            i[ca] = Some(ci);
-            ci += 1;
-            ca = a[ca];
+    let mut c = 0;
+    for i in 0..=kn {
+        if (k >> i) & 1 == 1 {
+            c = tbl[i][c];
         }
-        match i[ca] {
-            Some(i_i) => (i_i, ci - i_i),
-            None => unreachable!(),
-        }
-    };
-    let ans = (0..(k - start) % cycle).fold((0..start).fold(0, |c, _| a[c]), |c, _| a[c]) + 1;
+    }
+    let ans = c + 1;
     println!("{}", ans);
 }
