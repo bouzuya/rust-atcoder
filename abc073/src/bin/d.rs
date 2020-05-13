@@ -7,12 +7,11 @@ fn f(inf: i64, n: usize, e: &Vec<Vec<(i64, usize)>>, u: usize) -> Vec<i64> {
     let mut pq = std::collections::BinaryHeap::new();
     pq.push(std::cmp::Reverse((0, u)));
     while let Some(std::cmp::Reverse((c_u, u))) = pq.pop() {
-        if c_u > sp[u] {
-            continue;
-        }
-        sp[u] = c_u;
-        for &(c_v, v) in e[u].iter() {
-            pq.push(std::cmp::Reverse((c_u + c_v, v)));
+        if c_u < sp[u] {
+            sp[u] = c_u;
+            for &(c_v, v) in e[u].iter() {
+                pq.push(std::cmp::Reverse((c_u + c_v, v)));
+            }
         }
     }
     sp
