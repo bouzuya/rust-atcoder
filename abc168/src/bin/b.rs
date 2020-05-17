@@ -1,14 +1,14 @@
 use proconio::input;
-use proconio::marker::Chars;
 
 fn main() {
     input! {
         k: usize,
-        s: Chars
+        s: String
     };
-    if s.len() <= k {
-        println!("{}", s.iter().collect::<String>());
+    let ans = if s.len() <= k {
+        s
     } else {
-        println!("{}{}", s[0..k].iter().collect::<String>(), "...");
-    }
+        s[0..k].to_owned() + "..."
+    };
+    println!("{}", ans);
 }
