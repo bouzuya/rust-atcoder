@@ -10,35 +10,23 @@ fn adjacency_list(n: usize, ab: &Vec<(usize, usize)>) -> Vec<Vec<usize>> {
     e
 }
 
-fn dfs(e: &Vec<Vec<usize>>, u: usize, p: usize, t: usize) -> Result<usize, Vec<usize>> {
-    if u == t {
-        return Err(vec![]);
-    }
-    let mut c = 1;
-    for &v in e[u].iter() {
-        if v == p {
-            continue;
-        }
-        match dfs(e, v, u, t) {
-            Ok(c_v) => c += c_v,
-            Err(mut v) => {
-                v.push(u);
-                return Err(v);
+fn shortest_path(e: &Vec<Vec<usize>>, s: usize) -> Vec<usize> {
+    let n = e.len();
+    let inf = n;
+    let mut d = vec![inf; n];
+    let mut pq = std::collections::BinaryHeap::new();
+    d[s] = 0;
+    pq.push(std::cmp::Reverse((0, s)));
+    while let Some(std::cmp::Reverse((c_u, u))) = pq.pop() {
+        for &v in e[u].iter() {
+            let c_v = c_u + 1;
+            if c_v < d[v] {
+                d[v] = c_v;
+                pq.push(std::cmp::Reverse((c_v, v)));
             }
         }
     }
-    Ok(c)
-}
-
-fn dfs2(e: &Vec<Vec<usize>>, u: usize, p: usize, v_b: usize, v_w: usize) -> usize {
-    let mut c = 1;
-    for &v in e[u].iter() {
-        if v == p || v == v_b || v == v_w {
-            continue;
-        }
-        c += dfs2(e, v, u, v_b, v_w);
-    }
-    c
+    d
 }
 
 fn main() {
@@ -48,29 +36,9 @@ fn main() {
     };
 
     let e = adjacency_list(n, &ab);
-
-    let mut us = vec![];
-    let mut c_b = 1;
-    for &v in e[0].iter() {
-        match dfs(&e, v, 0, n - 1) {
-            Ok(c) => c_b += c,
-            Err(s) => us = s,
-        }
-    }
-    us.push(n - 1);
-    if us.len() > 2 {
-        let mut v_b = 0;
-        for w in us[1..(us.len() - 2) / 2].windows(2) {
-            match w {
-                &[u, v_w] => {
-                    c_b += dfs2(&e, u, u, v_b, v_w);
-                    v_b = u;
-                }
-                _ => unreachable!(),
-            }
-        }
-    }
-
+    let sp_b = shortest_path(&e, 0);
+    let sp_w = shortest_path(&e, n - 1);
+    let c_b = (0..n).filter(|&i| sp_b[i] <= sp_w[i]).count();
     let c_w = n - c_b;
     let ans = if c_b > c_w { "Fennec" } else { "Snuke" };
     println!("{}", ans);
