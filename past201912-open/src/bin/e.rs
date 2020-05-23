@@ -30,15 +30,18 @@ fn main() {
             3 => {
                 // a がフォローしているユーザー x のフォローしているユーザーをフォロー
                 input! { a: Usize1 };
-                let current = following[a].clone();
+                let mut new_b = vec![];
                 for x in 0..n {
-                    if a != x && current[x] {
+                    if following[a][x] {
                         for b in 0..n {
                             if following[x][b] {
-                                following[a][b] = true;
+                                new_b.push(b);
                             }
                         }
                     }
+                }
+                for &b in new_b.iter() {
+                    following[a][b] = true;
                 }
             }
             _ => unreachable!(),
