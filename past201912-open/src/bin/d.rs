@@ -10,29 +10,12 @@ fn main() {
     for &a_i in a.iter() {
         c[a_i] += 1;
     }
-    let mut ans = None;
-    for (i, &c_i) in c.iter().enumerate() {
-        match c_i {
-            0 => {
-                let x = i + 1;
-                ans = Some(match ans {
-                    None => (x, 0_usize),
-                    Some((_, y)) => (x, y),
-                });
-            }
-            1 => {}
-            2 => {
-                let y = i + 1;
-                ans = Some(match ans {
-                    None => (0_usize, y),
-                    Some((x, _)) => (x, y),
-                });
-            }
-            _ => unreachable!(),
-        }
-    }
-    match ans {
-        None => println!("Correct"),
-        Some((x, y)) => println!("{} {}", y, x),
+    match (
+        c.iter().position(|&c_i| c_i == 2),
+        c.iter().position(|&c_i| c_i == 0),
+    ) {
+        (None, None) => println!("Correct"),
+        (Some(y), Some(x)) => println!("{} {}", y + 1, x + 1),
+        _ => unreachable!(),
     }
 }
