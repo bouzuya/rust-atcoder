@@ -1,6 +1,14 @@
 use proconio::input;
 use proconio::marker::Chars;
 
+macro_rules! chmin {
+    ($e: expr, $v: expr) => {
+        if $v < $e {
+            $e = $v;
+        }
+    };
+}
+
 fn main() {
     input! {
         n: usize,
@@ -24,8 +32,8 @@ fn main() {
     dp[0][0] = 0;
     for (i, &(b_i, c_i)) in bc.iter().enumerate() {
         for j in 0..1 << n {
-            dp[i + 1][j] = std::cmp::min(dp[i + 1][j], dp[i][j]);
-            dp[i + 1][j | b_i] = std::cmp::min(dp[i + 1][j | b_i], dp[i][j] + c_i);
+            chmin!(dp[i + 1][j], dp[i][j]);
+            chmin!(dp[i + 1][j | b_i], dp[i][j] + c_i);
         }
     }
     let mut mask = 0;
