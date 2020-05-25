@@ -85,9 +85,10 @@ fn main() {
     let p2 = f2(&spt1, (0, w - 1));
     let p3 = f2(&spt2, (0, w - 1));
 
-    let res1 = f3(&a, &p1, &p3);
-    let res2 = f3(&a, &p2, &p3);
+    let res1 = f3(&a, &p1, &p2);
+    let res2 = f3(&a, &p1, &p3);
+    let res3 = f3(&a, &p2, &p3);
 
-    let ans = std::cmp::min(res1, res2);
+    let ans = std::cmp::min(res1, std::cmp::min(res2, res3));
     println!("{}", ans);
 }
