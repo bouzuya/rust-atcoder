@@ -1,23 +1,23 @@
 use proconio::input;
 
-fn f1(
-    a: &Vec<Vec<i64>>,
-    h: usize,
-    w: usize,
-    s: (usize, usize),
-) -> (Vec<Vec<i64>>, Vec<Vec<(usize, usize)>>) {
+macro_rules! chmin {
+    ($e: expr, $v: expr) => {
+        if $v < $e {
+            $e = $v;
+        }
+    };
+}
+
+fn f1(a: &Vec<Vec<i64>>, h: usize, w: usize, s: (usize, usize)) -> Vec<Vec<i64>> {
     let inf = 1_000_000_000_000_i64;
-    let mut spt = vec![vec![(h, w); w]; h];
     let mut sp = vec![vec![inf; w]; h];
     let mut pq = std::collections::BinaryHeap::new();
-    spt[s.0][s.1] = s;
     sp[s.0][s.1] = 0;
-    pq.push(std::cmp::Reverse((0, (s.0, s.1, s.0, s.1))));
-    while let Some(std::cmp::Reverse((c_u, (y, x, py, px)))) = pq.pop() {
+    pq.push(std::cmp::Reverse((0, (s.0, s.1))));
+    while let Some(std::cmp::Reverse((c_u, (y, x)))) = pq.pop() {
         if c_u > sp[y][x] {
             continue;
         }
-        spt[y][x] = (py, px);
         let d = vec![-1, 0, 1];
         for (d_y, d_x) in d
             .iter()
@@ -35,40 +35,12 @@ fn f1(
                 let c = c_u + c_v;
                 if c < sp[ny][nx] {
                     sp[ny][nx] = c;
-                    pq.push(std::cmp::Reverse((c, (ny, nx, y, x))));
+                    pq.push(std::cmp::Reverse((c, (ny, nx))));
                 }
             }
         }
     }
-    (sp, spt)
-}
-
-fn f2(
-    spt: &Vec<Vec<(usize, usize)>>,
-    s: (usize, usize),
-) -> std::collections::BTreeSet<(usize, usize)> {
-    let mut c = s;
-    let mut p = std::collections::BTreeSet::new();
-    while c != spt[c.0][c.1] {
-        p.insert(spt[c.0][c.1]);
-        c = spt[c.0][c.1];
-    }
-    p
-}
-
-fn f3(
-    a: &Vec<Vec<i64>>,
-    p1: &std::collections::BTreeSet<(usize, usize)>,
-    p2: &std::collections::BTreeSet<(usize, usize)>,
-) -> i64 {
-    let mut p_a = p1.clone();
-    let mut p_b = p2.clone();
-    p_a.append(&mut p_b);
-    let mut res = 0;
-    for &(y, x) in p_a.iter() {
-        res += a[y][x];
-    }
-    res
+    sp
 }
 
 fn main() {
@@ -78,17 +50,16 @@ fn main() {
         mut a: [[i64; w]; h],
     };
 
-    let (_, spt1) = f1(&a, h, w, (h - 1, 0));
-    let (_, spt2) = f1(&a, h, w, (h - 1, w - 1));
-
-    let p1 = f2(&spt1, (h - 1, w - 1));
-    let p2 = f2(&spt1, (0, w - 1));
-    let p3 = f2(&spt2, (0, w - 1));
-
-    let res1 = f3(&a, &p1, &p2);
-    let res2 = f3(&a, &p1, &p3);
-    let res3 = f3(&a, &p2, &p3);
-
-    let ans = std::cmp::min(res1, std::cmp::min(res2, res3));
+    let inf = 1_000_000_000_000_i64;
+    let mut ans = inf;
+    for y in 0..h {
+        for x in 0..w {
+            let sp = f1(&a, h, w, (y, x));
+            chmin!(
+                ans,
+                sp[h - 1][0] + sp[h - 1][w - 1] + sp[0][w - 1] + a[y][x]
+            );
+        }
+    }
     println!("{}", ans);
 }
