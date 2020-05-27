@@ -8,17 +8,20 @@ fn main() {
         lrp: [(i64, i64, i64); n],
     };
 
-    let mut xp = std::collections::BTreeMap::new();
+    let mut xp = vec![];
     for &(l_i, r_i, p_i) in lrp.iter() {
-        *xp.entry(std::cmp::max(0, l_i - c + 1)).or_insert(0) += p_i;
-        *xp.entry(r_i).or_insert(0) -= p_i;
+        xp.push((l_i - c, p_i));
+        xp.push((r_i, -p_i));
     }
+    xp.push((0, 0));
+    xp.push((w - c, 0));
+    xp.sort();
 
-    let mut ans = 1_000_000_000_000_000_000;
+    let mut ans = std::i64::MAX;
     let mut cp = 0;
-    for (&x, &dp) in xp.iter() {
-        if x < w - c {
-            cp += dp;
+    for &(x, dp) in xp.iter() {
+        cp += dp;
+        if (0..=w - c).contains(&x) {
             ans = std::cmp::min(ans, cp);
         }
     }
