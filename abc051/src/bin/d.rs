@@ -1,7 +1,7 @@
 use proconio::input;
 use proconio::marker::Usize1;
 
-fn adjacency_list(n: usize, uvw: &Vec<(usize, usize, i64)>) -> Vec<Vec<(usize, i64)>> {
+fn adjacency_list(n: usize, uvw: &Vec<(usize, usize, u64)>) -> Vec<Vec<(usize, u64)>> {
     let mut e = vec![vec![]; n];
     for &(u, v, w) in uvw.iter() {
         e[u].push((v, w));
@@ -10,29 +10,31 @@ fn adjacency_list(n: usize, uvw: &Vec<(usize, usize, i64)>) -> Vec<Vec<(usize, i
     e
 }
 
-fn bellman_ford(n: usize, inf: i64, e: &Vec<Vec<(usize, i64)>>, s: usize) -> Option<Vec<i64>> {
+fn dijkstra(n: usize, inf: u64, e: &Vec<Vec<(usize, u64)>>, s: usize) -> Vec<u64> {
     let mut d = vec![inf; n];
+    let mut pq = std::collections::BinaryHeap::new();
     d[s] = 0;
-    for i in 0..n {
-        for (u, e_u) in e.iter().enumerate() {
-            for &(v, w) in e_u.iter() {
-                if d[u] + w < d[v] {
-                    d[v] = d[u] + w;
-                    if i == n - 1 {
-                        return None;
-                    }
-                }
+    pq.push(std::cmp::Reverse((0, s)));
+    while let Some(std::cmp::Reverse((w_u, u))) = pq.pop() {
+        if w_u > d[u] {
+            continue;
+        }
+        for &(v, w_v) in e[u].iter() {
+            let w = w_u + w_v;
+            if w < d[v] {
+                d[v] = w;
+                pq.push(std::cmp::Reverse((w, v)));
             }
         }
     }
-    Some(d)
+    d
 }
 
 fn main() {
     input! {
         n: usize,
         m: usize,
-        abc: [(Usize1, Usize1, i64); m],
+        abc: [(Usize1, Usize1, u64); m],
     };
 
     let e = adjacency_list(n, &abc);
@@ -40,10 +42,7 @@ fn main() {
     // d[u][v]: u から v への最短距離
     let mut d = vec![];
     for u in 0..n {
-        match bellman_ford(n, inf, &e, u) {
-            Some(d_u) => d.push(d_u),
-            None => unreachable!(),
-        }
+        d.push(dijkstra(n, inf, &e, u));
     }
     let mut ans = 0;
     for &(u, v, c) in abc.iter() {
