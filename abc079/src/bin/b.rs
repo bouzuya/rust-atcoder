@@ -4,18 +4,12 @@ fn main() {
     input! {
         n: usize
     };
-    let mut tbl = vec![0_usize; n + 1];
-    for i in 0..=n {
-        if i == 0 {
-            tbl[i] = 2;
-        } else if i == 1 {
-            tbl[i] = 1;
-        } else if i >= 2 {
-            tbl[i] = tbl[i - 1] + tbl[i - 2];
-        } else {
-            unreachable!()
-        }
+    let mut l = vec![0_usize; n + 1];
+    l[0] = 2;
+    l[1] = 1;
+    for i in 2..=n {
+        l[i] = l[i - 1] + l[i - 2];
     }
-    let ans = tbl[n];
+    let ans = l[n];
     println!("{}", ans);
 }
