@@ -19,7 +19,7 @@ fn main() {
         })
         .collect::<Vec<usize>>();
     // cc[i][j]: i 番目までの j の個数
-    let mut cc = vec![vec![0_i64; 4]; n + 1];
+    let mut cc = vec![vec![0; 4]; n + 1];
     for (i, &c_i) in c.iter().enumerate() {
         for j in 0..4 {
             cc[i + 1][j] = cc[i][j];
@@ -31,11 +31,11 @@ fn main() {
         if c[i_b] != 1 && c[i_b] != 3 {
             continue;
         }
-        let c_q = cc[n][3] - if c[i_b] == 3 { 1 } else { 0 };
-        let c_ql = (cc[i_b][3]) as u64;
-        let c_qr = (cc[n][3] - cc[i_b + 1][3]) as u64;
-        let c_a = cc[i_b][0] as u64;
-        let c_c = (cc[n][2] - cc[i_b + 1][2]) as u64;
+        let c_q = cc[n][3] as i64 - if c[i_b] == 3 { 1 } else { 0 };
+        let c_ql = cc[i_b][3];
+        let c_qr = cc[n][3] - cc[i_b + 1][3];
+        let c_a = cc[i_b][0];
+        let c_c = cc[n][2] - cc[i_b + 1][2];
         // a+c
         count += ModU32::new(c_a) * ModU32::new(c_c) * ModU32::new(3).pow(c_q as u32);
         // a+?
