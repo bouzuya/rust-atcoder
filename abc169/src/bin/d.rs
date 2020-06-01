@@ -1,7 +1,7 @@
 use proconio::input;
 
-fn prime_factorization(n: usize) -> std::collections::BTreeMap<usize, usize> {
-    let mut p = std::collections::BTreeMap::new();
+fn prime_factorization(n: usize) -> Vec<(usize, usize)> {
+    let mut p = vec![];
     if n < 2 {
         return p;
     }
@@ -10,13 +10,17 @@ fn prime_factorization(n: usize) -> std::collections::BTreeMap<usize, usize> {
         if i * i > n {
             break;
         }
+        let mut c = 0;
         while n % i == 0 {
-            *p.entry(i).or_insert(0) += 1;
+            c += 1;
             n /= i;
+        }
+        if c > 0 {
+            p.push((i, c));
         }
     }
     if n != 1 {
-        *p.entry(n).or_insert(0) += 1;
+        p.push((n, 1));
     }
     p
 }
@@ -27,7 +31,7 @@ fn main() {
     };
     let pq = prime_factorization(n as usize);
     let mut count = 0;
-    for (&_, &q_i) in pq.iter() {
+    for &(_, q_i) in pq.iter() {
         let mut c = 0;
         for i in 1.. {
             c += i;
