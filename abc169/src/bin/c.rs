@@ -1,24 +1,12 @@
 use proconio::input;
-use proconio::marker::Chars;
 
 fn main() {
     input! {
-        mut a: u128,
-        b: Chars,
+        a: u64,
+        mut b: String,
     };
-
-    let mut d = vec![];
-    for &c_i in b.iter() {
-        if c_i.is_digit(10) {
-            d.push(c_i.to_digit(10).unwrap() as u128);
-        }
-    }
-    let mut ans = 0;
-    for &d_i in d.iter() {
-        ans *= 10;
-        ans += a * d_i;
-    }
-    ans *= 10;
-    ans /= 10_u128.pow(d.len() as u32);
+    b.retain(|c| c != '.');
+    let d = b.parse::<u64>().unwrap();
+    let ans = a * d / 100_u64;
     println!("{}", ans);
 }
