@@ -7,14 +7,14 @@ fn main() {
         mut ab: [(i64, i64); m],
     };
     ab.sort_by_key(|&(_, b)| b);
-    let mut ans = 1;
-    let mut c = ab[0].1;
+    let mut c = 0;
+    let mut l = 0;
     for &(a_i, b_i) in ab.iter() {
-        if a_i < c {
-            continue;
+        if a_i >= l {
+            c += 1;
+            l = b_i;
         }
-        c = b_i;
-        ans += 1;
     }
+    let ans = c;
     println!("{}", ans);
 }
