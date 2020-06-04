@@ -32,7 +32,7 @@ fn main() {
     let mut ans = inf;
     for i in 0..=max_ab {
         for j in 0..=max_ab {
-            if (i == 0 && j == 0) || i < m_a || j < m_b || i * m_b != j * m_a {
+            if i < m_a || j < m_b || i * m_b != j * m_a {
                 continue;
             }
             ans = std::cmp::min(ans, dp[n][i][j]);
