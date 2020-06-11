@@ -1,55 +1,44 @@
 use proconio::input;
-
-fn swap(a: &mut Vec<Vec<usize>>, a_x: usize, b_x: usize, row: bool) {
-    if row {
-        let t = a[a_x][0];
-        a[a_x][0] = a[b_x][0];
-        a[b_x][0] = t;
-    } else {
-        let t = a[0][a_x];
-        a[0][a_x] = a[0][b_x];
-        a[0][b_x] = t;
-    }
-}
+use proconio::marker::Usize1;
 
 fn main() {
     input! {
         n: usize,
         q: usize,
     };
-    let mut a = vec![vec![0; n + 1]; n + 1];
-    for i in 1..=n {
-        for j in 1..=n {
-            a[i][j] = n * (i - 1) + j - 1;
-        }
-    }
-    for i in 1..=n {
-        a[i][0] = i; // a[y][0] = r // y 行目の実体は r 行目
-        a[0][i] = i; // a[0][x] = c // x 列目の実体は c 列目
-    }
+    let mut pr = (0..n).collect::<Vec<_>>();
+    let mut pc = (0..n).collect::<Vec<_>>();
     let mut is_ij_rc = true;
     for _ in 0..q {
         input! { t: usize };
         match t {
             1 => {
-                input! { r_a: usize, r_b: usize };
-                swap(&mut a, r_a, r_b, is_ij_rc);
+                input! { r_a: Usize1, r_b: Usize1 };
+                if is_ij_rc {
+                    pr.swap(r_a, r_b);
+                } else {
+                    pc.swap(r_a, r_b);
+                }
             }
             2 => {
-                input! { c_a: usize, c_b: usize };
-                swap(&mut a, c_a, c_b, !is_ij_rc);
+                input! { c_a: Usize1, c_b: Usize1 };
+                if is_ij_rc {
+                    pc.swap(c_a, c_b);
+                } else {
+                    pr.swap(c_a, c_b);
+                }
             }
             3 => {
                 is_ij_rc = !is_ij_rc;
             }
             4 => {
-                input! { r_a: usize, c_b: usize };
+                input! { r_a: Usize1, c_b: Usize1 };
                 let (r, c) = if is_ij_rc {
-                    (a[r_a][0], a[0][c_b])
+                    (pr[r_a], pc[c_b])
                 } else {
-                    (a[c_b][0], a[0][r_a])
+                    (pr[c_b], pc[r_a])
                 };
-                let ans = a[r][c];
+                let ans = n * r + c;
                 println!("{}", ans);
             }
             _ => unreachable!(),
