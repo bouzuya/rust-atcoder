@@ -79,5 +79,5 @@ fn main() {
     for i in 0..k + 1 {
         mask |= 1 << i;
     }
-    println!("{}", dp[mask][k]);
+    println!("{}", dp[mask].iter().min().unwrap());
 }
