@@ -1,4 +1,3 @@
-use self::union_find::UnionFind;
 use proconio::input;
 use proconio::marker::Usize1;
 
@@ -49,79 +48,36 @@ fn main() {
         t: [Usize1; k],
     };
 
-    let e = adjacency_list(n, &uv);
     let inf = 1_000_000_000_000;
-    let d_s = bfs(n, inf, &e, s);
-    let mut d_t = vec![vec![inf; k]; k];
-    for (i, &t_i) in t.iter().enumerate() {
-        let d_t_i = bfs(n, inf, &e, t_i);
-        for (j, &t_j) in t.iter().enumerate() {
-            chmin!(d_t[i][j], d_t_i[t_j]);
-            chmin!(d_t[j][i], d_t_i[t_j]);
+    let d_t = {
+        let mut d_t = vec![vec![inf; k + 1]; k + 1];
+        let e = adjacency_list(n, &uv);
+        let d_s = bfs(n, inf, &e, s);
+        for i in 0..k {
+            chmin!(d_t[i + 1][0], d_s[t[i]]);
+            chmin!(d_t[0][i + 1], d_s[t[i]]);
         }
-    }
-
-    let mut et = vec![];
-    for i in 0..k {
-        for j in i + 1..k {
-            et.push((i, j, d_t[i][j]));
-        }
-    }
-    for i in 0..k {
-        et.push((i, k, d_s[t[i]]));
-    }
-    et.sort_by_key(|&(_, _, w)| w);
-
-    let mut ans = 0;
-    let mut uf = UnionFind::new(k + 1);
-    for &(u, v, w) in et.iter() {
-        if uf.root(u) == uf.root(v) {
-            continue;
-        }
-        uf.unite(u, v);
-        ans += w;
-    }
-    println!("{}", ans + 1);
-}
-
-mod union_find {
-    pub struct UnionFind {
-        p: Vec<usize>,
-        s: Vec<usize>,
-    }
-
-    impl UnionFind {
-        pub fn new(n: usize) -> Self {
-            let mut p = vec![0; n];
-            for i in 0..n {
-                p[i] = i;
-            }
-            let s = vec![1; n];
-            Self { p, s }
-        }
-
-        pub fn root(&mut self, x: usize) -> usize {
-            if self.p[x] == x {
-                return x;
-            } else {
-                self.p[x] = self.root(self.p[x]);
-                self.p[x]
+        for (i, &t_i) in t.iter().enumerate() {
+            let d_t_i = bfs(n, inf, &e, t_i);
+            for (j, &t_j) in t.iter().enumerate() {
+                chmin!(d_t[i + 1][j + 1], d_t_i[t_j]);
+                chmin!(d_t[j + 1][i + 1], d_t_i[t_j]);
             }
         }
-
-        pub fn unite(&mut self, x: usize, y: usize) {
-            let rx = self.root(x);
-            let ry = self.root(y);
-            if rx == ry {
-                return;
-            };
-            if self.s[rx] >= self.s[ry] {
-                self.s[rx] += self.s[ry];
-                self.p[ry] = rx;
-            } else {
-                self.s[ry] += self.s[rx];
-                self.p[rx] = ry;
+        d_t
+    };
+    let mut dp = vec![vec![inf; k + 1]; 1 << (k + 1)];
+    dp[0][0] = 0;
+    for i in 0..1 << (k + 1) {
+        for u in 0..k + 1 {
+            for v in 0..k + 1 {
+                chmin!(dp[i | 1 << u][v], dp[i][u] + d_t[u][v]);
             }
         }
     }
+    let mut mask = 0;
+    for i in 0..k + 1 {
+        mask |= 1 << i;
+    }
+    println!("{}", dp[mask][k]);
 }
