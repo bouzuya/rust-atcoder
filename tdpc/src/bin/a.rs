@@ -1,3 +1,4 @@
+// ref. https://algo-logic.info/typical-dp-contest-a/
 use proconio::input;
 
 fn main() {
