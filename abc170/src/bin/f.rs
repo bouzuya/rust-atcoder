@@ -11,10 +11,10 @@ fn main() {
         c: [Chars; h],
     };
     let mut d = vec![vec![None; w]; h];
-    let mut pq = std::collections::BinaryHeap::new();
+    let mut q = std::collections::VecDeque::new();
     d[s.0][s.1] = Some(0);
-    pq.push(std::cmp::Reverse((0, s.0, s.1)));
-    while let Some(std::cmp::Reverse((cost, y, x))) = pq.pop() {
+    q.push_back((0, s.0, s.1));
+    while let Some((cost, y, x)) = q.pop_front() {
         for &(dy, dx) in [(-1, 0), (0, 1), (1, 0), (0, -1)].iter() {
             for k_i in 1..=k {
                 let (ny, nx, ncost) = (
@@ -32,7 +32,7 @@ fn main() {
                         Some(w_o) if ncost == w_o => continue,
                         None | Some(_) => {
                             d[ny][nx] = Some(ncost);
-                            pq.push(std::cmp::Reverse((ncost, ny, nx)));
+                            q.push_back((ncost, ny, nx));
                         }
                     }
                 }
