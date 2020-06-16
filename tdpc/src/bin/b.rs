@@ -1,5 +1,4 @@
-// http://shifth.hatenablog.com/entry/2015/05/10/115226
-// https://atcoder.jp/contests/tdpc/submissions/6607507
+// ref. http://shifth.hatenablog.com/entry/2015/05/10/115226
 use proconio::input;
 
 macro_rules! chmax {
