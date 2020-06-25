@@ -17,33 +17,25 @@ fn main() {
         k: i64,
         s: [i64; n],
     };
-    if s.contains(&0) {
-        println!("{}", n);
-        return;
-    }
-    let mut t: Vec<(i64, i64)> = vec![];
-    for &s_i in s.iter() {
-        match t.last_mut() {
-            Some((t_prev, c_prev)) if *t_prev == 1 && s_i == 1 => {
-                *c_prev += 1;
-            }
-            None | Some(_) => {
-                t.push((s_i, 1));
-            }
-        }
-    }
-    let m = t.len();
+
+    // [l, r)
+    let mut r = 0;
+    let mut p = 1;
     let mut ans = 0;
-    for l in 0..m {
-        let mut c = 0;
-        let mut p = 1;
-        for r in l..m {
-            p *= t[r].0;
-            c += t[r].1;
-            if p > k {
-                break;
-            }
-            chmax!(ans, c);
+    for l in 0..n {
+        while r < n && p * s[r] <= k {
+            p *= s[r];
+            r += 1;
+        }
+        if p == 0 {
+            println!("{}", n);
+            return;
+        }
+        chmax!(ans, r - l);
+        if l == r {
+            r += 1;
+        } else {
+            p /= s[l];
         }
     }
     println!("{}", ans);
