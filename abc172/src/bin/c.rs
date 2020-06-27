@@ -44,5 +44,15 @@ fn main() {
         }
     }
 
+    // 二分探索 (superslice の upper_bound) を使う方法
+    // for i in 0..=n {
+    //     let x = k - ca[i];
+    //     if x < 0 {
+    //         continue;
+    //     }
+    //     let j = cb.upper_bound(&x);
+    //     chmax!(ans, i + j - 1);
+    // }
+
     println!("{}", ans);
 }
