@@ -6,11 +6,10 @@ fn main() {
         s: Chars,
         t: Chars,
     };
-    let mut ans = 0;
-    for i in 0..s.len() {
-        if s[i] != t[i] {
-            ans += 1;
-        }
-    }
+    let ans = s
+        .iter()
+        .zip(t.iter())
+        .filter(|&(&s_i, &t_i)| s_i != t_i)
+        .count();
     println!("{}", ans);
 }
