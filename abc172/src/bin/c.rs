@@ -1,5 +1,4 @@
 use proconio::input;
-use superslice::*;
 
 macro_rules! chmax {
     ($max_v: expr, $v: expr) => {
@@ -34,13 +33,16 @@ fn main() {
         .collect::<Vec<_>>();
 
     let mut ans = 0;
-    for i in 0..=n {
-        let x = k - ca[i];
-        if x < 0 {
-            continue;
+    let mut max_j = cb.len() - 1;
+    for (i, &ca_i) in ca.iter().enumerate() {
+        for (j, &cb_i) in cb[0..=max_j].iter().enumerate().rev() {
+            if ca_i + cb_i <= k {
+                chmax!(ans, i + j);
+                max_j = j;
+                break;
+            }
         }
-        let j = cb.upper_bound(&x);
-        chmax!(ans, i + j - 1);
     }
+
     println!("{}", ans);
 }
