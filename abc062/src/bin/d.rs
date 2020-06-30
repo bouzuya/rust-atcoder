@@ -19,28 +19,30 @@ fn main() {
         s_1 -= a_j;
     }
 
-    let mut l = n;
-    let mut r = 2 * n;
-    for _ in 0..n {
-        let a_l = a[l];
-        let a_r = a[r - 1];
-        let &m_0 = pq_0.peek().unwrap();
-        let &m_1 = pq_1.peek().unwrap();
-        let score_0 = m_0 + a_l;
-        let score_1 = m_1 - a_r;
-        if score_0 >= score_1 {
-            pq_0.pop();
-            pq_0.push(-a_l);
-            s_0 += score_0;
-            l += 1;
-        } else {
-            pq_1.pop();
-            pq_1.push(a_r);
-            s_1 += score_1;
-            r -= 1;
-        }
+    let mut c_0 = vec![s_0];
+    for i in n..2 * n {
+        let a_l = a[i];
+        pq_0.push(-a_l);
+        s_0 += a_l;
+        let m_0 = pq_0.pop().unwrap();
+        s_0 -= -m_0;
+        c_0.push(s_0);
     }
 
-    let ans = s_0 + s_1;
+    let mut c_1 = vec![s_1];
+    for i in (n..2 * n).rev() {
+        let a_r = a[i];
+        pq_1.push(a_r);
+        s_1 -= a_r;
+        let m_1 = pq_1.pop().unwrap();
+        s_1 += m_1;
+        c_1.push(s_1);
+    }
+
+    let mut ans = -1_000_000_000_000_000_i64;
+    for (&s_0, &s_1) in c_0.iter().zip(c_1.iter().rev()) {
+        ans = std::cmp::max(ans, s_0 + s_1);
+    }
+
     println!("{}", ans);
 }
