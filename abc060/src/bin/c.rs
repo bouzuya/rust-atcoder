@@ -7,18 +7,13 @@ fn main() {
         t: [i64; n],
     };
     let mut s = 0;
-    let mut l = 0;
-    let mut r = t_l;
-    for &t_i in t.iter() {
-        if t_i <= r {
-            r = t_i + t_l;
-        } else {
-            s += r - l;
-            l = t_i;
-            r = t_i + t_l;
-        }
+    for (t_i0, t_i1) in t.windows(2).map(|w| match w {
+        &[t_i0, t_i1] => (t_i0, t_i1),
+        _ => unreachable!(),
+    }) {
+        s += std::cmp::min(t_l, t_i1 - t_i0);
     }
-    s += r - l;
+    s += t_l;
     let ans = s;
     println!("{}", ans);
 }
