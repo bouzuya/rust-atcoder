@@ -9,30 +9,18 @@ fn main() {
         a: [Chars; h],
     };
 
-    let mut used = vec![vec![false; w]; h];
     let mut dp = vec![vec![ModU32::new(0); w]; h];
     dp[0][0] = ModU32::new(1);
-    let mut q = std::collections::VecDeque::new();
-    q.push_back((0, 0));
-    while let Some((y, x)) = q.pop_front() {
-        if used[y][x] {
-            continue;
-        }
-        used[y][x] = true;
-        let d = vec![(0, 1), (1, 0)];
-        for (dy, dx) in d.iter() {
-            let (y_next, x_next) = (y as i64 + dy, x as i64 + dx);
-            if (0..h as i64).contains(&y_next) && (0..w as i64).contains(&x_next) {
-                // shadowing
-                let (y_next, x_next) = (y_next as usize, x_next as usize);
-                if a[y_next][x_next] == '.' && !used[y_next][x_next] {
-                    dp[y_next][x_next] = dp[y_next][x_next] + dp[y][x];
-                    q.push_back((y_next, x_next));
-                }
+    for y in 0..h {
+        for x in 0..w {
+            if y + 1 < h && a[y + 1][x] == '.' {
+                dp[y + 1][x] = dp[y + 1][x] + dp[y][x];
+            }
+            if x + 1 < w && a[y][x + 1] == '.' {
+                dp[y][x + 1] = dp[y][x + 1] + dp[y][x];
             }
         }
     }
-
     let ans = dp[h - 1][w - 1];
     println!("{}", ans);
 }
