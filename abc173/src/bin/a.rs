@@ -4,13 +4,6 @@ fn main() {
     input! {
         n: usize,
     };
-    let mut m = 0;
-    for _ in 0.. {
-        if m >= n {
-            break;
-        }
-        m += 1000;
-    }
-    let ans = m - n;
+    let ans = (n + (1000 - 1)) / 1000 * 1000 - n;
     println!("{}", ans);
 }
