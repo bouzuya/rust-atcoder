@@ -3,19 +3,16 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
+        n: i64,
         k: i64,
         a: [i64; n],
     };
 
-    let mut pa = vec![];
-    let mut c_z = 0;
+    let mut na = vec![];
     let mut ma = vec![];
     for &a_i in a.iter() {
-        if a_i == 0 {
-            c_z += 1;
-        } else if a_i > 0 {
-            pa.push(a_i);
+        if a_i >= 0 {
+            na.push(a_i);
         } else if a_i < 0 {
             ma.push(a_i);
         } else {
@@ -23,17 +20,30 @@ fn main() {
         }
     }
 
-    let c_p = pa.len();
+    let c_n = na.len();
     let c_m = ma.len();
-    let kn = if k < c_m as i64 / 2 * 2 {
-        k % 2
+    if if c_n > 0 {
+        if n == k {
+            c_m % 2 == 0
+        } else if n > k {
+            true
+        } else {
+            unreachable!()
+        }
     } else {
-        k - c_m as i64 / 2 * 2
-    };
-    if kn <= c_z as i64 + c_p as i64 {
-        pa.sort_by_key(|&a_i| -a_i.abs());
+        k % 2 == 0
+    } {
+        na.sort_by_key(|&a_i| -a_i.abs());
         ma.sort_by_key(|&a_i| -a_i.abs());
 
+        let mut na2 = vec![];
+        for i in (if k % 2 == 0 { 0 } else { 1 }..na.len()).step_by(2) {
+            if i + 1 < na.len() {
+                na2.push(na[i] * na[i + 1]);
+            } else {
+                na2.push(na[i]);
+            }
+        }
         let mut ma2 = vec![];
         for i in (0..ma.len()).step_by(2) {
             if i + 1 < ma.len() {
@@ -43,30 +53,32 @@ fn main() {
             }
         }
 
-        let mut i_p = 0_usize;
+        let mut i_n = 0_usize;
         let mut i_m = 0_usize;
-        let mut i_z = 0_usize;
-        let mut ans = ModU32::new(1);
-        while i_p + i_m + i_z < k as usize {
-            let x = match (pa.get(i_p), ma2.get(i_m)) {
+        let mut ans = if k % 2 == 0 || na.is_empty() {
+            ModU32::new(1)
+        } else {
+            ModU32::new(na[0] as u64)
+        };
+        while i_n * 2 + i_m * 2 < (k - if k % 2 == 0 { 0 } else { 1 }) as usize {
+            let x = match (na2.get(i_n), ma2.get(i_m)) {
                 (None, None) => {
-                    i_z += 1;
-                    ModU32::new(0)
+                    unreachable!();
                 }
                 (None, Some(&x)) => {
-                    i_m += 2;
+                    i_m += 1;
                     ModU32::new(x as u64)
                 }
                 (Some(&x), None) => {
-                    i_p += 1;
+                    i_n += 1;
                     ModU32::new(x as u64)
                 }
                 (Some(&x), Some(&y)) => {
                     if x >= y {
-                        i_p += 1;
+                        i_n += 1;
                         ModU32::new(x as u64)
                     } else {
-                        i_m += 2;
+                        i_m += 1;
                         ModU32::new(y as u64)
                     }
                 }
@@ -75,25 +87,25 @@ fn main() {
         }
         println!("{}", ans);
     } else {
-        pa.sort_by_key(|&a_i| a_i.abs());
+        na.sort_by_key(|&a_i| a_i.abs());
         ma.sort_by_key(|&a_i| a_i.abs());
-        let mut i_p = 0;
+        let mut i_n = 0;
         let mut i_m = 0;
         let mut ans = ModU32::new(1);
         for _ in 0..k {
-            let x = match (pa.get(i_p), ma.get(i_m)) {
-                (None, None) => ModU32::new(0),
+            let x = match (na.get(i_n), ma.get(i_m)) {
+                (None, None) => unreachable!(),
                 (None, Some(&x)) => {
                     i_m += 1;
                     ModU32::new(0) - ModU32::new(x.abs() as u64)
                 }
                 (Some(&x), None) => {
-                    i_p += 1;
+                    i_n += 1;
                     ModU32::new(x as u64)
                 }
                 (Some(&x), Some(&y)) => {
                     if x.abs() <= y.abs() {
-                        i_p += 1;
+                        i_n += 1;
                         ModU32::new(x as u64)
                     } else {
                         i_m += 1;
