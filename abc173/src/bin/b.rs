@@ -5,18 +5,15 @@ fn main() {
         n: usize,
         s: [String; n],
     };
-    let mut ans = vec![0; 4];
+    let t: Vec<&str> = vec!["AC", "WA", "TLE", "RE"];
+    let mut c = vec![0; 4];
     for s_i in s.iter() {
-        match s_i.as_str() {
-            "AC" => ans[0] += 1,
-            "WA" => ans[1] += 1,
-            "TLE" => ans[2] += 1,
-            "RE" => ans[3] += 1,
-            _ => unreachable!(),
+        match t.iter().position(|t_i| t_i == s_i) {
+            Some(i) => c[i] += 1,
+            None => unreachable!(),
         }
     }
-    println!("AC x {}", ans[0]);
-    println!("WA x {}", ans[1]);
-    println!("TLE x {}", ans[2]);
-    println!("RE x {}", ans[3]);
+    for (t_i, c_i) in t.iter().zip(c.iter()) {
+        println!("{} x {}", t_i, c_i);
+    }
 }
