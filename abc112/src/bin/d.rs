@@ -22,7 +22,7 @@ fn main() {
 
     let mut ans = 1;
     for &d_i in d.iter() {
-        if m / d_i >= n {
+        if n * d_i <= m {
             ans = std::cmp::max(ans, d_i);
         }
     }
