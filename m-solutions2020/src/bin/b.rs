@@ -8,15 +8,15 @@ fn main() {
         k: i64,
     };
 
-    let mut is_b = a >= b;
-    for _ in 0..k {
-        if is_b {
-            b *= 2;
-            is_b = a >= b;
-        } else {
-            c *= 2;
-        }
+    let mut m = 0;
+    while a >= b {
+        b *= 2;
+        m += 1;
     }
-    let ans = a < b && b < c;
+    while b >= c {
+        c *= 2;
+        m += 1;
+    }
+    let ans = m <= k;
     println!("{}", if ans { "Yes" } else { "No" });
 }
