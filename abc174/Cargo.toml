@@ -8,7 +8,6 @@ edition = "2018"
 [dependencies]
 proconio = { version = "=0.3.6", features = ["derive"] }
 superslice = "=1.0.0"
-ordered-float = "2.0.0"
 
 [profile.release]
 lto = true

@@ -6,11 +6,9 @@ fn main() {
         d: i64,
         xy: [(i64, i64); n],
     };
-    let mut ans = 0;
-    for &(x_i, y_i) in xy.iter() {
-        if x_i * x_i + y_i * y_i <= d * d {
-            ans += 1;
-        }
-    }
+    let ans = xy
+        .iter()
+        .filter(|&&(x_i, y_i)| x_i * x_i + y_i * y_i <= d * d)
+        .count();
     println!("{}", ans);
 }
