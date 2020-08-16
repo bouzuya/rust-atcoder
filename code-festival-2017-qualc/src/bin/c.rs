@@ -1,61 +1,41 @@
 use proconio::input;
 use proconio::marker::Chars;
 
-fn f(s: &[char]) -> i64 {
-    if s.len() == 1 {
-        return 0;
-    }
+fn main() {
+    input! {
+        s: Chars,
+    };
     if (0..s.len() / 2).all(|i| s[i] == s[s.len() - i - 1]) {
-        return 0;
+        println!("0");
+        return;
     }
     let nx = s
         .iter()
         .filter(|&&c| c != 'x')
         .map(|&c| c)
         .collect::<Vec<char>>();
-    let is_ok = {
-        let mut nxr = nx.clone();
-        nxr.reverse();
-        nx == nxr
-    };
-    if !is_ok {
-        return -1;
+    if !(0..nx.len() / 2).all(|i| nx[i] == nx[nx.len() - i - 1]) {
+        println!("-1");
+        return;
     }
-    if nx.is_empty() {
-        return 0;
-    }
-    let mut i_s = 0;
-    let mut c = vec![0_i64; nx.len() + 1];
-    for (i, &nx_i) in nx.iter().enumerate() {
-        while s[i_s] != nx_i {
-            if s[i_s] == 'x' {
-                c[i] += 1;
-            }
-            i_s += 1;
-        }
-        i_s += 1;
-    }
-    while i_s < s.len() {
-        if s[i_s] == 'x' {
-            c[nx.len()] += 1;
-        }
-        i_s += 1;
-    }
-    let mut ans = 0_i64;
-    for i in 0..c.len() / 2 {
-        let c_l = c[i];
-        let c_r = c[c.len() - i - 1];
-        if c_l != c_r {
-            ans += (c_l - c_r).abs();
+    let mut ans = 0;
+    let mut i_l = 0;
+    let mut i_r = s.len() - 1;
+    while i_l < i_r {
+        let s_l = s[i_l];
+        let s_r = s[i_r];
+        if s_l == s_r {
+            i_l += 1;
+            i_r -= 1;
+        } else if s_l == 'x' {
+            i_l += 1;
+            ans += 1;
+        } else if s_r == 'x' {
+            i_r -= 1;
+            ans += 1;
+        } else {
+            unreachable!();
         }
     }
-    ans
-}
-
-fn main() {
-    input! {
-        s: Chars,
-    };
-    let ans = f(&s);
     println!("{}", ans);
 }
