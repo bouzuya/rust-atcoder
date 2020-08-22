@@ -12,12 +12,11 @@ fn main() {
             Some(*acc)
         }))
         .collect::<Vec<_>>();
-    let mut c = 0;
-    for (i, (&a_i, &s_i)) in a.iter().zip(s.iter()).enumerate() {
-        if s_i * 2 < a_i {
-            c = i;
-        }
-    }
+    let c = a
+        .iter()
+        .zip(s.iter())
+        .rposition(|(&a_i, &s_i)| s_i * 2 < a_i)
+        .unwrap_or(0);
     let ans = n - c;
     println!("{}", ans);
 }
