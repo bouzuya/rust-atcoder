@@ -28,7 +28,7 @@ fn main() {
         first: Chars,
         last: Chars,
         n: usize,
-        s: [Chars; n],
+        mut s: [Chars; n],
     };
     if first == last {
         println!("0");
@@ -36,6 +36,8 @@ fn main() {
         println!("{}", last.iter().collect::<String>());
         return;
     }
+    s.push(first.clone());
+    s.push(last.clone());
     let mut e = vec![vec![]; n + 2];
     for (i, s_i) in s.iter().enumerate() {
         for (j, s_j) in s.iter().enumerate() {
@@ -54,43 +56,6 @@ fn main() {
             }
         }
     }
-    // e[n]: first
-    for (i, s_i) in s.iter().enumerate() {
-        let mut c = 0;
-        for (s_i_k, s_j_k) in s_i.iter().zip(first.iter()) {
-            if s_i_k == s_j_k {
-                c += 1;
-            }
-        }
-        if c == s_i.len() - 1 {
-            e[i].push(n);
-            e[n].push(i);
-        }
-    }
-    // e[n + 1]: last
-    for (i, s_i) in s.iter().enumerate() {
-        let mut c = 0;
-        for (s_i_k, s_j_k) in s_i.iter().zip(last.iter()) {
-            if s_i_k == s_j_k {
-                c += 1;
-            }
-        }
-        if c == s_i.len() - 1 {
-            e[i].push(n + 1);
-            e[n + 1].push(i);
-        }
-    }
-    let mut c = 0;
-    for (s_i_k, s_j_k) in first.iter().zip(last.iter()) {
-        if s_i_k == s_j_k {
-            c += 1;
-        }
-    }
-    if c == first.len() - 1 {
-        e[n].push(n + 1);
-        e[n + 1].push(n);
-    }
-
     let (d, t) = shortest_path_spanning_tree(&e, n);
     if d[n + 1] == n + 2 {
         println!("-1");
