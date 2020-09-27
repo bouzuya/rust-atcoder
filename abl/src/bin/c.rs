@@ -1,4 +1,4 @@
-use self::union_find::UnionFind;
+use self::dsu::Dsu;
 use proconio::input;
 use proconio::marker::Usize1;
 
@@ -8,61 +8,86 @@ fn main() {
         m: usize,
         ab: [(Usize1, Usize1); m],
     };
-    let mut uf = UnionFind::new(n);
+    let mut dsu = Dsu::new(n);
     for &(a_i, b_i) in ab.iter() {
-        uf.unite(a_i, b_i);
+        dsu.merge(a_i, b_i);
     }
-    let mut q = std::collections::BTreeSet::new();
-    for i in 0..n {
-        q.insert(uf.root(i));
-    }
-    let ans = q.len() - 1;
+    let ans = dsu.groups().len() - 1;
     println!("{}", ans);
 }
 
-mod union_find {
-    pub struct UnionFind {
-        p: Vec<usize>,
-        s: Vec<usize>,
+// https://raw.githubusercontent.com/rust-lang-ja/ac-library-rs/ad148b05b07e3ac59cbc2987b8834742ef3d497a/src/dsu.rs
+pub mod dsu {
+    /// Implement (union by size) + (path compression)
+    /// Reference:
+    /// Zvi Galil and Giuseppe F. Italiano,
+    /// Data structures and algorithms for disjoint set union problems
+    pub struct Dsu {
+        n: usize,
+        // root node: -1 * component size
+        // otherwise: parent
+        parent_or_size: Vec<i32>,
     }
 
-    impl UnionFind {
-        pub fn new(n: usize) -> Self {
-            let mut p = vec![0; n];
-            for i in 0..n {
-                p[i] = i;
+    impl Dsu {
+        // 0 <= size <= 10^8 is constrained.
+        pub fn new(size: usize) -> Self {
+            Self {
+                n: size,
+                parent_or_size: vec![-1; size],
             }
-            let s = vec![1; n];
-            Self { p, s }
         }
-
-        pub fn root(&mut self, x: usize) -> usize {
-            if self.p[x] == x {
+        pub fn merge(&mut self, a: usize, b: usize) -> usize {
+            assert!(a < self.n);
+            assert!(b < self.n);
+            let (mut x, mut y) = (self.leader(a), self.leader(b));
+            if x == y {
                 return x;
-            } else {
-                self.p[x] = self.root(self.p[x]);
-                self.p[x]
             }
+            if -self.parent_or_size[x] < -self.parent_or_size[y] {
+                std::mem::swap(&mut x, &mut y);
+            }
+            self.parent_or_size[x] += self.parent_or_size[y];
+            self.parent_or_size[y] = x as i32;
+            x
         }
 
-        pub fn size(&mut self, x: usize) -> usize {
-            let rx = self.root(x);
-            self.s[rx]
+        pub fn same(&mut self, a: usize, b: usize) -> bool {
+            assert!(a < self.n);
+            assert!(b < self.n);
+            self.leader(a) == self.leader(b)
         }
-
-        pub fn unite(&mut self, x: usize, y: usize) {
-            let rx = self.root(x);
-            let ry = self.root(y);
-            if rx == ry {
-                return;
-            };
-            if self.s[rx] >= self.s[ry] {
-                self.s[rx] += self.s[ry];
-                self.p[ry] = rx;
-            } else {
-                self.s[ry] += self.s[rx];
-                self.p[rx] = ry;
+        pub fn leader(&mut self, a: usize) -> usize {
+            assert!(a < self.n);
+            if self.parent_or_size[a] < 0 {
+                return a;
             }
+            self.parent_or_size[a] = self.leader(self.parent_or_size[a] as usize) as i32;
+            self.parent_or_size[a] as usize
+        }
+        pub fn size(&mut self, a: usize) -> usize {
+            assert!(a < self.n);
+            let x = self.leader(a);
+            -self.parent_or_size[x] as usize
+        }
+        pub fn groups(&mut self) -> Vec<Vec<usize>> {
+            let mut leader_buf = vec![0; self.n];
+            let mut group_size = vec![0; self.n];
+            for i in 0..self.n {
+                leader_buf[i] = self.leader(i);
+                group_size[leader_buf[i]] += 1;
+            }
+            let mut result = vec![Vec::new(); self.n];
+            for i in 0..self.n {
+                result[i].reserve(group_size[i]);
+            }
+            for i in 0..self.n {
+                result[leader_buf[i]].push(i);
+            }
+            result
+                .into_iter()
+                .filter(|x| !x.is_empty())
+                .collect::<Vec<Vec<usize>>>()
         }
     }
 }
