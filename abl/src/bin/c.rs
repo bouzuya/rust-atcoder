@@ -12,7 +12,7 @@ fn main() {
     for &(a_i, b_i) in ab.iter() {
         dsu.merge(a_i, b_i);
     }
-    let ans = dsu.groups().len() - 1;
+    let ans = (0..n).filter(|&i| dsu.leader(i) == i).count() - 1;
     println!("{}", ans);
 }
 
