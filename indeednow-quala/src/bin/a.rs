@@ -3,11 +3,13 @@ use proconio::input;
 fn digits(n: usize) -> Vec<u8> {
     let mut d = vec![];
     let mut m = n;
-    while m >= 10 {
+    loop {
         d.push((m % 10) as u8);
         m /= 10;
+        if m == 0 {
+            break;
+        }
     }
-    d.push((m % 10) as u8);
     d.reverse();
     d
 }
