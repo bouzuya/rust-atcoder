@@ -8,10 +8,7 @@ fn main() {
     let mut dp = vec![ModU32::new(0); s + 1];
     dp[0] = ModU32::new(1);
     for i in 1..=s {
-        if i < 3 {
-            continue;
-        }
-        for j in 0..=i - 3 {
+        for j in 0..i.saturating_sub(2) {
             dp[i] = dp[i] + dp[j];
         }
     }

@@ -6,14 +6,14 @@ fn main() {
         n: usize,
     };
     let mut u = ModU32::new(1);
-    let mut c1 = ModU32::new(1);
-    let mut c2 = ModU32::new(1);
+    let mut p1 = ModU32::new(1);
+    let mut p2 = ModU32::new(1);
     for _ in 0..n {
-        u = u * ModU32::new(10);
-        c1 = c1 * ModU32::new(9);
-        c2 = c2 * ModU32::new(8);
+        u *= ModU32::new(10);
+        p1 *= ModU32::new(9);
+        p2 *= ModU32::new(8);
     }
-    let ans = u + c2 - c1 * ModU32::new(2);
+    let ans = u + p2 - p1 * ModU32::new(2);
     println!("{}", ans);
 }
 
