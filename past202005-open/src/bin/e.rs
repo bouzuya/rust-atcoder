@@ -16,26 +16,32 @@ fn main() {
         m: usize,
         q: usize,
         uv: [(Usize1, Usize1); m],
-        mut c: [u64; n],
+        mut c: [i64; n],
     };
 
     let e = adjacency_list(n, &uv);
+
     for _ in 0..q {
         input! {
-            t: usize,
-            x: Usize1,
+            t_i: usize,
         };
-        match t {
+        match t_i {
             1 => {
-                println!("{}", c[x]);
-                for &v in e[x].iter() {
-                    c[v] = c[x];
+                input! {
+                    x_i: Usize1,
+                };
+                println!("{}", c[x_i]);
+                for &v in e[x_i].iter() {
+                    c[v] = c[x_i];
                 }
             }
             2 => {
-                input! { y: u64 };
-                println!("{}", c[x]);
-                c[x] = y;
+                input! {
+                    x_i: Usize1,
+                    y_i: i64,
+                };
+                println!("{}", c[x_i]);
+                c[x_i] = y_i;
             }
             _ => unreachable!(),
         }

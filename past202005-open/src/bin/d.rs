@@ -6,25 +6,44 @@ fn main() {
         n: usize,
         s: [Chars; 5],
     };
-    let t = vec![
+
+    let tbl = vec![
         ".###..#..###.###.#.#.###.###.###.###.###.",
         ".#.#.##....#...#.#.#.#...#.....#.#.#.#.#.",
         ".#.#..#..###.###.###.###.###...#.###.###.",
         ".#.#..#..#.....#...#...#.#.#...#.#.#...#.",
         ".###.###.###.###...#.###.###...#.###.###.",
     ]
-    .iter()
-    .map(|&d_i| d_i.chars().collect::<Vec<char>>())
+    .into_iter()
+    .map(|s_i| s_i.chars().collect::<Vec<char>>())
     .collect::<Vec<Vec<char>>>();
 
-    let mut ans = vec![];
+    let mut digits = vec![];
+    for i in 0..=9 {
+        let l = 4 * i;
+        let r = 4 * (i + 1);
+        let mut ch = vec![];
+        for j in 0..5 {
+            ch.push(&tbl[j][l..r]);
+        }
+        digits.push(ch);
+    }
+
     for i in 0..n {
-        for d in 0..=9 {
-            if (0..5).all(|y| (0..4).all(|x| s[y][4 * i + x] == t[y][4 * d + x])) {
-                ans.push(std::char::from_digit(d as u32, 10).unwrap());
-                break;
+        let l = 4 * i;
+        let r = 4 * (i + 1);
+        let mut ch1 = vec![];
+        for j in 0..5 {
+            ch1.push(&s[j][l..r]);
+        }
+
+        let mut d = 0;
+        for (j, ch2) in digits.iter().enumerate() {
+            if &ch1 == ch2 {
+                d = j;
             }
         }
+        print!("{}", d);
     }
-    println!("{}", ans.iter().collect::<String>());
+    println!();
 }

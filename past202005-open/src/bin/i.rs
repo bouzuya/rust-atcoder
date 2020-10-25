@@ -6,39 +6,48 @@ fn main() {
         n: usize,
         q: usize,
     };
-    let mut pr = (0..n).collect::<Vec<_>>();
-    let mut pc = (0..n).collect::<Vec<_>>();
-    let mut is_ij_rc = true;
+    let mut rs = (0..n).collect::<Vec<usize>>();
+    let mut cs = (0..n).collect::<Vec<usize>>();
+    let mut f = false;
     for _ in 0..q {
-        input! { t: usize };
-        match t {
+        input! {
+            t_i: usize,
+        };
+        match t_i {
             1 => {
-                input! { r_a: Usize1, r_b: Usize1 };
-                if is_ij_rc {
-                    pr.swap(r_a, r_b);
-                } else {
-                    pc.swap(r_a, r_b);
-                }
+                input! {
+                    a_i: Usize1,
+                    b_i: Usize1,
+                };
+                let t = rs[a_i];
+                rs[a_i] = rs[b_i];
+                rs[b_i] = t;
             }
             2 => {
-                input! { c_a: Usize1, c_b: Usize1 };
-                if is_ij_rc {
-                    pc.swap(c_a, c_b);
-                } else {
-                    pr.swap(c_a, c_b);
-                }
+                input! {
+                    a_i: Usize1,
+                    b_i: Usize1,
+                };
+                let t = cs[a_i];
+                cs[a_i] = cs[b_i];
+                cs[b_i] = t;
             }
             3 => {
-                is_ij_rc = !is_ij_rc;
+                let t = cs;
+                cs = rs;
+                rs = t;
+                f = !f;
             }
             4 => {
-                input! { r_a: Usize1, c_b: Usize1 };
-                let (r, c) = if is_ij_rc {
-                    (pr[r_a], pc[c_b])
-                } else {
-                    (pr[c_b], pc[r_a])
+                input! {
+                    a_i: Usize1,
+                    b_i: Usize1,
                 };
-                let ans = n * r + c;
+                let ans = if f {
+                    rs[a_i] + cs[b_i] * n
+                } else {
+                    rs[a_i] * n + cs[b_i]
+                };
                 println!("{}", ans);
             }
             _ => unreachable!(),

@@ -7,27 +7,25 @@ fn main() {
         m: usize,
         q: usize,
     };
-    let mut a = vec![vec![false; m]; n];
-    let mut c = vec![0; m];
+    let mut resolved = vec![vec![false; m]; n];
+    let mut count = vec![0; m];
     for _ in 0..q {
-        input! {
-            q_t: usize,
-            q_n: Usize1,
-        };
-        match q_t {
-            1 => println!(
-                "{}",
-                a[q_n]
-                    .iter()
-                    .enumerate()
-                    .filter(|&(_, &ok)| ok)
-                    .map(|(i, _)| n - c[i])
-                    .sum::<usize>()
-            ),
+        input! { t_i: usize };
+        match t_i {
+            1 => {
+                input! { n_i: Usize1 };
+                let mut score = 0;
+                for (j, &r_j) in resolved[n_i].iter().enumerate() {
+                    if r_j {
+                        score += n - count[j];
+                    }
+                }
+                println!("{}", score);
+            }
             2 => {
-                input! { q_m: Usize1 };
-                a[q_n][q_m] = true;
-                c[q_m] += 1;
+                input! { n_i: Usize1, m_i: Usize1 };
+                resolved[n_i][m_i] = true;
+                count[m_i] += 1;
             }
             _ => unreachable!(),
         }

@@ -1,5 +1,5 @@
 use proconio::input;
-use superslice::*;
+use superslice::Ext;
 
 fn main() {
     input! {
@@ -7,14 +7,23 @@ fn main() {
         m: usize,
         a: [i64; m],
     };
-    let mut c = vec![-1; n];
+    let inf = 1_000_000_000_000;
+    let mut c = vec![inf; n];
+    let mut count = 0;
+
     for &a_i in a.iter() {
-        let i = c.upper_bound_by_key(&-a_i, |&c_i| -c_i);
-        if i == c.len() {
-            println!("-1");
+        let i = c[n - count..].upper_bound(&(a_i - 1));
+        if i == 0 {
+            if count < n {
+                count += 1;
+                c[n - count] = a_i;
+                println!("{}", count);
+            } else {
+                println!("-1");
+            }
         } else {
-            println!("{}", i + 1);
-            c[i] = a_i;
+            c[n - count + i - 1] = a_i;
+            println!("{}", count - i + 1);
         }
     }
 }
