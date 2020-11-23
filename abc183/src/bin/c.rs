@@ -1,5 +1,5 @@
 use proconio::input;
-use superslice::*;
+use superslice::Ext;
 
 fn main() {
     input! {
@@ -8,21 +8,22 @@ fn main() {
         t: [[u64; n]; n],
     };
     let mut count = 0;
-    let mut d = (1..n).collect::<Vec<usize>>();
+    let mut is = (1..n).collect::<Vec<usize>>();
     loop {
-        let mut c = 0;
-        let mut sum = 0;
-        for &d_i in d.iter() {
-            sum += t[c][d_i];
-            c = d_i;
+        let mut sum = 0_u64;
+        let mut i = 0;
+        for &j in is.iter() {
+            sum += t[i][j];
+            i = j;
         }
-        sum += t[c][0];
+        sum += t[i][0];
         if sum == k {
             count += 1;
         }
-        if !d.next_permutation() {
+        if !is.next_permutation() {
             break;
         }
     }
-    println!("{}", count);
+    let ans = count;
+    println!("{}", ans);
 }

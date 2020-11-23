@@ -7,17 +7,20 @@ fn main() {
         stp: [(usize, usize, i64); n],
     };
     let max_t = 2 * 100_000;
-    let mut tbl = vec![0_i64; max_t + 5];
+    let mut sum = vec![0_i64; max_t + 1];
     for (s_i, t_i, p_i) in stp {
-        tbl[s_i] += p_i;
-        tbl[t_i] -= p_i;
+        sum[s_i] += p_i;
+        sum[t_i] -= p_i;
     }
-    let mut max = 0_i64;
-    for i in 0..=max_t + 1 {
-        tbl[i + 1] += tbl[i];
-        max = std::cmp::max(max, tbl[i]);
+    for i in 0..sum.len() - 1 {
+        sum[i + 1] += sum[i];
     }
-
-    let ans = max <= w;
+    let mut all = true;
+    for &sum_i in sum.iter() {
+        if sum_i > w {
+            all = false;
+        }
+    }
+    let ans = all;
     println!("{}", if ans { "Yes" } else { "No" });
 }
