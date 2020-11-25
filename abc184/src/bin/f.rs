@@ -15,23 +15,21 @@ fn main() {
                 sum += a[i];
             }
         }
-        if sum <= t {
-            b.push(sum);
-        }
+        b.push(sum);
     }
     b.sort();
 
     let mut max_x = 0;
     let o = n / 2;
-    for bits in 0..1 << n / 2 {
+    for bits in 0..1 << n - n / 2 {
         let mut sum = 0;
-        for i in 0..n / 2 {
+        for i in 0..n - n / 2 {
             if (bits >> i) & 1 == 1 {
                 sum += a[o + i];
             }
         }
         if sum <= t {
-            let x = sum + b[b.lower_bound(&(t - sum))];
+            let x = sum + b[b.upper_bound(&(t - sum)) - 1];
             if x <= t {
                 max_x = std::cmp::max(max_x, x);
             }
