@@ -7,10 +7,10 @@ fn main() {
         b: i64,
         c: i64,
     };
-    let a = ModInt::new(a);
-    let b = ModInt::new(b);
-    let c = ModInt::new(c);
-    let ans = a * (a + 1) / 2 * b * (b + 1) / 2 * c * (c + 1) / 2;
+    let ans = ModInt::new(a) * ModInt::new(a + 1) / 2 * ModInt::new(b) * ModInt::new(b + 1) / 2
+        * ModInt::new(c)
+        * ModInt::new(c + 1)
+        / 2;
     println!("{}", ans);
 }
 
