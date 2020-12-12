@@ -3,24 +3,28 @@ use proconio::marker::Chars;
 
 fn main() {
     input! {
-        s: Chars
+        s: Chars,
     };
-    let mut w = vec![];
-    let mut r = None;
-    for (i, &c) in s.iter().enumerate() {
+    let mut words = vec![];
+    let mut word = vec![];
+    for c in s {
         if c.is_uppercase() {
-            r = match r {
-                None => Some(i),
-                Some(j) => {
-                    w.push(s[j..i + 1].iter().collect::<String>());
-                    None
-                }
-            };
+            if word.is_empty() {
+                word.push(c);
+            } else {
+                word.push(c);
+                words.push(word.iter().collect::<String>());
+                word.clear();
+            }
+        } else {
+            word.push(c);
         }
     }
-    w.sort_by_key(|w_i| w_i.to_lowercase());
-    for w_i in w.iter() {
-        print!("{}", w_i);
+    words.push(word.iter().collect::<String>());
+
+    words.sort_by_key(|s| s.to_lowercase());
+    for w in words {
+        print!("{}", w);
     }
     println!();
 }

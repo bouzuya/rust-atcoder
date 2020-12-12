@@ -5,18 +5,17 @@ fn main() {
         n: usize,
         a: [i64; n],
     };
-    for (a_i0, a_i1) in a.windows(2).map(|w| match w {
-        &[a_i0, a_i1] => (a_i0, a_i1),
-        _ => unreachable!(),
-    }) {
-        if a_i1 == a_i0 {
+    let mut p = a[0];
+    for &a_i in a.iter().skip(1) {
+        if p == a_i {
             println!("stay");
-        } else if a_i1 < a_i0 {
-            println!("down {}", a_i0 - a_i1);
-        } else if a_i1 > a_i0 {
-            println!("up {}", a_i1 - a_i0);
+        } else if p > a_i {
+            println!("down {}", p - a_i);
+        } else if p < a_i {
+            println!("up {}", a_i - p);
         } else {
             unreachable!();
         }
+        p = a_i;
     }
 }

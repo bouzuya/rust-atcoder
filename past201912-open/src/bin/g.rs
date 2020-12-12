@@ -1,36 +1,45 @@
 use proconio::input;
+use std::cmp::{max, min};
 
-fn main() {
-    input! { n: usize };
-    let mut a = vec![vec![0_i64; n]; n];
-    for i in 0..n - 1 {
-        for j in i + 1..n {
-            input! { a_ij: i64 };
-            a[i][j] = a_ij;
-            a[j][i] = a_ij;
-        }
-    }
-
-    let mut ans = -1_000_000_000_000_000;
-    let n_g = 3_usize;
-    for ds in 0..n_g.pow(n as u32) {
-        let mut x = ds;
-        let mut g = vec![0; n];
-        for i in (0..n).rev() {
-            g[i] = x % n_g;
-            x /= n_g;
-        }
-
+fn dfs(v: &Vec<Vec<i64>>, g: &mut Vec<usize>) -> i64 {
+    if g.len() == v.len() {
         let mut sum = 0;
-        for i in 0..n {
-            for j in i + 1..n {
-                if g[i] == g[j] {
-                    sum += a[i][j];
+        for (i, g_i) in g.iter().enumerate() {
+            for (j, g_j) in g.iter().enumerate() {
+                if i == j || g_i != g_j {
+                    continue;
                 }
+                sum += v[min(i, j)][max(i, j)];
             }
         }
-        ans = std::cmp::max(ans, sum);
+        return sum;
+    }
+    (0..3)
+        .map(|i| {
+            g.push(i);
+            let value = dfs(v, g);
+            g.pop();
+            value
+        })
+        .max()
+        .unwrap()
+}
+
+fn main() {
+    input! {
+        n: usize,
+    };
+    let mut v = vec![vec![]; n];
+    for i in 0..n {
+        for _ in 0..i + 1 {
+            v[i].push(0);
+        }
+        input! {
+            mut a: [i64; n - i - 1]
+        };
+        v[i].append(&mut a);
     }
 
+    let ans = dfs(&v, &mut vec![]) / 2;
     println!("{}", ans);
 }

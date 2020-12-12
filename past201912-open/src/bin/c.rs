@@ -4,7 +4,8 @@ fn main() {
     input! {
         mut abcdef: [i64; 6],
     };
-    abcdef.sort_by_key(|&x| std::cmp::Reverse(x));
+    abcdef.sort();
+    abcdef.reverse();
     let ans = abcdef[2];
     println!("{}", ans);
 }

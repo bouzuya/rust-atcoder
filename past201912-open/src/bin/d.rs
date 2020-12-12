@@ -6,16 +6,16 @@ fn main() {
         n: usize,
         a: [Usize1; n],
     };
-    let mut c = vec![0; n];
-    for &a_i in a.iter() {
-        c[a_i] += 1;
+    let mut count = vec![0; n];
+    for a_i in a {
+        count[a_i] += 1;
     }
     match (
-        c.iter().position(|&c_i| c_i == 2),
-        c.iter().position(|&c_i| c_i == 0),
+        count.iter().position(|&c| c == 0),
+        count.iter().position(|&c| c == 2),
     ) {
         (None, None) => println!("Correct"),
-        (Some(y), Some(x)) => println!("{} {}", y + 1, x + 1),
-        _ => unreachable!(),
+        (Some(_), None) | (None, Some(_)) => unreachable!(),
+        (Some(s), Some(d)) => println!("{} {}", d + 1, s + 1),
     }
 }

@@ -6,54 +6,52 @@ fn main() {
         n: usize,
         q: usize,
     };
+    // f[a][b] : a が b をフォローしているとき true
     let mut following = vec![vec![false; n]; n];
     for _ in 0..q {
         input! { t: usize };
         match t {
             1 => {
-                // a が b をフォロー
-                input! {
-                    a: Usize1,
-                    b: Usize1,
-                };
+                input! { a: Usize1, b: Usize1 };
                 following[a][b] = true;
             }
             2 => {
-                // a が a のフォロワーをフォロー
                 input! { a: Usize1 };
-                for b in 0..n {
-                    if following[b][a] {
-                        following[a][b] = true;
-                    }
+                let followers = (0..n).filter(|&i| following[i][a]).collect::<Vec<usize>>();
+                for i in followers {
+                    following[a][i] = true;
                 }
             }
             3 => {
-                // a がフォローしているユーザー x のフォローしているユーザーをフォロー
                 input! { a: Usize1 };
-                let mut new_b = vec![];
-                for x in 0..n {
-                    if following[a][x] {
-                        for b in 0..n {
-                            if following[x][b] {
-                                new_b.push(b);
-                            }
+                let f = following[a]
+                    .iter()
+                    .enumerate()
+                    .filter(|(_, &b)| b)
+                    .map(|(i, _)| i)
+                    .collect::<Vec<usize>>();
+                for i in f {
+                    let ff = following[i]
+                        .iter()
+                        .enumerate()
+                        .filter(|(_, &b)| b)
+                        .map(|(j, _)| j)
+                        .collect::<Vec<usize>>();
+                    for j in ff {
+                        if j == a {
+                            continue;
                         }
+                        following[a][j] = true;
                     }
-                }
-                for &b in new_b.iter() {
-                    following[a][b] = true;
                 }
             }
             _ => unreachable!(),
         }
     }
-
-    for a in 0..n {
-        println!(
-            "{}",
-            (0..n)
-                .map(|b| if a != b && following[a][b] { 'Y' } else { 'N' })
-                .collect::<String>()
-        );
+    for i in 0..n {
+        for j in 0..n {
+            print!("{}", if following[i][j] { "Y" } else { "N" });
+        }
+        println!();
     }
 }
