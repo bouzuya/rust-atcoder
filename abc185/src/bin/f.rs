@@ -3,7 +3,6 @@ use proconio::marker::Usize1;
 use segtree::*;
 
 fn main() {
-    todo!();
     input! {
         n: usize,
         q: usize,
@@ -11,7 +10,7 @@ fn main() {
         txy: [(usize, Usize1, Usize1); q],
     };
     let mut trees: Vec<Segtree<X<usize>>> = vec![];
-    for j in 0..=32 {
+    for j in 0..=30 {
         trees.push(Segtree::from(
             a.iter().map(|&a_i| (a_i >> j) & 1).collect::<Vec<usize>>(),
         ));
@@ -19,13 +18,15 @@ fn main() {
     for (t_i, x_i, y_i) in txy {
         match t_i {
             1 => {
-                for i in 0..=32 {
-                    trees[i].set(x_i, (y_i >> i) & 1);
+                for i in 0..=30 {
+                    let mut v = trees[i].get(x_i);
+                    v ^= ((y_i + 1) >> i) & 1;
+                    trees[i].set(x_i, v);
                 }
             }
             2 => {
                 let mut bits = 0;
-                for i in 0..=32 {
+                for i in 0..=30 {
                     bits |= trees[i].prod(x_i, y_i + 1) << i;
                 }
                 println!("{}", bits);

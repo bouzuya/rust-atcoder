@@ -1,49 +1,31 @@
 use proconio::input;
-use std::cmp::min;
-
-fn f(x: usize, k: usize) -> usize {
-    (x + k - 1) / k
-}
 
 fn main() {
     input! {
         n: usize,
-        mut m: usize,
+        m: usize,
         mut a: [usize; m],
     };
-    if m == 0 {
-        println!("1");
-        return;
-    }
     if m >= n {
         println!("0");
         return;
     }
     a.sort();
     a.push(n + 1);
-    a.push(0);
-    a.sort();
-
-    let mut k = n;
-    let mut p = a[0];
+    let mut counts = vec![];
+    let mut p = 0;
     for &a_i in a.iter() {
-        if a_i - p <= 1 {
-            p = a_i;
-            continue;
+        let c = a_i - p - 1;
+        if c > 0 {
+            counts.push(c);
         }
-        k = min(k, a_i - p - 1);
         p = a_i;
     }
-    let mut count = 0;
-    let mut p = a[0];
-    for &a_i in a.iter() {
-        if a_i - p <= 1 {
-            p = a_i;
-            continue;
-        }
-        count += f(a_i - p - 1, k);
-        p = a_i;
+    if counts.is_empty() {
+        println!("1");
+        return;
     }
-    let ans = count;
+    let k = *counts.iter().min().unwrap();
+    let ans = counts.iter().map(|c| (c + k - 1) / k).sum::<usize>();
     println!("{}", ans);
 }
