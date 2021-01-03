@@ -7,7 +7,8 @@ fn main() {
         w: usize,
         a: [[i64; w]; h],
     };
-    let mut min_a = 1_000;
+
+    let mut min_a = a[0][0];
     for i in 0..h {
         for j in 0..w {
             min_a = min(min_a, a[i][j]);
