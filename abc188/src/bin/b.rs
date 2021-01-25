@@ -6,10 +6,11 @@ fn main() {
         a: [i64; n],
         b: [i64; n],
     };
-    let mut x = 0_i64;
-    for (&a_i, &b_i) in a.iter().zip(b.iter()) {
-        x += a_i * b_i;
-    }
-    let ans = x == 0;
+    let ans = a
+        .iter()
+        .zip(b.iter())
+        .map(|(&a_i, &b_i)| a_i * b_i)
+        .sum::<i64>()
+        == 0;
     println!("{}", if ans { "Yes" } else { "No" });
 }
