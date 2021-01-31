@@ -2,16 +2,10 @@ use proconio::input;
 
 fn main() {
     input! {
-        mut ab: [i64; 2],
-        c: usize,
+        a: i64,
+        b: i64,
+        c: i64,
     };
-    let mut i = c;
-    loop {
-        if ab[i] == 0 {
-            println!("{}", if i == 0 { "Aoki" } else { "Takahashi" });
-            return;
-        }
-        ab[i] -= 1;
-        i = if i == 0 { 1 } else { 0 };
-    }
+    let ans = a > b - c;
+    println!("{}", if ans { "Takahashi" } else { "Aoki" });
 }

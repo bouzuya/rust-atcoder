@@ -7,15 +7,6 @@ fn main() {
         d: i64,
         xy: [(i64, i64); n],
     };
-    for (x_i, y_i) in xy {
-        if x_i >= s {
-            continue;
-        }
-        if y_i <= d {
-            continue;
-        }
-        println!("Yes");
-        return;
-    }
-    println!("No");
+    let ans = xy.iter().any(|&(x_i, y_i)| x_i < s && y_i > d);
+    println!("{}", if ans { "Yes" } else { "No" });
 }
