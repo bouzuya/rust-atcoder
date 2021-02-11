@@ -2,7 +2,7 @@ use proconio::input;
 use proconio::marker::Usize1;
 use std::collections::VecDeque;
 
-fn topological_sort(e: &Vec<Vec<usize>>) -> Vec<usize> {
+fn topological_sort(e: &Vec<Vec<usize>>) -> Option<Vec<usize>> {
     let n = e.len();
     let mut c_in = vec![0; n];
     for e_u in e.iter() {
@@ -26,7 +26,11 @@ fn topological_sort(e: &Vec<Vec<usize>>) -> Vec<usize> {
             }
         }
     }
-    res
+    if res.len() == n {
+        Some(res)
+    } else {
+        None
+    }
 }
 
 fn main() {
@@ -43,11 +47,13 @@ fn main() {
         e2[l_i].push((r_i, d_i));
     }
 
-    let sorted = topological_sort(&e);
-    if sorted.len() != n {
-        println!("No");
-        return;
-    }
+    let sorted = match topological_sort(&e) {
+        None => {
+            println!("No");
+            return;
+        }
+        Some(sorted) => sorted,
+    };
 
     let mut d = vec![0; n];
     d[sorted[0]] = 0;
