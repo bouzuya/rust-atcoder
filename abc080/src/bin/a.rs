@@ -1,4 +1,5 @@
 use proconio::input;
+use std::cmp::min;
 
 fn main() {
     input! {
@@ -6,6 +7,6 @@ fn main() {
         a: usize,
         b: usize,
     };
-    let ans = std::cmp::min(a * n, b);
+    let ans = min(n * a, b);
     println!("{}", ans);
 }

@@ -1,37 +1,27 @@
 use proconio::input;
+use std::cmp::max;
 
 fn main() {
     input! {
         n: usize,
-        f: [[usize; 10]; n],
+        f: [[u8; 10]; n],
         p: [[i64; 11]; n],
     };
-    let mut max_score = -1_000_000_000_000_000_i64;
-    for bits in 0..1 << 10 {
-        let mut ls = vec![];
-        for l in 0..10 {
-            if (bits >> l) & 1 == 1 {
-                ls.push(l);
-            }
-        }
-        if ls.is_empty() {
-            continue;
-        }
-
-        let mut score = 0_i64;
+    let mut max_v = -1_000_000_000;
+    for bits in 1..1 << 10 {
+        let is = (0..10).map(|i| (bits >> i) & 1 == 1).collect::<Vec<bool>>();
+        let mut v = 0_i64;
         for i in 0..n {
-            let f_i = &f[i];
-            let p_i = &p[i];
             let mut count = 0;
-            for &l in ls.iter() {
-                if f_i[l] == 1 {
+            for j in 0..10 {
+                if is[j] && f[i][j] == 1 {
                     count += 1;
                 }
             }
-            score += p_i[count];
+            v += p[i][count];
         }
-        max_score = std::cmp::max(max_score, score);
+        max_v = max(max_v, v);
     }
-    let ans = max_score;
+    let ans = max_v;
     println!("{}", ans);
 }
