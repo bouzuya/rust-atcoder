@@ -13,29 +13,20 @@ fn main() {
     for i in 0..n {
         set.insert(i);
     }
-    if m == n {
-        for &a_i in a.iter() {
-            set.remove(&a_i);
-        }
-        println!("{}", *set.iter().next().unwrap());
-        return;
+    let mut counts = vec![0; n];
+    for i in 0..m {
+        counts[a[i]] += 1;
+        set.remove(&a[i]);
     }
-    let mut min_x = 1_000_000_000;
-    let mut map = vec![0; n];
-    let mut i_m = 0;
-    for i in 0..n - m {
-        while i_m < i + m {
-            map[a[i_m]] += 1;
-            set.remove(&a[i_m]);
-            i_m += 1;
+    let mut min_x = *set.iter().next().unwrap_or(&n);
+    for i in m..n {
+        counts[a[i]] += 1;
+        set.remove(&a[i]);
+        counts[a[i - m]] -= 1;
+        if counts[a[i - m]] == 0 {
+            set.insert(a[i - m]);
         }
-
-        min_x = min(min_x, *set.iter().next().unwrap());
-
-        map[a[i]] -= 1;
-        if map[a[i]] == 0 {
-            set.insert(a[i]);
-        }
+        min_x = min(min_x, *set.iter().next().unwrap_or(&n));
     }
     let ans = min_x;
     println!("{}", ans);
