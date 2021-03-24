@@ -1,11 +1,18 @@
 use proconio::input;
-use proconio::marker::Usize1;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        n: i64,
+        k: i64,
     };
-    let ans = n - a.len();
+    let ans = if k <= n {
+        k.pow(3)
+    } else if k <= 2 * n {
+        k.pow(3) - 3 * (k - n).pow(3)
+    } else if k <= 3 * n {
+        n.pow(3) * 6 - (3 * n - k).pow(3)
+    } else {
+        n.pow(3) * 6
+    };
     println!("{}", ans);
 }
