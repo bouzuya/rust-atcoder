@@ -1,11 +1,20 @@
 use proconio::input;
-use proconio::marker::Usize1;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        x: usize,
+        y: usize,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    if x == y {
+        if x == 0 {
+            assert!(y == 0);
+            println!("1 1");
+        } else {
+            println!("-1");
+        }
+    } else if x < y {
+        println!("{} {}", x + 2 * y, y);
+    } else if x > y {
+        println!("{} {}", x, 2 * x + y);
+    }
 }
