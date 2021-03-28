@@ -3,7 +3,8 @@ use proconio::marker::Chars;
 
 fn main() {
     input! {
-        s: Chars,
+        mut s: Chars,
     };
-    println!("{}{}{}", s[1], s[2], s[0]);
+    s.rotate_left(1);
+    println!("{}", s.iter().collect::<String>());
 }
