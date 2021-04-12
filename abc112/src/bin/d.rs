@@ -1,3 +1,5 @@
+use std::cmp::max;
+
 use proconio::input;
 
 fn divisors(n: usize) -> Vec<usize> {
@@ -13,7 +15,6 @@ fn divisors(n: usize) -> Vec<usize> {
             }
         }
     }
-    // d.sort();
     d
 }
 
@@ -22,13 +23,13 @@ fn main() {
         n: usize,
         m: usize,
     };
-
-    let d = divisors(m);
-    let mut ans = 1;
-    for &d_i in d.iter() {
-        if n * d_i <= m {
-            ans = std::cmp::max(ans, d_i);
+    let ds = divisors(m);
+    let mut max_d = 1;
+    for d in ds {
+        if d >= n {
+            max_d = max(max_d, m / d);
         }
     }
+    let ans = max_d;
     println!("{}", ans);
 }

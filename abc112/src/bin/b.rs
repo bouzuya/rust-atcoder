@@ -1,21 +1,27 @@
 use proconio::input;
+use std::cmp::min;
 
 fn main() {
     input! {
         n: usize,
-        t: usize,
-        ct: [(usize, usize); n],
+        t: u64,
+        ct: [(u64, u64); n],
     };
-    let inf = 1_000_000;
-    let mut ans = inf;
-    for &(c_i, t_i) in ct.iter() {
-        if t_i <= t {
-            ans = std::cmp::min(ans, c_i);
+    let mut ans = None;
+    for (c_i, t_i) in ct {
+        if t_i > t {
+            continue;
         }
+        ans = match ans {
+            None => Some(c_i),
+            Some(min_c) => Some(min(min_c, c_i)),
+        };
     }
-    if ans == inf {
-        println!("TLE");
-    } else {
-        println!("{}", ans);
-    }
+    println!(
+        "{}",
+        match ans {
+            None => "TLE".to_string(),
+            Some(c) => format!("{}", c),
+        }
+    );
 }
