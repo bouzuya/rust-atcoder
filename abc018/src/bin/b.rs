@@ -8,16 +8,13 @@ fn main() {
         lr: [(Usize1, Usize1); n],
     };
     for (l_i, r_i) in lr {
-        let mut l = l_i;
-        let mut r = r_i;
-        while l < r {
+        let len = r_i + 1 - l_i;
+        for j in 0..len / 2 {
+            let (l, r) = (l_i + j, l_i + len - 1 - j);
             let t = s[l];
             s[l] = s[r];
             s[r] = t;
-            l += 1;
-            r -= 1;
         }
     }
-    let ans = s.iter().collect::<String>();
-    println!("{}", ans);
+    println!("{}", s.iter().collect::<String>());
 }
