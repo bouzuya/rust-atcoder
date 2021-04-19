@@ -5,15 +5,21 @@ fn main() {
     input! {
         s: Chars,
     };
-    let mut s_p = s[0];
-    let mut c = 1;
+    let mut t = vec![];
+    t.push(s[0]);
+    let mut count = 1;
+    let mut prev = s[0];
     for &s_i in s.iter().skip(1) {
-        if s_p != s_i {
-            print!("{}{}", s_p, c);
-            c = 0;
+        if prev == s_i {
+            count += 1;
+        } else {
+            t.append(&mut format!("{}", count).chars().collect::<Vec<char>>());
+            t.push(s_i);
+            prev = s_i;
+            count = 1;
         }
-        s_p = s_i;
-        c += 1;
     }
-    println!("{}{}", s_p, c);
+    t.append(&mut format!("{}", count).chars().collect::<Vec<char>>());
+    let ans = t.iter().collect::<String>();
+    println!("{}", ans);
 }
