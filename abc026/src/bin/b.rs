@@ -3,15 +3,13 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        mut r: [i64; n],
+        mut r: [f64; n],
     };
-    r.sort();
-    let mut sum = 0_i64;
-    let mut s = 1_i64;
-    for &r_i in r.iter().rev() {
-        sum += s * r_i.pow(2);
-        s *= -1;
+    r.sort_by(|&a, &b| b.partial_cmp(&a).unwrap());
+    let mut a = 0_f64;
+    for (i, r_i) in r.iter().enumerate() {
+        a += if i % 2 == 0 { 1_f64 } else { -1_f64 } * r_i * r_i * std::f64::consts::PI;
     }
-    let ans = sum as f64 * std::f64::consts::PI;
+    let ans = a;
     println!("{}", ans);
 }
