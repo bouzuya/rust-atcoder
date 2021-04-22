@@ -1,23 +1,27 @@
-use modint::*;
 use proconio::input;
-use std::cmp::min;
+use modint::ModInt1000000007 as ModInt;
 
 fn main() {
     input! {
-        w: i64,
-        h: i64,
+        w: usize,
+        h: usize,
     };
-    let n = w + h - 1;
-    let k = min(w, h);
-    // (n - 1) choose (k - 1)
-    let n = (n - 1) as usize;
-    let k = (k - 1) as usize;
-    let mut p = ModInt1000000007::new(1);
-    for (i, x) in ((n - k + 1)..=n).enumerate() {
-        p *= x;
-        p /= i + 1;
+    let n = w + h;
+
+    let mut fact = vec![ModInt::new(0); n + 1];
+    fact[0] = ModInt::new(1);
+    for i in 1..=n {
+        fact[i] = fact[i - 1] * ModInt::new(i);
     }
-    let ans = p;
+    let mut finv = vec![ModInt::new(0); n + 1];
+    finv[n] = fact[n].inv();
+    for i in (1..=n).rev() {
+        finv[i - 1] = finv[i] * ModInt::new(i);
+    }
+
+    let k = w - 1 + h - 1;
+    let r = h - 1;
+    let ans = fact[k] * finv[r] * finv[k - r];
     println!("{}", ans);
 }
 
@@ -1646,3 +1650,4 @@ pub mod modint {
         }
     }
 }
+

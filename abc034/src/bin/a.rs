@@ -5,6 +5,6 @@ fn main() {
         x: i64,
         y: i64,
     };
-    let ans = x < y;
-    println!("{}", if ans { "Better" } else { "Worse" });
+    let ans = if x < y { "Better" } else { "Worse" };
+    println!("{}", ans);
 }
