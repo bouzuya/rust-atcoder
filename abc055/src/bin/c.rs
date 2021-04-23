@@ -1,18 +1,13 @@
 use proconio::input;
+use std::cmp::min;
 
 fn main() {
     input! {
-        n: i64,
-        m: i64,
+        s: usize,
+        c: usize,
     };
-
-    let s = n;
-    let c = m;
-    let scc = if s >= c / 2 {
-        c / 2
-    } else {
-        s + (c - 2 * s) / 4
-    };
-    let ans = scc;
+    let x = min(s, c / 2);
+    let c = c - x * 2;
+    let ans = x + if c < 2 { 0 } else { c / 4 };
     println!("{}", ans);
 }

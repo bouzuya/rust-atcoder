@@ -2,10 +2,16 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: i64,
+        n: usize,
     };
-    let x = 800 * n;
-    let y = 200 * (n / 15);
+    let mut x = 0;
+    let mut y = 0;
+    for i in 1..=n {
+        x += 800;
+        if i % 15 == 0 {
+            y += 200;
+        }
+    }
     let ans = x - y;
     println!("{}", ans);
 }

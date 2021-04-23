@@ -2,13 +2,13 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: i64,
+        n: usize,
     };
-    let mut p = 1;
+    let mut x = 1_usize;
     for i in 1..=n {
-        p *= i;
-        p %= 1_000_000_007;
+        x *= i;
+        x %= 1_000_000_007_usize;
     }
-    let ans = p;
+    let ans = x;
     println!("{}", ans);
 }
