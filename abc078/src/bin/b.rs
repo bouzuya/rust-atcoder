@@ -2,14 +2,10 @@ use proconio::input;
 
 fn main() {
     input! {
-        x: i64,
-        y: i64,
-        z: i64,
+        x: usize,
+        y: usize,
+        z: usize,
     };
-    let mut a = 1;
-    while a * (y + z) + z <= x {
-        a += 1;
-    }
-    let ans = a - 1;
+    let ans = (x - z) / (y + z);
     println!("{}", ans);
 }
