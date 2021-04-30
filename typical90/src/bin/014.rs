@@ -1,11 +1,17 @@
 use proconio::input;
-use proconio::marker::Usize1;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        mut a: [i64; n],
+        mut b: [i64; n],
     };
-    let ans = n - a.len();
+    a.sort();
+    b.sort();
+    let mut d = 0;
+    for (a_i, b_i) in a.iter().zip(b.iter()) {
+        d += (a_i - b_i).abs();
+    }
+    let ans = d;
     println!("{}", ans);
 }
