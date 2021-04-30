@@ -30,24 +30,20 @@ fn main() {
         let mut init = 0;
         let mut is_x = true;
         let mut count = 0;
-        for &s_i in s.iter().chain(std::iter::once(&'T')) {
+        for s_i in s.into_iter().chain(std::iter::once('T')) {
             match s_i {
-                'F' => {
-                    if first {
-                        init += 1;
-                    } else {
-                        count += 1;
-                    }
-                }
+                'F' => count += 1,
                 'T' => {
                     if first {
                         first = false;
-                    }
-                    if count > 0 {
-                        if is_x {
-                            xs.push(count);
-                        } else {
-                            ys.push(count);
+                        init = count;
+                    } else {
+                        if count > 0 {
+                            if is_x {
+                                xs.push(count);
+                            } else {
+                                ys.push(count);
+                            }
                         }
                     }
                     is_x = !is_x;
