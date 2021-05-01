@@ -1,11 +1,27 @@
+use std::cmp;
+
 use proconio::input;
-use proconio::marker::Usize1;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        n: u64,
+        a: u64,
+        b: u64,
+        c: u64,
     };
-    let ans = n - a.len();
+    let mut min_v = 9999;
+    for x in 0..=9999 {
+        for y in 0..=(9999 - x) {
+            if a * x + b * y > n {
+                break;
+            }
+            let z = (n - (a * x + b * y)) / c;
+            if a * x + b * y + c * z == n {
+                let v = x + y + z;
+                min_v = cmp::min(min_v, v);
+            }
+        }
+    }
+    let ans = min_v;
     println!("{}", ans);
 }
