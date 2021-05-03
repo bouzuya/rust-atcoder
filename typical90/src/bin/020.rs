@@ -1,11 +1,11 @@
 use proconio::input;
-use proconio::marker::Usize1;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        a: usize,
+        b: usize,
+        c: usize,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    let ans = a < c.pow(b as u32);
+    println!("{}", if ans { "Yes" } else { "No" });
 }
