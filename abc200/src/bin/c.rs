@@ -1,21 +1,18 @@
-use std::collections::BTreeMap;
-
 use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [i64; n],
+        a: [usize; n],
     };
-    let b = a.iter().map(|&a_i| a_i % 200).collect::<Vec<i64>>();
-    let mut map = BTreeMap::new();
+    let b = a.iter().map(|&a_i| a_i % 200).collect::<Vec<usize>>();
+    let mut map = vec![0_usize; 200];
     for &b_i in b.iter() {
-        *map.entry(b_i).or_insert(0) += 1;
+        map[b_i] += 1;
     }
-    let mut count = 0_i64;
-    for (_, v) in map {
-        count += v * (v - 1);
-    }
-    let ans = count / 2;
+    let ans = map
+        .iter()
+        .map(|&c| if c > 0 { c * (c - 1) / 2 } else { 0 })
+        .sum::<usize>();
     println!("{}", ans);
 }
