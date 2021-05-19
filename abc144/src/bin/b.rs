@@ -2,11 +2,11 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: i64,
+        n: usize,
     };
     for a in 1..=9 {
         for b in 1..=9 {
-            if n == a * b {
+            if a * b == n {
                 println!("Yes");
                 return;
             }

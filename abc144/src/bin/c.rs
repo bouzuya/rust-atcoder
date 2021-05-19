@@ -1,5 +1,6 @@
+use std::cmp;
+
 use proconio::input;
-use std::cmp::min;
 
 fn divisors(n: usize) -> Vec<usize> {
     let mut d = vec![];
@@ -14,7 +15,6 @@ fn divisors(n: usize) -> Vec<usize> {
             }
         }
     }
-    d.sort();
     d
 }
 
@@ -22,13 +22,12 @@ fn main() {
     input! {
         n: usize,
     };
-    let mut min_x = n;
-    let d = divisors(n);
-    for a in d {
-        let b = n / a;
-        assert_eq!(a * b, n);
-        min_x = min(min_x, a.saturating_sub(1) + b.saturating_sub(1));
+    let mut min_v = 1_000_000_000_000_000_usize;
+    let ds = divisors(n);
+    for i in ds {
+        let j = n / i;
+        min_v = cmp::min(min_v, i + j - 2);
     }
-    let ans = min_x;
+    let ans = min_v;
     println!("{}", ans);
 }
