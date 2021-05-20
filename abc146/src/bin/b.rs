@@ -1,15 +1,17 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        n: u8,
+        n: usize,
         s: Chars,
     };
-    for &s_i in s.iter() {
-        let ci = s_i as u8 - 'A' as u8; // 0..26
-        let cj = ((ci + n) % 26 + 'A' as u8) as char;
-        print!("{}", cj);
-    }
-    println!();
+    let chars = (0..26).map(|i| (b'A' + i) as char).collect::<Vec<char>>();
+    let ans = s
+        .iter()
+        .map(|s_i| {
+            let j = chars.iter().position(|c| c == s_i).unwrap();
+            chars[(j + n) % chars.len()]
+        })
+        .collect::<String>();
+    println!("{}", ans);
 }

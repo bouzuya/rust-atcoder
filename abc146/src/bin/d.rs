@@ -1,46 +1,44 @@
-use proconio::input;
-use proconio::marker::Usize1;
+use std::collections::BTreeMap;
 
-fn adjacency_list(n: usize, uv: &Vec<(usize, usize)>) -> Vec<Vec<(usize, usize)>> {
+use proconio::{input, marker::Usize1};
+
+fn adjacency_list(n: usize, uv: &Vec<(usize, usize)>) -> Vec<Vec<usize>> {
     let mut e = vec![vec![]; n];
-    for (i, &(u, v)) in uv.iter().enumerate() {
-        e[u].push((v, i));
-        e[v].push((u, i));
+    for &(u, v) in uv.iter() {
+        e[u].push(v);
+        e[v].push(u);
     }
     e
+}
+
+fn dfs(e: &Vec<Vec<usize>>, cs: &mut Vec<BTreeMap<usize, usize>>, u: usize, p: usize, pc: usize) {
+    let mut c = 1;
+    for &v in e[u].iter() {
+        if v == p {
+            continue;
+        }
+        if c == pc {
+            c += 1;
+        }
+        cs[if u < v { u } else { v }].insert(if u < v { v } else { u }, c);
+        dfs(e, cs, v, u, c);
+        c += 1;
+    }
 }
 
 fn main() {
     input! {
         n: usize,
-        ab: [(Usize1, Usize1); n - 1]
+        ab: [(Usize1, Usize1); n - 1],
     };
 
     let e = adjacency_list(n, &ab);
-    let mut color_count = 0;
-    let mut color = vec![n; n - 1];
-    let mut q = std::collections::VecDeque::new();
-    q.push_back((0, 0, n));
-    while let Some((u, p, pc)) = q.pop_front() {
-        let mut c = 0;
-        for &(v, i_e) in e[u].iter() {
-            if v == p {
-                continue;
-            }
-            if color[i_e] != n {
-                continue;
-            }
-            if c == pc {
-                c += 1;
-            }
-            color[i_e] = c;
-            q.push_back((v, u, c));
-            c += 1;
-            color_count = std::cmp::max(c, color_count);
-        }
-    }
-    println!("{}", color_count);
-    for c in color.iter() {
-        println!("{}", c + 1);
+    let k = e.iter().map(|e_i| e_i.len()).max().unwrap();
+    let mut cs = vec![BTreeMap::new(); n];
+    dfs(&e, &mut cs, 0, 0, k + 1);
+    println!("{}", k);
+    for (a_i, b_i) in ab {
+        let c = *cs[a_i].get(&b_i).unwrap();
+        println!("{}", c);
     }
 }
