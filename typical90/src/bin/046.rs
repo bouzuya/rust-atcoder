@@ -16,13 +16,14 @@ fn main() {
         c: [usize; n],
     };
     let c_a = f(&a);
+    let c_b = f(&b);
     let c_c = f(&c);
     let mut sum = 0_usize;
-    for b_i in b.iter() {
-        for a in 0..46 {
+    for a in 0..46 {
+        for b in 0..46 {
             for c in 0..46 {
-                if (a + b_i % 46 + c) % 46 == 0 {
-                    sum += c_a[a] * c_c[c];
+                if (a + b + c) % 46 == 0 {
+                    sum += c_a[a] * c_b[b] * c_c[c];
                 }
             }
         }
