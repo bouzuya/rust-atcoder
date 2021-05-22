@@ -3,18 +3,14 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        a: [i64; n],
+        a: [usize; n],
     };
-    let mut i = 1_i64;
+    let mut i = 1;
     for &a_i in a.iter() {
-        if a_i == i {
+        if i == a_i {
             i += 1;
         }
     }
-    if i == 1 {
-        println!("{}", -1);
-    } else {
-        let ans = n as i64 - (i - 1);
-        println!("{}", ans);
-    }
+    let ans = if i == 1 { -1 } else { (n + 1 - i) as i64 };
+    println!("{}", ans);
 }

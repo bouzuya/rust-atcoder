@@ -1,5 +1,4 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
@@ -7,8 +6,10 @@ fn main() {
         s: Chars,
         t: Chars,
     };
-    for (s_i, t_i) in s.iter().zip(t.iter()) {
-        print!("{}{}", s_i, t_i);
-    }
-    println!();
+    let ans = s
+        .iter()
+        .zip(t.iter())
+        .flat_map(|(s_i, t_i)| vec![s_i, t_i])
+        .collect::<String>();
+    println!("{}", ans);
 }

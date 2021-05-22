@@ -6,9 +6,9 @@ fn main() {
         b: usize,
     };
     for x in 1..=3 {
-        if x == a || x == b {
-            continue;
+        if x != a && x != b {
+            println!("{}", x);
+            return;
         }
-        println!("{}", x);
     }
 }
