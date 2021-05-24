@@ -2,17 +2,18 @@ use proconio::input;
 
 fn main() {
     input! {
-        k: i64,
+        k: usize,
     };
-    let mut found = None;
-    let mut x = 7;
-    for i in 1..=k {
+    let mut x = 7_usize;
+    for i in 0..=1_000_000 {
         if x % k == 0 {
-            found = Some(i);
-            break;
+            println!("{}", i + 1);
+            return;
         }
-        x = (x * 10 + 7) % k;
+        x *= 10;
+        x %= k;
+        x += 7;
+        x %= k;
     }
-    let ans = found.unwrap_or(-1);
-    println!("{}", ans);
+    println!("-1");
 }

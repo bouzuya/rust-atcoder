@@ -6,9 +6,12 @@ fn main() {
         d: i64,
         xy: [(i64, i64); n],
     };
-    let ans = xy
-        .iter()
-        .filter(|&&(x_i, y_i)| x_i * x_i + y_i * y_i <= d * d)
-        .count();
+    let mut count = 0;
+    for (x_i, y_i) in xy {
+        if x_i * x_i + y_i * y_i <= d * d {
+            count += 1;
+        }
+    }
+    let ans = count;
     println!("{}", ans);
 }
