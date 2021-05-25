@@ -1,19 +1,18 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        s: Chars,
+        s: Chars
     };
-    let c = s.iter().filter(|&&c| c == 'R').count();
-    let ans = if c == 2 {
-        if s[0] == s[1] || s[1] == s[2] {
-            c
+    let ans = s.iter().filter(|&&c| c == 'R').count();
+    let ans = if ans != 2 {
+        ans
+    } else {
+        if s[1] == 'R' {
+            2
         } else {
             1
         }
-    } else {
-        c
     };
     println!("{}", ans);
 }

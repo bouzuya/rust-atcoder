@@ -1,5 +1,6 @@
-use proconio::input;
-use proconio::marker::Usize1;
+// <https://drken1215.hatenablog.com/entry/2020/08/17/182700>
+use proconio::{input, marker::Usize1};
+use std::iter;
 
 macro_rules! chmax {
     ($max_v: expr, $v: expr) => {
@@ -19,47 +20,54 @@ fn main() {
         p: [Usize1; n],
         c: [i64; n],
     };
-
-    let mut vs = vec![];
-    let mut b = vec![false; n];
-    for i in 0..n {
-        if !b[i] {
+    let cycles = {
+        let mut vv = vec![];
+        let mut b = vec![false; n];
+        for i in 0..n {
+            if b[i] {
+                continue;
+            }
             let mut v = vec![];
-            let mut c = i;
-            while !b[c] {
-                b[c] = true;
-                v.push(c);
-                c = p[c];
+            let mut j = i;
+            while !b[j] {
+                b[j] = true;
+                v.push(c[j]);
+                j = p[j];
             }
-            vs.push(v);
+            vv.push(v);
         }
-    }
+        vv
+    };
 
-    let mut ans = c[vs[0][0]];
-    for v in vs.iter() {
-        let sum_v = v.iter().map(|&v_i| c[v_i]).sum::<i64>();
-        let n_v = v.len();
-        let mut a = c[v[0]];
-        for i in 0..n_v {
-            let mut s = 0_i64;
-            for j in i..std::cmp::min(2 * n_v, i + k) {
-                s += c[v[j % n_v]];
-                chmax!(a, s);
+    let mut ans = -1_000_000_000;
+    for c in cycles {
+        let s = iter::once(0)
+            .chain(c.iter().chain(c.iter()).scan(0, |acc, x| {
+                *acc += x;
+                Some(*acc)
+            }))
+            .collect::<Vec<i64>>();
+        let mut r = vec![-1_000_000_000; c.len()];
+        for i in 0..c.len() {
+            for j in 0..c.len() {
+                chmax!(r[j], s[i + j] - s[i]);
             }
         }
-        if k > n_v {
-            let x = k / n_v;
-            let k = k % n_v;
-            for i in 0..n_v {
-                let mut s = (x as i64 - 1) * sum_v;
-                chmax!(a, s);
-                for j in i..i + n_v + k {
-                    s += c[v[j % n_v]];
-                    chmax!(a, s);
-                }
+
+        for l in 0..c.len() {
+            if l > k {
+                continue;
+            }
+            let q = (k - l) / c.len();
+            if q == 0 && l == 0 {
+                continue;
+            }
+            if s[c.len()] > 0 {
+                chmax!(ans, s[c.len()] * q as i64 + r[l]);
+            } else if l > 0 {
+                chmax!(ans, r[l]);
             }
         }
-        chmax!(ans, a);
     }
     println!("{}", ans);
 }
