@@ -4,11 +4,14 @@ fn main() {
     input! {
         l: usize,
     };
-    let mut x = 1;
-    for i in 1..=11 {
-        x *= l - i;
-        x /= i;
-    }
-    let ans = x;
+    let c = |n: usize, k: usize| -> usize {
+        let mut x = 1_usize;
+        for i in 0..k {
+            x *= n - i;
+            x /= i + 1;
+        }
+        x
+    };
+    let ans = c(l - 12 + 11, 11);
     println!("{}", ans);
 }

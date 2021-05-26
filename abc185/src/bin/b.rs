@@ -1,27 +1,26 @@
 use proconio::input;
-use std::cmp::min;
+use std::cmp;
 
 fn main() {
     input! {
-        n: i64,
+        n: usize,
         m: usize,
-        t: i64,
-        ab: [(i64, i64); m]
+        t: usize,
+        ab: [(usize, usize); m],
     };
-    let max_n = n;
-    let mut c = n;
-    let mut p = 0;
+    let mut c_n = n;
+    let mut c_t = 0;
     for (a_i, b_i) in ab {
-        c -= a_i - p;
-        if c <= 0 {
+        let d = a_i - c_t;
+        if d >= c_n {
             println!("No");
             return;
         }
-        c = min(max_n, c + b_i - a_i);
-        p = b_i;
+        c_n -= d;
+        c_n = cmp::min(n, c_n + b_i - a_i);
+        c_t = b_i;
     }
-    c -= t - p;
-    if c <= 0 {
+    if t - c_t >= c_n {
         println!("No");
         return;
     }
