@@ -1,24 +1,18 @@
 use proconio::input;
-use std::cmp::max;
+use std::cmp;
 
 fn main() {
     input! {
         n: usize,
-         a: [usize; n],
+        a: [usize; n],
     };
-    let mut max_x = 0;
-    for &x in a.iter() {
-        let mut max_count = 0;
-        let mut count = 0;
-        for &a_i in a.iter() {
-            if a_i >= x {
-                count += 1;
-                max_count = max(max_count, count);
-            } else {
-                count = 0;
-            }
+    let mut ans = 0;
+    for l in 0..n {
+        let mut max = a[l];
+        for r in l..n {
+            max = cmp::min(max, a[r]);
+            ans = cmp::max(ans, max * (r - l + 1));
         }
-        max_x = max(max_x, max_count * x);
     }
-    println!("{}", max_x);
+    println!("{}", ans);
 }
