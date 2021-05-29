@@ -4,19 +4,17 @@ fn main() {
     input! {
         a: [[i64; 4]; 4],
     };
+    let mut gameover = true;
     for i in 0..4 {
-        for j in 0..4 {
-            let dir = vec![(-1, 0), (0, -1), (0, 1), (1, 0)];
-            for (dy, dx) in dir {
-                let (ny, nx) = (i as i64 + dy, j as i64 + dx);
-                if (0..4 as i64).contains(&ny) && (0..4 as i64).contains(&nx) {
-                    if a[i][j] == a[ny as usize][nx as usize] {
-                        println!("CONTINUE");
-                        return;
-                    }
-                }
+        for j in 0..4 - 1 {
+            if a[i][j] == a[i][j + 1] {
+                gameover = false;
+            }
+            if a[j][i] == a[j + 1][i] {
+                gameover = false;
             }
         }
     }
-    println!("GAMEOVER");
+    let ans = gameover;
+    println!("{}", if ans { "GAMEOVER" } else { "CONTINUE" });
 }
