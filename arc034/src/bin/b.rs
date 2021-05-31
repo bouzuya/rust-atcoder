@@ -1,34 +1,26 @@
 use proconio::input;
 
-fn f(x: i64) -> i64 {
-    let mut res = 0;
-    let mut x = x;
-    while x > 0 {
-        res += x % 10;
-        x /= 10;
-    }
-    res
-}
-
-#[test]
-fn name() {
-    assert_eq!(1, f(1));
-}
-
 fn main() {
     input! {
-        n: i64,
+        n: usize,
+    };
+    let f = |x: usize| -> usize {
+        x.to_string()
+            .chars()
+            .fold(0_usize, |acc, c| acc + c.to_digit(10).unwrap() as usize)
     };
     let mut ans = vec![];
-    let x_start = std::cmp::max(n - 153, 0);
-    for x in x_start..=n {
-        if x + f(x) == n {
+    let fxs = (1..=9 * 18).filter(|&fx| fx < n).collect::<Vec<usize>>();
+    for fx in fxs {
+        let x = n - fx;
+        if f(x) == fx {
             ans.push(x);
         }
     }
 
+    ans.sort();
     println!("{}", ans.len());
-    for &ans_i in ans.iter() {
-        println!("{}", ans_i);
+    for a in ans {
+        println!("{}", a);
     }
 }
