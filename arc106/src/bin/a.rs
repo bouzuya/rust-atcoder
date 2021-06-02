@@ -4,27 +4,35 @@ fn main() {
     input! {
         n: usize,
     };
-    let mut a = 1;
-    let mut x = 3_usize;
-    loop {
-        let mut b = 1;
-        let mut y = 5_usize;
-        loop {
-            if x + y == n {
-                println!("{} {}", a, b);
-                return;
+    for a in 1.. {
+        match 3_usize.checked_pow(a) {
+            None => break,
+            Some(p3a) => {
+                if p3a >= n {
+                    break;
+                }
+                for b in 1.. {
+                    match 5_usize.checked_pow(b) {
+                        None => break,
+                        Some(p5b) => {
+                            if p5b >= n {
+                                break;
+                            }
+                            match p3a.checked_add(p5b) {
+                                None => break,
+                                Some(x) => {
+                                    if x == n {
+                                        println!("{} {}", a, b);
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            if y.checked_mul(5).is_none() || x + y * 5 > n {
-                break;
-            }
-            b += 1;
-            y *= 5;
         }
-        if x.checked_mul(3).is_none() || x * 3 > n {
-            break;
-        }
-        a += 1;
-        x *= 3;
     }
+
     println!("-1");
 }
