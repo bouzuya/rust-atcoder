@@ -1,23 +1,21 @@
-use proconio::input;
-use std::cmp::min;
+use std::cmp;
 
-fn f(n: i64, k: i64) -> i64 {
-    min(k - 1, 2 * n + 1 - k)
-}
+use proconio::input;
 
 fn main() {
     input! {
-        n: i64,
+        n: usize,
         k: i64,
     };
-    let mut count = 0_i64;
-    for x in 2_i64..=2 * n {
-        let y = x - k;
-        if y < 2 || 2 * n < y {
-            continue;
-        }
-        count += f(n, x) * f(n, x - k);
+    // (a + b) - (c + d) = k
+    let k = if k < 0 { -k } else { k } as usize;
+    let mut x = vec![0; 2 * n + 1];
+    for v in 2..=2 * n {
+        x[v] = cmp::min(v - 1, 2 * n + 1 - v);
     }
-    let ans = count;
+    let mut ans = 0_usize;
+    for v in 0..=2 * n - k {
+        ans += x[v] * x[v + k];
+    }
     println!("{}", ans);
 }

@@ -3,14 +3,12 @@ use proconio::input;
 
 fn main() {
     input! {
-        a: i64,
-        b: i64,
-        c: i64,
+        a: usize,
+        b: usize,
+        c: usize,
     };
-    let ans = ModInt::new(a) * ModInt::new(a + 1) / 2 * ModInt::new(b) * ModInt::new(b + 1) / 2
-        * ModInt::new(c)
-        * ModInt::new(c + 1)
-        / 2;
+    let f = |x: usize| -> ModInt { ModInt::new(x) * (x + 1) / 2 };
+    let ans = f(a) * f(b) * f(c);
     println!("{}", ans);
 }
 
