@@ -1,16 +1,15 @@
 use proconio::input;
-use std::cmp::max;
 
 fn main() {
     input! {
-        h_1: i64,
-        m_1: i64,
-        h_2: i64,
-        m_2: i64,
-        k: i64,
+        h1: usize,
+        m1: usize,
+        h2: usize,
+        m2: usize,
+        k: usize,
     };
-    let m_1 = h_1 * 60 + m_1;
-    let m_2 = h_2 * 60 + m_2;
-    let ans = max(0, m_2 - m_1 - k);
+    let t1 = h1 * 60 + m1;
+    let t2 = h2 * 60 + m2;
+    let ans = (t2 - t1).saturating_sub(k);
     println!("{}", ans);
 }
