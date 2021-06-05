@@ -8,12 +8,8 @@ fn main() {
         w: i64,
         t: i64,
     };
-    if v <= w {
-        println!("NO");
-        return;
-    }
-    let d = (a - b).abs();
-    let v = v - w;
-    let ans = v * t >= d;
+    let d = (b - a).abs();
+    let dv = v - w;
+    let ans = dv * t >= d;
     println!("{}", if ans { "YES" } else { "NO" });
 }
