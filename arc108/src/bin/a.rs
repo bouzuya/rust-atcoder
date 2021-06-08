@@ -1,6 +1,6 @@
 use proconio::input;
 
-fn divisors(n: i64) -> Vec<i64> {
+fn divisors(n: usize) -> Vec<usize> {
     let mut d = vec![];
     for i in 1.. {
         if i * i > n {
@@ -19,18 +19,15 @@ fn divisors(n: i64) -> Vec<i64> {
 
 fn main() {
     input! {
-        s: i64,
-        p: i64,
+        s: usize,
+        p: usize,
     };
-    // N + M = S
-    // N * M = P
     let ds = divisors(p);
-    for &n in ds.iter() {
-        for &m in ds.iter() {
-            if m + n == s && m * n == p {
-                println!("Yes");
-                return;
-            }
+    for n in ds {
+        let m = p / n;
+        if n + m == s && n * m == p {
+            println!("Yes");
+            return;
         }
     }
     println!("No");

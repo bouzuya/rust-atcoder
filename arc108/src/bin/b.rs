@@ -1,21 +1,30 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        _: usize,
+        _n: usize,
         s: Chars,
     };
     let mut stack = vec![];
     for c in s {
-        stack.push(c);
-        let l = stack.len();
-        if l >= 3 && stack[l - 3] == 'f' && stack[l - 2] == 'o' && stack[l - 1] == 'x' {
-            stack.pop(); // x
-            stack.pop(); // o
-            stack.pop(); // f
+        if c == 'x' && stack.len() >= 2 {
+            let c1 = stack.pop().unwrap();
+            if c1 == 'o' {
+                let c2 = stack.pop().unwrap();
+                if c2 != 'f' {
+                    stack.push(c2);
+                    stack.push(c1);
+                    stack.push(c);
+                }
+            } else {
+                stack.push(c1);
+                stack.push(c);
+            }
+        } else {
+            stack.push(c);
         }
     }
+
     let ans = stack.len();
     println!("{}", ans);
 }
