@@ -1,32 +1,20 @@
-use proconio::input;
+use proconio::{input, marker::Usize1};
+use std::collections::VecDeque;
 
 fn main() {
     input! {
         n: usize,
-        b: [usize; n],
+        b: [Usize1; n],
     };
-    let mut ans = std::collections::VecDeque::new();
-    let mut bd = b.into_iter().collect::<std::collections::VecDeque<_>>();
+    let mut res = VecDeque::new();
+    let mut b = b.into_iter().collect::<VecDeque<_>>();
     for _ in 0..n {
-        let mut found = None;
-        for (j, &b_i) in bd.iter().enumerate().rev() {
-            if j + 1 == b_i {
-                found = Some(j);
-                ans.push_front(b_i);
-                break;
-            }
-        }
-        match found {
-            Some(j) => {
-                bd.remove(j);
-            }
-            None => {
-                println!("-1");
-                return;
-            }
+        match b.iter().enumerate().rposition(|(j, &b_j)| j == b_j) {
+            Some(j) => res.push_front(b.remove(j).unwrap()),
+            None => return println!("-1"),
         }
     }
-    for &a_i in ans.iter() {
-        println!("{}", a_i);
+    for r in res {
+        println!("{}", r + 1);
     }
 }
