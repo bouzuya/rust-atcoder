@@ -6,6 +6,12 @@ fn main() {
         r: usize,
         d: usize,
     };
-    let ans = (l..=r).filter(|&x| x % d == 0).count();
+    let mut count = 0;
+    for x in l..=r {
+        if x % d == 0 {
+            count += 1;
+        }
+    }
+    let ans = count;
     println!("{}", ans);
 }
