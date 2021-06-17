@@ -1,13 +1,15 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        mut s: Chars,
+        s: Chars,
     };
-    if s.len() == 3 {
-        s.reverse();
-    }
-    let ans = s.iter().collect::<String>();
+    let ans = if s.len() == 2 {
+        s.into_iter().collect::<String>()
+    } else if s.len() == 3 {
+        s.into_iter().rev().collect::<String>()
+    } else {
+        unreachable!()
+    };
     println!("{}", ans);
 }
