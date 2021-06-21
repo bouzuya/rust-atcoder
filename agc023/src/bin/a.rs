@@ -1,25 +1,30 @@
+use std::collections::BTreeMap;
+
 use proconio::input;
+
+fn cumsum(a: &[i64]) -> Vec<i64> {
+    std::iter::once(0)
+        .chain(a.iter().scan(0, |acc, &i| {
+            *acc += i;
+            Some(*acc)
+        }))
+        .collect()
+}
 
 fn main() {
     input! {
         n: usize,
         a: [i64; n],
     };
-    let s = std::iter::once(0)
-        .chain(a.iter().scan(0, |acc, &a_i| {
-            *acc += a_i;
-            Some(*acc)
-        }))
-        .collect::<Vec<i64>>();
-    let mut m = std::collections::BTreeMap::new();
+    let s = cumsum(&a);
+    let mut map = BTreeMap::new();
     for &s_i in s.iter() {
-        let entry = m.entry(s_i).or_insert(0);
-        *entry += 1;
+        *map.entry(s_i).or_insert(0) += 1;
     }
-    let ans = m
-        .values()
-        .filter(|&&v| v >= 2)
-        .map(|&v| v * (v - 1) / 2)
-        .sum::<i64>();
+    let mut count = 0_usize;
+    for (_, v) in map {
+        count += v * (v - 1) / 2;
+    }
+    let ans = count;
     println!("{}", ans);
 }
