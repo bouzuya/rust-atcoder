@@ -1,11 +1,27 @@
 use proconio::input;
-use proconio::marker::Usize1;
+use std::collections::BTreeSet;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        mut a: [i64; n],
     };
-    let ans = n - a.len();
+    let mut set1 = BTreeSet::new();
+    for (i, &a_i) in a.iter().enumerate() {
+        if i % 2 == 0 {
+            set1.insert(a_i);
+        }
+    }
+
+    a.sort();
+
+    let mut set2 = BTreeSet::new();
+    for (i, &a_i) in a.iter().enumerate() {
+        if i % 2 != 0 {
+            set2.insert(a_i);
+        }
+    }
+
+    let ans = set1.iter().filter(|a_i| set2.contains(&a_i)).count();
     println!("{}", ans);
 }
