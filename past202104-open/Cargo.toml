@@ -7,6 +7,7 @@ edition = "2018"
 # dependencies added to new project
 [dependencies]
 num = "=0.2.1"
+ordered-float = "2.5.1"
 proconio = { version = "=0.3.6", features = ["derive"] }
 superslice = "=1.0.0"
 
