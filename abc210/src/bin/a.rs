@@ -7,14 +7,6 @@ fn main() {
         x: usize,
         y: usize,
     };
-    let mut sum = 0_usize;
-    for i in 0..n {
-        if i < a {
-            sum += x;
-        } else {
-            sum += y;
-        }
-    }
-    let ans = sum;
+    let ans = if n <= a { n * x } else { a * x + (n - a) * y };
     println!("{}", ans);
 }
