@@ -1,28 +1,16 @@
 use proconio::{input, marker::Chars};
 
-fn dfs(n: usize, k: usize, s: &mut Vec<Vec<char>>, res: &mut usize) {
-    let mut count = 0;
-    for i in 0..n {
-        for j in 0..n {
-            // if n < 5 {
-            //     print!("{}", s[i][j]);
-            // }
-            if s[i][j] == '@' {
-                count += 1;
-            }
-        }
-    }
-    if count == k {
+fn dfs(n: usize, k: usize, s: &mut Vec<Vec<char>>, res: &mut usize, c: usize) {
+    if k == c {
         *res += 1;
         return;
     }
-
     for i in 0..n {
         for j in 0..n {
             if s[i][j] != '.' {
                 continue;
             }
-            if count != 0 {
+            if c > 0 {
                 let mut ok = false;
                 let dir = vec![(-1, 0), (0, -1), (0, 1), (1, 0)];
                 for (dr, dc) in dir {
@@ -40,9 +28,9 @@ fn dfs(n: usize, k: usize, s: &mut Vec<Vec<char>>, res: &mut usize) {
                 }
             }
             s[i][j] = '@';
-            dfs(n, k, s, res);
+            dfs(n, k, s, res, c + 1);
             s[i][j] = '#';
-            dfs(n, k, s, res);
+            dfs(n, k, s, res, c);
             s[i][j] = '.';
             return;
         }
@@ -56,7 +44,7 @@ fn main() {
         mut s: [Chars; n],
     };
     let mut res = 0;
-    dfs(n, k, &mut s, &mut res);
+    dfs(n, k, &mut s, &mut res, 0);
     let ans = res;
     println!("{}", ans);
 }
