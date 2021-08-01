@@ -1,46 +1,41 @@
 use modint::ModInt998244353 as ModInt;
 use proconio::{input, marker::Usize1};
 
+fn adjacency_list(n: usize, uv: &[(usize, usize)]) -> Vec<Vec<usize>> {
+    let mut e = vec![vec![]; n];
+    for &(u, v) in uv.iter() {
+        e[u].push(v);
+        e[v].push(u);
+    }
+    e
+}
+
 fn main() {
     input! {
         n: usize,
         m: usize,
         k: usize,
-        uv: [(Usize1, Usize1); m],
+        uv: [(Usize1, Usize1); m]
     };
-
-    let mut d = vec![vec![true; n]; n];
-    for (u_i, v_i) in uv {
-        d[u_i][v_i] = false;
-        d[v_i][u_i] = false;
-    }
-    for i in 0..n {
-        d[i][i] = false;
-    }
-    let mut e = vec![vec![]; n];
+    let mut e = adjacency_list(n, &uv);
     for u in 0..n {
+        e[u].push(u);
+    }
+
+    // dp[i][j] : i 日目に j に居る場合の数
+    let mut dp = vec![vec![ModInt::new(0); n]; k + 1];
+    dp[0][0] = ModInt::new(1);
+    for i in 0..k {
+        let sum = dp[i].iter().sum();
         for v in 0..n {
-            if u == v {
-                continue;
-            }
-            if d[u][v] {
-                e[u].push(v);
+            dp[i + 1][v] = sum;
+            for u in e[v].iter().copied() {
+                dp[i + 1][v] = dp[i + 1][v] - dp[i][u];
             }
         }
     }
 
-    let mut dp = vec![ModInt::new(0); n];
-    dp[0] = ModInt::new(1);
-    for _ in 0..k {
-        let mut next = vec![ModInt::new(0); n];
-        for u in 0..n {
-            for v in e[u].iter().copied() {
-                next[v] = next[v] + dp[u];
-            }
-        }
-        dp = next;
-    }
-    let ans = dp[0];
+    let ans = dp[k][0];
     println!("{}", ans);
 }
 

@@ -1,18 +1,20 @@
-use std::collections::BTreeSet;
-
-use proconio::{input, marker::Chars};
+use proconio::{input, marker::Bytes};
 
 fn main() {
     input! {
-        x: Chars,
+        x: Bytes,
     };
-    if x.iter().copied().collect::<BTreeSet<char>>().len() == 1 {
+    let x = x
+        .into_iter()
+        .map(|c| (c - b'0') as usize)
+        .collect::<Vec<usize>>();
+    let x_0 = x[0];
+    if x.iter().copied().all(|x_i| x_i == x_0) {
         println!("Weak");
         return;
     }
-    let b = (x[0] as u8 - b'0') as usize;
-    for i in 0..4 {
-        if (b + i) % 10 != ((x[i] as u8 - b'0') as usize) {
+    for (i, x_i) in x.iter().copied().enumerate() {
+        if (x_0 + i) % 10 != x_i {
             println!("Strong");
             return;
         }

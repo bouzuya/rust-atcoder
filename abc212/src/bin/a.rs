@@ -5,12 +5,11 @@ fn main() {
         a: usize,
         b: usize,
     };
-    let ans = if a > 0 && b == 0 {
-        "Gold"
-    } else if a == 0 && b > 0 {
-        "Silver"
-    } else {
-        "Alloy"
+    let ans = match (a > 0, b > 0) {
+        (false, false) => unreachable!(),
+        (false, true) => "Silver",
+        (true, false) => "Gold",
+        (true, true) => "Alloy",
     };
     println!("{}", ans);
 }
