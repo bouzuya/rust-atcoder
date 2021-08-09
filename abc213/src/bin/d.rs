@@ -9,16 +9,14 @@ fn adjacency_list(n: usize, uv: &[(usize, usize)]) -> Vec<Vec<usize>> {
     e
 }
 
-fn dfs(n: usize, e: &[Vec<usize>], u: usize, p: usize) {
-    println!("{}", u + 1);
+fn dfs(res: &mut Vec<usize>, n: usize, e: &[Vec<usize>], u: usize, p: usize) {
+    res.push(u);
     for v in e[u].iter().copied() {
         if v == p {
             continue;
         }
-        dfs(n, e, v, u);
-    }
-    if p != n {
-        println!("{}", p + 1);
+        dfs(res, n, e, v, u);
+        res.push(u);
     }
 }
 
@@ -32,5 +30,9 @@ fn main() {
     for u in 0..n {
         e[u].sort();
     }
-    dfs(n, &e, 0, n);
+    let mut ans = vec![];
+    dfs(&mut ans, n, &e, 0, n);
+    for u in ans {
+        println!("{}", u + 1);
+    }
 }
