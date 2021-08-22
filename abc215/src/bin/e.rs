@@ -3,7 +3,7 @@ use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        n: usize,
+        _: usize,
         s: Chars,
     };
     let s = s
@@ -11,37 +11,29 @@ fn main() {
         .copied()
         .map(|c| (c as u8 - b'A') as usize)
         .collect::<Vec<usize>>();
-    let mut dp = vec![vec![vec![ModInt::new(0); 10]; 1 << 10]; n + 1];
-    for i in 1..=n {
-        let s_i = s[i - 1];
+    let mut dp = vec![vec![ModInt::new(0); 10]; 1 << 10];
+    for s_i in s.iter().copied() {
+        let mut next = vec![vec![ModInt::new(0); 10]; 1 << 10];
         for j in 0..1 << 10 {
             for k in 0..10 {
-                dp[i][j][k] = dp[i - 1][j][k];
+                if (j & (1 << k)) == 0 {
+                    continue;
+                }
+                next[j][k] += dp[j][k];
                 if k == s_i {
-                    dp[i][j][k] = dp[i][j][k] + dp[i - 1][j][k];
+                    next[j][k] += dp[j][k];
+                } else if j & (1 << s_i) == 0 {
+                    next[j | (1 << s_i)][s_i] += dp[j][k];
                 }
             }
         }
-        for j in 0..1 << 10 {
-            if (j & (1 << s_i)) != 0 {
-                continue;
-            }
-            for k in 0..10 {
-                let nj = j | (1 << s_i);
-                let nk = s_i;
-                dp[i][nj][nk] = dp[i][nj][nk] + dp[i - 1][j][k];
-            }
-        }
-        let nj = 1 << s_i;
-        dp[i][nj][s_i] = dp[i][nj][s_i] + ModInt::new(1);
+        next[1 << s_i][s_i] += ModInt::new(1);
+        dp = next;
     }
-    let mut sum = ModInt::new(0);
-    for j in 0..1 << 10 {
-        for k in 0..10 {
-            sum += dp[n][j][k];
-        }
-    }
-    let ans = sum;
+    let ans = dp
+        .into_iter()
+        .map(|dp_j| dp_j.into_iter().sum::<ModInt>())
+        .sum::<ModInt>();
     println!("{}", ans);
 }
 
