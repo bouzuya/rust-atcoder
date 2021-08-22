@@ -8,18 +8,17 @@ fn main() {
         s: Chars,
         k: usize,
     };
-    let n = s.len();
-    let mut is = (0..n).collect::<Vec<usize>>();
-    let mut set = BTreeSet::new();
-    loop {
-        let mut t = vec![];
-        for i in is.clone() {
-            t.push(s[i]);
+    let all_words = {
+        let mut set = BTreeSet::new();
+        let mut is = (0..s.len()).collect::<Vec<usize>>();
+        loop {
+            let t = is.iter().copied().map(|i| s[i]).collect::<String>();
+            set.insert(t);
+            if !is.next_permutation() {
+                break;
+            }
         }
-        set.insert(t.iter().collect::<String>());
-        if !is.next_permutation() {
-            break;
-        }
-    }
-    println!("{}", set.iter().nth(k - 1).unwrap());
+        set
+    };
+    println!("{}", all_words.iter().nth(k - 1).unwrap());
 }
