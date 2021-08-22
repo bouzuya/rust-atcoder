@@ -1,24 +1,14 @@
-use std::collections::BTreeSet;
-
 use proconio::{input, marker::Chars};
 use superslice::Ext;
 
 fn main() {
     input! {
-        s: Chars,
+        mut s: Chars,
         k: usize,
     };
-    let all_words = {
-        let mut set = BTreeSet::new();
-        let mut is = (0..s.len()).collect::<Vec<usize>>();
-        loop {
-            let t = is.iter().copied().map(|i| s[i]).collect::<String>();
-            set.insert(t);
-            if !is.next_permutation() {
-                break;
-            }
-        }
-        set
-    };
-    println!("{}", all_words.iter().nth(k - 1).unwrap());
+    s.sort();
+    for _ in 0..k - 1 {
+        s.next_permutation();
+    }
+    println!("{}", s.into_iter().collect::<String>());
 }
