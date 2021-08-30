@@ -1,10 +1,14 @@
-use proconio::{input, marker::Usize1};
+use std::cmp;
+
+use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        a: usize,
+        b: usize,
+        c: usize,
     };
-    let ans = n - a.len();
+    let a2 = cmp::min(a, b * c);
+    let ans = a2 as f64 / b as f64;
     println!("{}", ans);
 }
