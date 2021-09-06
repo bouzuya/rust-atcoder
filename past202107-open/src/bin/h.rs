@@ -23,22 +23,23 @@ fn main() {
 
     let s = a.iter().sum::<usize>();
     let inf = 1_000_000_000_000_f64;
-    let mut dp = vec![vec![inf; 100 + 1]; s + 1];
-    dp[0][0] = 0_f64;
+    let mut curr = vec![vec![inf; s + 1]; s + 1];
+    curr[0][0] = 0_f64;
     for _ in 1..n {
-        let mut next = vec![vec![inf; 100 + 1]; s + 1];
+        let mut next = vec![vec![inf; s + 1]; s + 1];
         for sum in 0..=s {
-            for last in 0..=100 {
-                for j in 0..=100 {
-                    if sum >= last {
-                        chmin!(next[sum][last], dp[sum - last][j] + f(j, last));
-                    }
+            for j_next in 0..=sum {
+                for j_prev in 0..=sum {
+                    chmin!(
+                        next[sum][j_next],
+                        curr[sum - j_next][j_prev] + f(j_prev, j_next)
+                    );
                 }
             }
         }
-        dp = next;
+        curr = next;
     }
 
-    let ans = dp[s][0];
+    let ans = curr[s][0];
     println!("{}", ans);
 }
