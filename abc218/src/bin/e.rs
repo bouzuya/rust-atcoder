@@ -1,6 +1,19 @@
 use dsu::*;
 use proconio::{input, marker::Usize1};
 
+fn kruskal(n: usize, e: &mut Vec<(usize, usize, u64)>) -> u64 {
+    e.sort_by_key(|&(_, _, w)| w);
+    let mut dsu = Dsu::new(n);
+    let mut sum = 0_u64;
+    for (u_i, v_i, w_i) in e.iter().copied() {
+        if !dsu.same(u_i, v_i) {
+            dsu.merge(u_i, v_i);
+            sum += w_i;
+        }
+    }
+    sum
+}
+
 fn main() {
     input! {
         n: usize,
@@ -8,7 +21,7 @@ fn main() {
         abc: [(Usize1, Usize1, i64); m],
     };
 
-    let mut ans = 0_usize;
+    let mut ans = 0_u64;
 
     let mut dsu = Dsu::new(n);
     let mut e = vec![];
@@ -16,7 +29,7 @@ fn main() {
         // 自己ループは取り除く
         if a_i == b_i {
             if c_i > 0 {
-                ans += c_i as usize;
+                ans += c_i as u64;
             }
             continue;
         }
@@ -25,11 +38,11 @@ fn main() {
         if c_i <= 0 {
             dsu.merge(a_i, b_i);
         } else {
-            e.push((a_i, b_i, c_i as usize));
+            e.push((a_i, b_i, c_i as u64));
         }
     }
 
-    let mut sum = 0_usize;
+    let mut sum = 0_u64;
     let mut edge = vec![];
     for (a_i, b_i, c_i) in e {
         let u = dsu.leader(a_i);
@@ -37,21 +50,12 @@ fn main() {
         if u == v {
             ans += c_i;
         } else {
-            edge.push((c_i, u, v));
+            edge.push((u, v, c_i));
             sum += c_i;
         }
     }
 
-    edge.sort();
-
-    let mut dsu2 = Dsu::new(n);
-    let mut min_cost = 0_usize;
-    for (cost, u, v) in edge {
-        if !dsu2.same(u, v) {
-            min_cost += cost;
-            dsu2.merge(u, v);
-        }
-    }
+    let min_cost = kruskal(n, &mut edge);
 
     let ans = ans + sum - min_cost;
     println!("{}", ans);
