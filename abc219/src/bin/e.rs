@@ -25,6 +25,31 @@ fn dfs(route: &mut usize, bits: usize, i: usize, j: usize) {
     }
 }
 
+fn dfs2(ok: &mut bool, used: &mut usize, bits: usize, i: usize, j: usize) {
+    if *ok {
+        return;
+    }
+    if (*used & bit(i, j)) != 0 {
+        return;
+    }
+    *used |= bit(i, j);
+
+    let dir = vec![(-1, 0), (0, -1), (0, 1), (1, 0)];
+    for (dr, dc) in dir {
+        let (nr, nc) = (i as i64 + dr, j as i64 + dc);
+        if !(0..4 as i64).contains(&nr) || !(0..4 as i64).contains(&nc) {
+            *ok = true;
+            return;
+        }
+        let (nr, nc) = (nr as usize, nc as usize);
+        if (bits & bit(nr, nc)) != 0 {
+            continue;
+        }
+
+        dfs2(ok, used, bits, nr, nc);
+    }
+}
+
 fn main() {
     input! {
         a: [[usize; 4]; 4]
@@ -41,7 +66,7 @@ fn main() {
     // println!("{:b}", mask);
 
     let mut count = 0;
-    for bits in 0..1_usize << 16 {
+    'loop_bits: for bits in 0..1_usize << 16 {
         if (bits & mask) != mask {
             continue;
         }
@@ -61,6 +86,19 @@ fn main() {
                 dfs(&mut route, bits, i, j);
                 if route != bits {
                     continue;
+                }
+            }
+        }
+
+        for i in 0 + 1..4 - 1 {
+            for j in 0 + 1..4 - 1 {
+                if (bits & bit(i, j)) == 0 {
+                    let mut ok = false;
+                    let mut route = 0_usize;
+                    dfs2(&mut ok, &mut route, bits, i, j);
+                    if !ok {
+                        continue 'loop_bits;
+                    }
                 }
             }
         }
