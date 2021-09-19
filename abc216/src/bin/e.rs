@@ -1,55 +1,37 @@
 use proconio::input;
 
+fn arithmetic_series(a_1: i64, a_n: i64, n: i64) -> i64 {
+    (a_1 + a_n) * n / 2
+}
+
 fn main() {
     input! {
         n: usize,
-        k: usize,
-        mut a: [usize; n],
+        k: i64,
+        a: [i64; n],
     };
-    if n == 1 {
-        println!("{}", a[0] * k - k * (k - 1) / 2);
-        return;
-    }
+    let f = |x: i64| -> i64 { a.iter().copied().map(|a_i| (a_i - x).max(0)).sum::<i64>() };
 
-    assert!(n > 1);
-
-    a.sort();
-    a.reverse();
-
-    let mut sum = a[0];
-    let mut count = 1_usize;
-    for i in 1..n {
-        let a_p = a[i - 1];
-        let a_i = a[i];
-
-        let d = if a_p == a_i { 0 } else { a_p - 1 - a_i };
-        let new_count = count + i * d;
-        if new_count > k {
-            // TODO
-            break;
+    // f(x) < k を満たす最大の x を求める
+    let mut l = -1_i64;
+    let mut r = 1_000_000_000_000_i64;
+    while l + 1 < r {
+        let m = (l + r) / 2;
+        if f(m) < k {
+            r = m;
         } else {
-            count = new_count;
-            sum += if a_i == a_p {
-                0
-            } else {
-                let k = d;
-                let h = a_p - 1;
-                (k * h - k * (k - 1) / 2) * (i + 1 - 1)
-            };
-        }
-
-        let curr = i + 1;
-        let new_count = count + curr;
-        if new_count > k {
-            count = count + (k - count);
-            sum += a_i * (k - count);
-            break;
-        } else {
-            count = new_count;
-            sum += a_i * curr;
+            l = m;
         }
     }
-
+    let x = r;
+    let mut sum = 0;
+    for a_i in a.iter().copied() {
+        if a_i <= x {
+            continue;
+        }
+        sum += arithmetic_series(x + 1, a_i, a_i - (x + 1) + 1);
+    }
+    sum += x * (k - f(x));
     let ans = sum;
     println!("{}", ans);
 }
