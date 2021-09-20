@@ -22,8 +22,15 @@ test-suite = "{{ manifest_dir }}/testcases/{{ bin_alias }}.yml"
 
 [template]
 src = '''
+use proconio::input;
+
 fn main() {
+    input! {
+        n: usize,
+    }
     todo!();
+    let ans = n;
+    println!("{}", ans);
 }
 '''
 
@@ -83,20 +90,25 @@ dev-dependencies = '''
 [template.new.copy-files]
 "./template-cargo-lock.toml" = "Cargo.lock"
 
+# [new]
+# kind = "cargo-compete"
+# # Platform
+# #
+# # - atcoder
+# # - codeforces
+# # - yukicoder
+# platform = "atcoder"
+# # Path (Liquid template)
+# #
+# # Variables:
+# #
+# # - `contest`:      Contest ID. **May be nil**
+# # - `package_name`: Package name
+# path = "./{{ contest }}"
+
 [new]
-kind = "cargo-compete"
-# Platform
-#
-# - atcoder
-# - codeforces
-# - yukicoder
-platform = "atcoder"
-# Path (Liquid template)
-#
-# Variables:
-#
-# - `contest`:      Contest ID. **May be nil**
-# - `package_name`: Package name
+kind = "oj-api"
+url = "https://kenkoooo.com/atcoder/#/contest/show/{{ id }}"
 path = "./{{ contest }}"
 
 #[new]
