@@ -1,10 +1,23 @@
-use proconio::{input, marker::Usize1};
+use std::{cmp, collections::HashSet};
+
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        m: usize,
+        a: [usize; n],
     };
-    let ans = n - a.len();
+    if m >= n {
+        println!("{}", n);
+        return;
+    }
+
+    let mut set = HashSet::new();
+    for a_i in a {
+        set.insert(a_i);
+    }
+
+    let ans = cmp::min(n, set.len() + m);
     println!("{}", ans);
 }
