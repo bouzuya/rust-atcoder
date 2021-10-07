@@ -1,10 +1,14 @@
-use proconio::{input, marker::Usize1};
+use std::cmp::Reverse;
+
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        mut xc: [(usize, char); n],
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    xc.sort_by_key(|&(u, c)| (Reverse(c), u));
+    for (x_i, _) in xc {
+        println!("{}", x_i);
+    }
 }
