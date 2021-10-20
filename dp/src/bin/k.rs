@@ -1,12 +1,19 @@
-// TODO:
 use proconio::input;
-use proconio::marker::Usize1;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        k: usize,
+        a: [usize; n],
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    let mut dp = vec![false; k + 1];
+    dp[0] = false;
+    for i in 1..=k {
+        dp[i] = a
+            .iter()
+            .copied()
+            .any(|a_j| if i < a_j { false } else { !dp[i - a_j] });
+    }
+    let ans = dp[k];
+    println!("{}", if ans { "First" } else { "Second" });
 }
