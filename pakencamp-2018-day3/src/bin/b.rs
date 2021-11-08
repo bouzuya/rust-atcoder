@@ -1,10 +1,18 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
+use superslice::Ext;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        a: [usize; n],
     };
-    let ans = n - a.len();
+    let s = a
+        .iter()
+        .scan(0, |acc, &i| {
+            *acc += i;
+            Some(*acc)
+        })
+        .collect::<Vec<usize>>();
+    let ans = s.lower_bound(&(2018 + 1));
     println!("{}", ans);
 }
