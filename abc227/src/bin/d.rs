@@ -1,47 +1,28 @@
-// WA
+use std::cmp;
+
 use proconio::input;
 
 fn main() {
     input! {
         n: usize,
         k: usize,
-        mut a: [usize; n],
+        a: [usize; n],
     };
-    if n == 1 {
-        println!("{}", a[0]);
-        return;
-    }
-    if n == 2 {
-        if k == 1 {
-            println!("{}", a[0] + a[1]);
+
+    let mut ok = 0;
+    let mut ng = std::usize::MAX;
+    while ng - ok > 1 {
+        let p = (ng + ok) / 2;
+        let sum = a.iter().copied().map(|a_i| cmp::min(a_i, p)).sum::<usize>();
+        if match p.checked_mul(k) {
+            Some(pk) => sum >= pk,
+            None => false,
+        } {
+            ok = p;
         } else {
-            println!("{}", a[0].min(a[1]));
-        }
-        return;
-    }
-
-    a.sort();
-    a.reverse();
-
-    let mut r = k - 1;
-    let mut l = k - 1;
-    let mut count = a[r];
-
-    while r < n - 1 {
-        let mut moved = 0;
-        while l > 0 && a[l] <= count {
-            l -= 1;
-            moved += 1;
-        }
-        r += moved;
-        if moved == 0 {
-            r += k;
-        }
-        if r < n {
-            count += a[r];
+            ng = p;
         }
     }
-
-    let ans = count;
+    let ans = ok;
     println!("{}", ans);
 }
