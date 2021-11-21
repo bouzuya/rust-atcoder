@@ -1,9 +1,9 @@
-use proconio::input;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
         n: usize,
-        k: usize,
+        k: Usize1,
         p: [[usize; 3]; n],
     };
     let mut s = vec![0; n];
@@ -12,18 +12,12 @@ fn main() {
             s[i] += p[i][j];
         }
     }
-
-    let mut count = vec![0; 1200 + 1 + 1];
-    for i in 0..n {
-        count[s[i]] += 1;
-    }
-
-    for i in (1..=900).rev() {
-        count[i - 1] += count[i];
-    }
-
-    for i in 0..n {
-        let ans = count[(s[i] + 300) + 1] < k;
+    let mut t = s.clone();
+    t.sort();
+    t.reverse();
+    let t = t[k];
+    for s_i in s {
+        let ans = s_i + 300 >= t;
         println!("{}", if ans { "Yes" } else { "No" });
     }
 }
