@@ -17,7 +17,7 @@ fn main() {
             sum_v += a * b;
         } else {
             let b = w - sum_w;
-            sum_w += b;
+            // sum_w += b;
             sum_v += a * b;
             break;
         }

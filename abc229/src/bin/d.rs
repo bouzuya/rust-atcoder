@@ -1,11 +1,6 @@
 use proconio::{input, marker::Chars};
 
-fn main() {
-    input! {
-        s: Chars,
-        k: usize,
-    };
-
+fn f(s: &[char], k: usize) -> usize {
     let a = s
         .iter()
         .map(|&s_i| if s_i == '.' { 1 } else { 0 })
@@ -36,6 +31,38 @@ fn main() {
             ng = x;
         }
     }
-    let ans = ok;
+    ok
+}
+
+fn g(s: &[char], k: usize) -> usize {
+    let n = s.len();
+    let a = s
+        .iter()
+        .map(|&s_i| if s_i == '.' { 1 } else { 0 })
+        .collect::<Vec<usize>>();
+    let mut max = 0_usize;
+    let mut sum = 0_usize;
+    let mut r = 0;
+    for l in 0..n {
+        while r < n && sum + a[r] <= k {
+            sum += a[r];
+            r += 1;
+        }
+        max = max.max(r - l);
+        if r == l {
+            r += 1;
+        } else {
+            sum -= a[l];
+        }
+    }
+    max
+}
+
+fn main() {
+    input! {
+        s: Chars,
+        k: usize,
+    };
+    let ans = g(&s, k);
     println!("{}", ans);
 }

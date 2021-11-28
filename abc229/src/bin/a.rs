@@ -1,15 +1,10 @@
-use proconio::{input, marker::Chars};
+use proconio::input;
 
 fn main() {
     input! {
-        s: [Chars; 2],
+        s: [String; 2],
     };
 
-    if (s[0][0] == '#' && s[0][1] == '.' && s[1][0] == '.' && s[1][1] == '#')
-        || (s[0][0] == '.' && s[0][1] == '#' && s[1][0] == '#' && s[1][1] == '.')
-    {
-        println!("No");
-    } else {
-        println!("Yes");
-    }
+    let ans = !((s[0] == "#." && s[1] == ".#") || (s[0] == ".#" && s[1] == "#."));
+    println!("{}", if ans { "Yes" } else { "No" });
 }

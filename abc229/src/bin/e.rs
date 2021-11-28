@@ -1,15 +1,6 @@
 use dsu::*;
 use proconio::{input, marker::Usize1};
 
-fn adjacency_list(n: usize, uv: &[(usize, usize)]) -> Vec<Vec<usize>> {
-    let mut e = vec![vec![]; n];
-    for &(u, v) in uv.iter() {
-        e[u].push(v);
-        e[v].push(u);
-    }
-    e
-}
-
 fn main() {
     input! {
         n: usize,
@@ -17,14 +8,17 @@ fn main() {
         ab: [(Usize1, Usize1); m],
     };
 
-    let e = adjacency_list(n, &ab);
+    let mut e = vec![vec![]; n];
+    for (a, b) in ab {
+        e[a].push(b);
+    }
 
     let mut dsu = Dsu::new(n);
     let mut ans = vec![0; n + 1];
     for u in (1..n).rev() {
         let mut count = 0;
         for v in e[u].iter().copied() {
-            if v >= u && !dsu.same(u, v) {
+            if !dsu.same(u, v) {
                 dsu.merge(u, v);
                 count += 1;
             }
