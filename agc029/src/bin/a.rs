@@ -1,10 +1,23 @@
-use proconio::{input, marker::Usize1};
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        mut s: Chars,
     };
-    let ans = n - a.len();
+    s.reverse();
+
+    let mut ans = 0_usize;
+    let mut count = 0_usize;
+    for s_i in s {
+        match s_i {
+            'B' => {
+                ans += count;
+            }
+            'W' => {
+                count += 1;
+            }
+            _ => unreachable!(),
+        }
+    }
     println!("{}", ans);
 }
