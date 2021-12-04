@@ -4,8 +4,7 @@ fn main() {
     input! {
         s: String,
     };
-    let ans = vec!["oxxoxxoxxo", "xxoxxoxxox", "xoxxoxxoxx"]
-        .iter()
-        .any(|&x| x.contains(&s));
+    let t = "oxx".repeat(5);
+    let ans = t.contains(&s);
     println!("{}", if ans { "Yes" } else { "No" });
 }
