@@ -1,10 +1,13 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        x: usize,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    for k in 1.. {
+        if (k * x) % 360 == 0 {
+            println!("{}", k);
+            return;
+        }
+    }
 }
