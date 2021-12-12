@@ -1,8 +1,22 @@
-// WA
 use fenwicktree::*;
-use std::{cmp::Reverse, collections::BTreeMap};
+use std::{
+    cmp::Reverse,
+    collections::{BTreeMap, BTreeSet},
+};
 
 use proconio::input;
+
+fn compress(a: &[usize]) -> BTreeMap<usize, usize> {
+    a.iter()
+        .copied()
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .enumerate()
+        .fold(BTreeMap::new(), |mut m, (i, k)| {
+            m.insert(k, i);
+            m
+        })
+}
 
 fn main() {
     input! {
@@ -11,28 +25,26 @@ fn main() {
         b: [usize; n],
     };
 
-    let mut map = BTreeMap::new();
-    for b_i in b.iter().copied() {
-        *map.entry(b_i).or_insert(0) += 1_usize;
-    }
-    let mut count = 0;
-    let mut b2 = BTreeMap::new();
-    for (i, (k, v)) in map.iter().enumerate() {
-        count += v.saturating_sub(1);
-        b2.insert(k, i + count);
-    }
-
+    let b2 = compress(&b);
     let mut ab = a
         .into_iter()
         .zip(b.into_iter())
         .collect::<Vec<(usize, usize)>>();
-    ab.sort_by_key(|&(a, b)| (a, Reverse(b)));
+    ab.sort_by_key(|&(a, b)| (Reverse(a), b));
 
-    let mut ans = n;
-    let mut bit = FenwickTree::new(n, 0);
-    for (i, (_, b)) in ab.into_iter().enumerate() {
-        bit.add(b2[&b], 1);
-        ans += i - bit.accum(b2[&b]);
+    let mut ans = 0_usize;
+    let mut bit = FenwickTree::new(n, 0_usize);
+    let mut i = 0_usize;
+    while i < n {
+        let (a, b) = ab[i];
+        let mut j = i + 1;
+        while j < n && ab[j] == (a, b) {
+            j += 1;
+        }
+        let count = j - i;
+        ans += count * (count + bit.accum(b2[&b] + 1));
+        bit.add(b2[&b], count);
+        i = j;
     }
     println!("{}", ans);
 }
