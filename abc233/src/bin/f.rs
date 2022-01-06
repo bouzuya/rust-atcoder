@@ -1,56 +1,97 @@
-// WA
-use std::collections::BTreeSet;
-
 use dsu::*;
 use proconio::{input, marker::Usize1};
+
+fn swap(
+    p: &mut Vec<usize>,
+    edges: &[Vec<(usize, usize)>],
+    ans: &mut Vec<usize>,
+    t: usize,
+    u: usize,
+    parent: usize,
+) -> bool {
+    if p[u] == t {
+        return true;
+    }
+
+    for (v, i) in edges[u].iter().copied() {
+        if v == parent {
+            continue;
+        }
+
+        if swap(p, edges, ans, t, v, u) {
+            ans.push(i);
+            p.swap(u, v);
+            return true;
+        }
+    }
+
+    false
+}
+
+fn dfs(
+    p: &mut Vec<usize>,
+    edges: &[Vec<(usize, usize)>],
+    ans: &mut Vec<usize>,
+    u: usize,
+    parent: usize,
+) -> bool {
+    for (v, _) in edges[u].iter().copied() {
+        if v == parent {
+            continue;
+        }
+
+        if !dfs(p, edges, ans, v, u) {
+            return false;
+        }
+    }
+
+    if !swap(p, edges, ans, u, u, u) {
+        return false;
+    }
+
+    true
+}
 
 fn main() {
     input! {
         n: usize,
-        p: [Usize1; n],
+        mut p: [Usize1; n],
         m: usize,
         ab: [(Usize1, Usize1); m],
     };
 
-    println!("p : {:?}", p);
-    println!("ab: {:?}", ab);
-
+    let mut edges = vec![vec![]; n];
     let mut dsu = Dsu::new(n);
-    for (a, b) in ab {
+    for (i, (a, b)) in ab.into_iter().enumerate() {
+        if dsu.same(a, b) {
+            continue;
+        }
         dsu.merge(a, b);
+
+        edges[a].push((b, i + 1));
+        edges[b].push((a, i + 1));
     }
 
-    for group_index in dsu.groups() {
-        let group_index = group_index.iter().copied().collect::<BTreeSet<usize>>();
-        let group_value = group_index
-            .iter()
-            .copied()
-            .map(|g| p[g])
-            .collect::<BTreeSet<usize>>();
-        println!("gi: {:?}", group_index);
-        println!("gv: {:?}", group_value);
-        if group_value != group_index {
-            println!("-1");
-            return;
-        }
+    let mut ans = vec![];
 
-        if group_index.len() == 1 {
+    // 連結成分を走査
+    for u in 0..n {
+        if dsu.leader(u) != u {
             continue;
         }
 
-        let group_value = group_index
-            .into_iter()
-            .map(|g| p[g])
-            .collect::<Vec<usize>>();
-        println!("{:?}", group_value);
-        let count = inversion_number(&group_value);
-        println!("{}", count);
+        // 連結成分ごとに dfs する
+        // 帰りがけ順 (葉から順) に位置を合わせる
+        if !dfs(&mut p, &edges, &mut ans, u, u) {
+            println!("{}", -1);
+            return;
+        }
     }
 
-    // 5*10^5
-
-    // let ans = n - a.len();
-    // println!("{}", ans);
+    println!("{}", ans.len());
+    for a in ans {
+        println!("{}", a);
+    }
 }
 
 //https://github.com/rust-lang-ja/ac-library-rs
