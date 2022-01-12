@@ -1,10 +1,23 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        m: usize,
+        a: [usize; n],
+        b: [usize; m],
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    let mut ans = a
+        .iter()
+        .copied()
+        .filter(|a_i| b.contains(&a_i))
+        .collect::<Vec<usize>>();
+    ans.sort();
+    println!(
+        "{}",
+        ans.iter()
+            .map(|a_i| a_i.to_string())
+            .collect::<Vec<String>>()
+            .join(" ")
+    );
 }
