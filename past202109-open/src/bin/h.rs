@@ -1,18 +1,24 @@
 use proconio::{input, marker::Usize1};
 
-fn dfs(edges: &[Vec<(usize, usize)>], x: usize, u: usize, p: usize, d: usize) -> bool {
-    if d == x {
-        return true;
-    }
-    for (v, w) in edges[u].iter().copied() {
-        if v == p {
+fn dijkstra(n: usize, inf: usize, e: &[Vec<(usize, usize)>], s: usize) -> Vec<usize> {
+    use std::{cmp::Reverse, collections::BinaryHeap};
+    let mut d = vec![inf; n];
+    let mut pq = BinaryHeap::new();
+    d[s] = 0;
+    pq.push(Reverse((0, s)));
+    while let Some(Reverse((w_u, u))) = pq.pop() {
+        if w_u > d[u] {
             continue;
         }
-        if dfs(edges, x, v, u, d + w) {
-            return true;
+        for (v, w_v) in e[u].iter().copied() {
+            let w = w_u + w_v;
+            if w < d[v] {
+                d[v] = w;
+                pq.push(Reverse((w, v)));
+            }
         }
     }
-    false
+    d
 }
 
 fn adjacency_list(n: usize, uvw: &[(usize, usize, usize)]) -> Vec<Vec<(usize, usize)>> {
@@ -33,7 +39,8 @@ fn main() {
 
     let e = adjacency_list(n, &abc);
     for u in 0..n {
-        if dfs(&e, x, u, u, 0) {
+        let d = dijkstra(n, 1_000_000_000, &e, u);
+        if d.contains(&x) {
             println!("Yes");
             return;
         }
