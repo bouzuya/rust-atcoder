@@ -1,10 +1,11 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        x: usize,
+        y: usize,
     };
-    let ans = n - a.len();
+    let ans = (1..=n).filter(|i| i % x == 0 || i % y == 0).count();
     println!("{}", ans);
 }
