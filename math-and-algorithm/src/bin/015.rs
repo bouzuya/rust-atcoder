@@ -1,10 +1,18 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
+
+fn gcd(n: usize, m: usize) -> usize {
+    if m == 0 {
+        n
+    } else {
+        gcd(m, n % m)
+    }
+}
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        a: usize,
+        b: usize,
     };
-    let ans = n - a.len();
+    let ans = gcd(a, b);
     println!("{}", ans);
 }

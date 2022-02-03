@@ -1,10 +1,17 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    for i in 2.. {
+        if i * i > n {
+            break;
+        }
+        if n % i == 0 {
+            println!("No");
+            return;
+        }
+    }
+    println!("Yes");
 }
