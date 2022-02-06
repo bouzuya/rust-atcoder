@@ -1,10 +1,11 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        pq: [(f64, f64); n],
     };
-    let ans = n - a.len();
+    let e = pq.into_iter().map(|(p, q)| q / p).sum::<f64>();
+    let ans = e;
     println!("{}", ans);
 }
