@@ -11,26 +11,20 @@ fn main() {
         n: u128,
     };
 
-    if n < 10 {
-        println!("{}", f(1, n));
-        return;
-    }
-
+    let mod_p = 998_244_353_u128;
     let mut sum = 0_u128;
     for i in 0..n.to_string().len() - 1 {
         let l = 10_u128.pow(i as u32);
         let r = 10_u128.pow(i as u32 + 1) - 1;
         sum += f(l, r) - (l - 1) * (r - l + 1);
-        sum %= 998244353_u128;
+        sum %= mod_p;
     }
 
     let l = 10_u128.pow(n.to_string().len() as u32 - 1);
     let r = n;
     sum += f(l, r) - (l - 1) * (r - l + 1);
-    sum %= 998244353_u128;
+    sum %= mod_p;
 
-    println!("{}", sum);
-
-    // let ans = n - a.len();
-    // println!("{}", ans);
+    let ans = sum;
+    println!("{}", ans);
 }

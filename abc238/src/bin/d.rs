@@ -1,24 +1,26 @@
 use proconio::input;
 
 fn f(a: usize, s: usize) -> bool {
-    let p = 60;
-    let mask = (1_usize << p) - 1;
+    let bits = 60;
+    let mask = (1_usize << bits) - 1;
     let max = a + mask;
     let min = a + a;
     if !(min..=max).contains(&s) {
         return false;
     }
     let mut x = mask << 1 | 1;
-    for i in 0..=p {
-        let b = 1 << (p - i);
+    for i in 0..=bits {
+        let b = 1 << (bits - i);
         if (a & b) != 0 {
             continue;
         }
         x ^= b;
-        if x + a == s {
-            return true;
-        } else if x + a < s {
-            x ^= b;
+        match (x + a).cmp(&s) {
+            std::cmp::Ordering::Less => x ^= b,
+            std::cmp::Ordering::Equal => return true,
+            std::cmp::Ordering::Greater => {
+                // do nothing
+            }
         }
     }
 
