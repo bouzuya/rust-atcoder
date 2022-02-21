@@ -1,6 +1,3 @@
-// WA
-use std::collections::BinaryHeap;
-
 use dsu::*;
 use proconio::{input, marker::Usize1};
 
@@ -12,57 +9,122 @@ fn main() {
         ab: [(Usize1, Usize1); m],
     };
 
-    if d.iter().copied().filter(|d_i| d_i == &1).count() > n - 1 {
+    if d.iter().copied().sum::<usize>() != 2 * (n - 1) {
         println!("-1");
         return;
     }
 
     let mut dsu = Dsu::new(n);
     for (a, b) in ab {
-        if dsu.same(a, b) {
-            println!("-1");
-            return;
-        }
-        dsu.merge(a, b);
         if d[a] == 0 || d[b] == 0 {
             println!("-1");
             return;
         }
         d[a] -= 1;
         d[b] -= 1;
+        if dsu.same(a, b) {
+            println!("-1");
+            return;
+        }
+        dsu.merge(a, b);
     }
 
-    let mut pq0 = BinaryHeap::new();
-    let mut pqx = BinaryHeap::new();
-    for (i, d_i) in d.iter().copied().enumerate() {
-        if d_i == 0 {
-            continue;
-        }
-        if dsu.same(i, 0) {
-            pq0.push((d_i, i));
-        } else {
-            pqx.push((d_i, i));
+    #[derive(Clone, Debug)]
+    struct C {
+        count: usize,
+        index: Vec<usize>,
+    }
+    let mut cs = dsu
+        .groups()
+        .into_iter()
+        .map(|group| C {
+            count: group.iter().copied().map(|i| d[i]).sum(),
+            index: group
+                .into_iter()
+                .filter(|&i| d[i] > 0)
+                .collect::<Vec<usize>>(),
+        })
+        .collect::<Vec<C>>();
+    let mut c1 = vec![];
+    let mut cx = vec![];
+    for (i, C { count, .. }) in cs.iter().enumerate() {
+        match &count {
+            0 => continue,
+            1 => c1.push(i),
+            _ => cx.push(i),
         }
     }
 
     let mut ans = vec![];
-    while let Some((d_i, i)) = pq0.pop() {
-        if let Some((d_j, j)) = pqx.pop() {
-            if d_i - 1 > 0 {
-                pq0.push((d_i - 1, i));
+    while let Some(i) = c1.pop() {
+        if let Some(j) = cx.pop() {
+            assert!(cs[i].count == 1);
+            assert!(cs[j].count >= 1);
+            cs[i].count -= 1;
+            cs[j].count -= 1;
+            match (cs[i].index.pop(), cs[j].index.pop()) {
+                (Some(index_i), Some(index_j)) => {
+                    ans.push((index_i, index_j));
+                    assert!(d[index_i] == 1);
+                    assert!(d[index_j] >= 1);
+                    d[index_i] -= 1;
+                    d[index_j] -= 1;
+                    if d[index_j] > 0 {
+                        cs[j].index.push(index_j);
+                    }
+                    assert!(!dsu.same(index_i, index_j));
+                    dsu.merge(index_i, index_j);
+                }
+                _ => {
+                    println!("-1");
+                    return;
+                }
             }
-            if d_j - 1 > 0 {
-                pq0.push((d_j - 1, j));
+            match cs[j].count {
+                0 => continue,
+                1 => c1.push(j),
+                _ => cx.push(j),
             }
-            ans.push((i, j));
-            dsu.merge(i, j);
         } else {
+            c1.push(i);
+            break;
+        }
+    }
+
+    if cs.iter().cloned().filter(|c| c.count > 1).count() > 0 {
+        println!("-1");
+        return;
+    }
+    let c1 = cs
+        .iter()
+        .enumerate()
+        .filter(|(_, c)| c.count == 1)
+        .map(|(i, _)| i)
+        .collect::<Vec<usize>>();
+    match c1.len() {
+        0 => {}
+        2 => {
+            let (index_i, index_j) = (cs[c1[0]].index[0], cs[c1[1]].index[0]);
+            ans.push((index_i, index_j));
+            assert!(d[index_i] == 1);
+            assert!(d[index_j] == 1);
+            d[index_i] -= 1;
+            d[index_j] -= 1;
+            assert!(!dsu.same(index_i, index_j));
+            dsu.merge(index_i, index_j);
+        }
+        _ => {
             println!("-1");
             return;
         }
     }
 
+    // assert
     for u in 0..n {
+        if d[u] != 0 {
+            println!("-1");
+            return;
+        }
         if !dsu.same(0, u) {
             println!("-1");
             return;
