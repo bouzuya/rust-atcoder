@@ -1,10 +1,17 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
     };
-    let ans = n - a.len();
+    // 2^1 % 10 = 2
+    // 2^2 % 10 = 4
+    // 2^3 % 10 = 8
+    // 2^4 % 10 = 6
+    // 2^5 % 10 = 2
+    // 2^6 % 10 = 4
+    // 2^7 % 10 = 8
+    // 2^8 % 10 = 6
+    let ans = [2, 4, 8, 6][(n - 1) % 4];
     println!("{}", ans);
 }
