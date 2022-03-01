@@ -6,7 +6,7 @@ fn main() {
         k: usize,
         a: [Usize1; n],
     };
-    if k <= 200_000 {
+    if k <= n {
         let mut curr = 0;
         for _ in 0..k {
             curr = a[curr];
@@ -14,20 +14,19 @@ fn main() {
         println!("{}", curr + 1);
     } else {
         let inf = 2 * n;
-        let mut pos = vec![inf; n];
+        let mut index = vec![inf; n];
         let mut curr = 0;
         for i in 0..n {
-            if pos[curr] != inf {
-                let start = curr;
-                let size = i + 1 - pos[start];
-                let mut curr = start;
-                for _ in 0..(k + 1 - pos[start]) % size {
+            if index[curr] != inf {
+                let loop_range = index[curr]..i;
+                let len = k - loop_range.start;
+                for _ in 0..len % loop_range.len() {
                     curr = a[curr];
                 }
                 println!("{}", curr + 1);
                 return;
             }
-            pos[curr] = i + 1;
+            index[curr] = i;
             curr = a[curr];
         }
         unreachable!();
