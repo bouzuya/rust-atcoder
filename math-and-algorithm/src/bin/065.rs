@@ -1,10 +1,10 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        h: usize,
+        w: usize,
     };
-    let ans = n - a.len();
+    let ans = if h == 1 || w == 1 { 1 } else { (h * w + 1) / 2 };
     println!("{}", ans);
 }

@@ -1,10 +1,12 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        k: usize,
+        a: [usize; n],
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    let sum = a.iter().sum::<usize>();
+    let ans = sum <= k && (sum % 2 == k % 2);
+    println!("{}", if ans { "Yes" } else { "No" });
 }
