@@ -1,10 +1,12 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        a: i64,
+        b: i64,
+        c: i64,
+        d: i64,
     };
-    let ans = n - a.len();
+    let ans = vec![a * c, a * d, b * c, b * d].into_iter().max().unwrap();
     println!("{}", ans);
 }
