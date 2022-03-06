@@ -4,9 +4,8 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        mut a: [usize; n],
+        a: [usize; n],
     };
-    a.sort();
     let mut ans = ModInt::new(a[0]);
     for (i, a_i) in a.iter().copied().enumerate().skip(1) {
         ans += ModInt::new(a_i) * ModInt::new(2).pow(i as u64);
