@@ -1,10 +1,20 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
+
+fn gcd(n: usize, m: usize) -> usize {
+    if m == 0 {
+        n
+    } else {
+        gcd(m, n % m)
+    }
+}
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        a: usize,
+        b: usize,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    match (a / gcd(a, b)).checked_mul(b) {
+        Some(x) if x <= 10_usize.pow(18) => println!("{}", x),
+        Some(_) | None => println!("Large"),
+    }
 }
