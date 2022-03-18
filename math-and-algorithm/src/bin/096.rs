@@ -1,10 +1,22 @@
-use proconio::{input, marker::Usize1};
+use std::collections::BTreeSet;
+
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        t: [usize; n],
     };
-    let ans = n - a.len();
+    let sum = t.iter().sum::<usize>();
+    let mut set = BTreeSet::new();
+    set.insert(0);
+    for t_i in t {
+        let mut next = set.clone();
+        for x in set.iter().copied() {
+            next.insert(x + t_i);
+        }
+        set = next;
+    }
+    let ans = set.iter().copied().map(|x| x.max(sum - x)).min().unwrap();
     println!("{}", ans);
 }
