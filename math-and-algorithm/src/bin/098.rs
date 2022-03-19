@@ -7,23 +7,18 @@ fn main() {
         ab: (i64, i64)
     };
     xy.push(xy[0]);
-    let mut count = 0_i64;
+    let mut inside = false;
     for i in 0..n {
         let (x, y) = ab;
-        let (x1, y1) = xy[i];
-        let (x2, y2) = xy[i + 1];
-        if (y1..y2).contains(&y) {
-            // ↑
-            if (x - x1) * (y2 - y1) < (y - y1) * (x2 - x1) {
-                count += 1;
-            }
-        } else if (y2..y1).contains(&y) {
-            // ↓
-            if (x - x2) * (y1 - y2) < (y - y2) * (x1 - x2) {
-                count -= 1;
-            }
+        let ((x1, y1), (x2, y2)) = if xy[i].1 < xy[i + 1].1 {
+            (xy[i], xy[i + 1])
+        } else {
+            (xy[i + 1], xy[i])
+        };
+        if (y1..y2).contains(&y) && (x - x1) * (y2 - y1) < (y - y1) * (x2 - x1) {
+            inside = !inside;
         }
     }
-    let ans = count % 2 != 0;
+    let ans = inside;
     println!("{}", if ans { "INSIDE" } else { "OUTSIDE" });
 }
