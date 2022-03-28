@@ -1,24 +1,20 @@
-use proconio::{input, marker::Usize1};
+use std::collections::HashMap;
+
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
         k: usize,
-        a: [Usize1; n],
+        a: [usize; n],
     };
-    let mut a = a
-        .iter()
-        .enumerate()
-        .map(|(i, &a_i)| (i, a_i, k / n))
-        .collect::<Vec<(usize, usize, usize)>>();
-    a.sort_by_key(|(_, a_i, _)| *a_i);
-    let mut k = k % n;
-    for (_, _, v) in a.iter_mut() {
-        *v += if k > 0 { 1 } else { 0 };
-        k = k.saturating_sub(1);
+    let mut count = HashMap::new();
+    let mut numbers = a.clone();
+    numbers.sort();
+    for (i, number) in numbers.into_iter().enumerate() {
+        count.insert(number, k / n + if i < k % n { 1 } else { 0 });
     }
-    a.sort_by_key(|(i, _, _)| *i);
-    for (_, _, v) in a {
-        println!("{}", v);
+    for a_i in a {
+        println!("{}", count.get(&a_i).unwrap());
     }
 }
