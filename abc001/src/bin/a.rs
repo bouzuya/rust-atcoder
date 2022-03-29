@@ -2,9 +2,8 @@ use proconio::input;
 
 fn main() {
     input! {
-        h_1: i64,
-        h_2: i64,
+        h: [i64; 2]
     };
-    let ans = h_1 - h_2;
+    let ans = h[0] - h[1];
     println!("{}", ans);
 }

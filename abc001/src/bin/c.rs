@@ -2,71 +2,45 @@ use proconio::input;
 
 fn main() {
     input! {
-        deg: i64,
-        dis: i64,
+        deg: usize,
+        dis: usize,
     };
-    let dir = if deg <= 112 {
-        "N"
-    } else if deg <= 337 {
-        "NNE"
-    } else if deg <= 562 {
-        "NE"
-    } else if deg <= 787 {
-        "ENE"
-    } else if deg <= 1012 {
-        "E"
-    } else if deg <= 1237 {
-        "ESE"
-    } else if deg <= 1462 {
-        "SE"
-    } else if deg <= 1687 {
-        "SSE"
-    } else if deg <= 1912 {
-        "S"
-    } else if deg <= 2137 {
-        "SSW"
-    } else if deg <= 2362 {
-        "SW"
-    } else if deg <= 2587 {
-        "WSW"
-    } else if deg <= 2812 {
-        "W"
-    } else if deg <= 3037 {
-        "WNW"
-    } else if deg <= 3262 {
-        "NW"
-    } else if deg <= 3487 {
-        "NNW"
-    } else {
-        "N"
-    };
-    let d = ((dis as f64 * 100_f64 / 60_f64 + 5_f64) / 10_f64) as i64;
-    let w = if d <= 2 {
-        0
-    } else if d <= 15 {
-        1
-    } else if d <= 33 {
-        2
-    } else if d <= 54 {
-        3
-    } else if d <= 79 {
-        4
-    } else if d <= 107 {
-        5
-    } else if d <= 138 {
-        6
-    } else if d <= 171 {
-        7
-    } else if d <= 207 {
-        8
-    } else if d <= 244 {
-        9
-    } else if d <= 284 {
-        10
-    } else if d <= 326 {
-        11
-    } else {
-        12
-    };
-    println!("{} {}", if w == 0 { "C" } else { dir }, w);
+    let mut dir = "N".to_string();
+    for (r, d) in vec![
+        (1125..3375, "NNE"),
+        (3375..5625, "NE"),
+        (5625..7875, "ENE"),
+        (7875..10125, "E"),
+        (10125..12375, "ESE"),
+        (12375..14625, "SE"),
+        (14625..16875, "SSE"),
+        (16875..19125, "S"),
+        (19125..21375, "SSW"),
+        (21375..23625, "SW"),
+        (23625..25875, "WSW"),
+        (25875..28125, "W"),
+        (28125..30375, "WNW"),
+        (30375..32625, "NW"),
+        (32625..34875, "NNW"),
+    ] {
+        if r.contains(&(deg * 10)) {
+            dir = d.to_string();
+            break;
+        }
+    }
+    let mut w = 12;
+    for (i, x) in vec![2, 15, 33, 54, 79, 107, 138, 171, 207, 244, 284, 326]
+        .into_iter()
+        .map(|x| (x * 10 + 4) * 6 / 10)
+        .enumerate()
+    {
+        if dis <= x {
+            w = i;
+            break;
+        }
+    }
+    if w == 0 {
+        dir = "C".to_string();
+    }
+    println!("{} {}", dir, w);
 }
