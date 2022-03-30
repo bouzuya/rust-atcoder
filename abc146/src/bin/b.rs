@@ -1,17 +1,14 @@
-use proconio::{input, marker::Chars};
+use proconio::{input, marker::Bytes};
 
 fn main() {
     input! {
         n: usize,
-        s: Chars,
+        s: Bytes,
     };
-    let chars = (0..26).map(|i| (b'A' + i) as char).collect::<Vec<char>>();
     let ans = s
         .iter()
-        .map(|s_i| {
-            let j = chars.iter().position(|c| c == s_i).unwrap();
-            chars[(j + n) % chars.len()]
-        })
+        .copied()
+        .map(|s_i| ((((s_i - b'A') as usize + n) % 26) as u8 + b'A') as char)
         .collect::<String>();
     println!("{}", ans);
 }

@@ -4,8 +4,7 @@ fn main() {
     input! {
         s: String,
     };
-    let w = vec!["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-    let i = w.iter().position(|w_i| w_i == &s).unwrap();
-    let ans = w.len() - i;
+    let wdays = vec!["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+    let ans = 7 - wdays.iter().position(|wday| &s == wday).unwrap();
     println!("{}", ans);
 }
