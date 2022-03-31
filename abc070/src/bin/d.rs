@@ -1,5 +1,34 @@
-use proconio::input;
-use proconio::marker::Usize1;
+use proconio::{input, marker::Usize1};
+
+fn adjacency_list(n: usize, uvw: &[(usize, usize, u64)]) -> Vec<Vec<(usize, u64)>> {
+    let mut e = vec![vec![]; n];
+    for (u, v, w) in uvw.iter().copied() {
+        e[u].push((v, w));
+        e[v].push((u, w));
+    }
+    e
+}
+
+fn dijkstra(n: usize, inf: u64, e: &[Vec<(usize, u64)>], s: usize) -> Vec<u64> {
+    use std::{cmp::Reverse, collections::BinaryHeap};
+    let mut d = vec![inf; n];
+    let mut pq = BinaryHeap::new();
+    d[s] = 0;
+    pq.push(Reverse((0, s)));
+    while let Some(Reverse((w_u, u))) = pq.pop() {
+        if w_u > d[u] {
+            continue;
+        }
+        for (v, w_v) in e[u].iter().copied() {
+            let w = w_u + w_v;
+            if w < d[v] {
+                d[v] = w;
+                pq.push(Reverse((w, v)));
+            }
+        }
+    }
+    d
+}
 
 fn main() {
     input! {
@@ -10,29 +39,10 @@ fn main() {
         xy: [(Usize1, Usize1); q],
     };
 
-    let mut e = vec![vec![]; n];
-    for &(a, b, c) in abc.iter() {
-        e[a].push((c, b));
-        e[b].push((c, a));
-    }
-
-    // K から各頂点への最短距離 O(N)
-    let inf = 1_000_000_000_000_000_u64;
-    let mut sp = vec![inf; n];
-    let mut pq = std::collections::BinaryHeap::new();
-    pq.push((0, k));
-    while let Some((c, u)) = pq.pop() {
-        if c > sp[u] {
-            continue;
-        }
-        sp[u] = c;
-        for &(c_v, v) in e[u].iter() {
-            pq.push((c + c_v, v));
-        }
-    }
-
-    for &(x, y) in xy.iter() {
-        let ans = sp[x] + sp[y];
-        println!("{}", ans);
+    let edges = adjacency_list(n, &abc);
+    let inf = 1 << 60;
+    let dist = dijkstra(n, inf, &edges, k);
+    for (x, y) in xy {
+        println!("{}", dist[x] + dist[y]);
     }
 }

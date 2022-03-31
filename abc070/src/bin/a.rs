@@ -1,10 +1,11 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         n: Chars,
     };
-    let ans = n[0] == n[2];
+    let mut t = n.clone();
+    t.reverse();
+    let ans = n == t;
     println!("{}", if ans { "Yes" } else { "No" });
 }

@@ -2,11 +2,24 @@ use proconio::input;
 
 fn main() {
     input! {
-        a: i64,
-        b: i64,
-        c: i64,
-        d: i64,
+        a: usize,
+        b: usize,
+        c: usize,
+        d: usize,
     };
-    let ans = std::cmp::max(0, std::cmp::min(b, d) - std::cmp::max(a, c));
+    let mut p_a = vec![false; 200 + 1];
+    for i in a..=b - 1 {
+        p_a[i] = true;
+    }
+    let mut p_b = vec![false; 200 + 1];
+    for i in c..=d - 1 {
+        p_b[i] = true;
+    }
+
+    let ans = p_a
+        .into_iter()
+        .zip(p_b.into_iter())
+        .filter(|&(a, b)| a && b)
+        .count();
     println!("{}", ans);
 }
