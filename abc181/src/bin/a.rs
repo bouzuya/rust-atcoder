@@ -4,6 +4,6 @@ fn main() {
     input! {
         n: usize,
     };
-    let ans = if n % 2 != 0 { "Black" } else { "White" };
-    println!("{}", ans);
+    let ans = n % 2 == 0;
+    println!("{}", if ans { "White" } else { "Black" });
 }

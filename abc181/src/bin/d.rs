@@ -1,68 +1,41 @@
-use proconio::input;
-use proconio::marker::Chars;
 use std::collections::HashMap;
+
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         s: Chars,
     };
-    let mut ans = vec![];
-    for i in 1.. {
-        if 8 * i >= 1000 {
-            break;
-        }
-        let mut map = HashMap::new();
-        let s = format!("{:03}", 8 * i);
-        for c in s.chars() {
-            *map.entry(c).or_insert(0) += 1;
-        }
-        ans.push(map);
-    }
-    if s.len() == 1 {
-        let ans = (s[0] as u8 - '0' as u8) == 8;
-        println!("{}", if ans { "Yes" } else { "No" });
-        return;
+    let ans = if s.len() == 1 {
+        s[0] == '8'
     } else if s.len() == 2 {
-        let xs = vec![format!("{}{}", s[0], s[1]), format!("{}{}", s[1], s[0])];
-        for x in xs {
-            if x.parse::<i64>().unwrap() % 8 == 0 {
-                println!("Yes");
-                return;
+        format!("{}{}", s[0], s[1]).parse::<usize>().unwrap() % 8 == 0
+            || format!("{}{}", s[1], s[0]).parse::<usize>().unwrap() % 8 == 0
+    } else {
+        let count = |chars: &[char]| -> HashMap<usize, usize> {
+            let mut counts = HashMap::new();
+            for c in chars.iter().copied() {
+                *counts.entry((c as u8 - b'0') as usize).or_insert(0) += 1_usize;
             }
-        }
-        println!("No");
-        return;
-    } else if s.len() == 3 {
-        let xs = vec![
-            format!("{}{}{}", s[0], s[1], s[2]),
-            format!("{}{}{}", s[0], s[2], s[1]),
-            format!("{}{}{}", s[1], s[0], s[2]),
-            format!("{}{}{}", s[1], s[2], s[0]),
-            format!("{}{}{}", s[2], s[0], s[1]),
-            format!("{}{}{}", s[2], s[1], s[0]),
-        ];
-        for x in xs {
-            if x.parse::<i64>().unwrap() % 8 == 0 {
-                println!("Yes");
-                return;
-            }
-        }
-        println!("No");
-        return;
-    }
+            counts
+        };
 
-    let mut map = HashMap::new();
-    for c in s {
-        *map.entry(c).or_insert(0) += 1;
-    }
-    for a in ans {
-        if a.iter().all(|(k, v)| match map.get(k) {
-            None => false,
-            Some(v1) => v1 >= v,
-        }) {
-            println!("Yes");
-            return;
+        let counts = count(&s);
+
+        let mut ok = false;
+        for i in 100..=999 {
+            if i % 8 == 0 {
+                let count_i = count(&i.to_string().chars().collect::<Vec<char>>());
+                if count_i
+                    .into_iter()
+                    .all(|(d, c)| c <= (*counts.get(&d).unwrap_or(&0)))
+                {
+                    ok = true;
+                    break;
+                }
+            }
         }
-    }
-    println!("No");
+        ok
+    };
+    println!("{}", if ans { "Yes" } else { "No" });
 }

@@ -1,4 +1,3 @@
-use num_rational::Ratio;
 use proconio::input;
 
 fn main() {
@@ -9,24 +8,12 @@ fn main() {
     for i in 0..n {
         for j in i + 1..n {
             for k in j + 1..n {
-                let dx = xy[j].0 - xy[i].0;
-                let dy = xy[j].1 - xy[i].1;
-                if dx == 0 {
-                    if xy[i].0 == xy[k].0 {
-                        println!("Yes");
-                        return;
-                    } else {
-                        continue;
-                    }
-                }
-                let a = Ratio::new(dy, dx);
-                let b = Ratio::new(xy[i].1, 1) - a * Ratio::new(xy[i].0, 1);
-                if (a * Ratio::new(xy[i].0, 1) + b != Ratio::new(xy[i].1, 1))
-                    || (a * Ratio::new(xy[j].0, 1) + b != Ratio::new(xy[j].1, 1))
-                {
-                    panic!();
-                }
-                if a * Ratio::new(xy[k].0, 1) + b == Ratio::new(xy[k].1, 1) {
+                let (x1, y1) = xy[i];
+                let (x2, y2) = xy[j];
+                let (x3, y3) = xy[k];
+                let ok = (x2 - x1 == 0 && x1 == x3)
+                    || ((y2 - y1) * x3 - (x2 - x1) * y3 + (x2 * y1 - x1 * y2) == 0);
+                if ok {
                     println!("Yes");
                     return;
                 }

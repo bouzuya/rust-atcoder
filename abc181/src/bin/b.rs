@@ -3,11 +3,12 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        ab: [(i64, i64); n],
+        ab: [(usize, usize); n],
     };
-    let mut sum = 0_i64;
-    for (a_i, b_i) in ab {
-        sum += (b_i - a_i + 1) * (a_i + b_i) / 2;
+    let mut sum = 0_usize;
+    for (a, b) in ab {
+        let m = b - a + 1;
+        sum += (2 * a + (m - 1)) * m / 2;
     }
     let ans = sum;
     println!("{}", ans);
