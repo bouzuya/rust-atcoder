@@ -9,21 +9,20 @@ fn main() {
         uv: [(Usize1, Usize1); m],
     };
 
-    let mut rev = vec![BTreeSet::new(); n];
+    let mut rev = vec![vec![]; n];
     let mut edges = vec![BTreeSet::new(); n];
     for (u, v) in uv.iter().copied() {
         edges[u].insert(v);
-        rev[v].insert(u);
+        rev[v].push(u);
     }
 
+    let mut deque = edges
+        .iter()
+        .enumerate()
+        .filter(|(_, e)| e.is_empty())
+        .map(|(v, _)| v)
+        .collect::<VecDeque<usize>>();
     let mut used = vec![false; n];
-    let mut deque = VecDeque::new();
-    for v in 0..n {
-        if edges[v].is_empty() {
-            deque.push_back(v);
-        }
-    }
-
     while let Some(v) = deque.pop_front() {
         if used[v] {
             continue;
