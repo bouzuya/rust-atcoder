@@ -1,11 +1,9 @@
-use proconio::input;
-use proconio::marker::Usize1;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        s: Chars,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    let ans = (s[0] == s[s.len() - 1]) == (s.len() % 2 == 0);
+    println!("{}", if ans { "First" } else { "Second" });
 }
