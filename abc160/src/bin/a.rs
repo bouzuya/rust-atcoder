@@ -1,14 +1,9 @@
-use proconio::input;
-use proconio::marker::Bytes;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        s: Bytes,
+        s: Chars,
     };
-    let ans = if s[2] == s[3] && s[4] == s[5] {
-        "Yes"
-    } else {
-        "No"
-    };
-    println!("{}", ans);
+    let ans = s[2] == s[3] && s[4] == s[5];
+    println!("{}", if ans { "Yes" } else { "No" });
 }

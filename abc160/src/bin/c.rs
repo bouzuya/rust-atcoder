@@ -4,12 +4,16 @@ fn main() {
     input! {
         k: usize,
         n: usize,
-        av: [usize; n],
+        a: [usize; n],
     };
-    let mut d = k - av[n - 1] + av[0];
-    for i in 0..av.len() - 1 {
-        d = std::cmp::max(d, av[i + 1] - av[i]);
+    let mut b = vec![];
+    b.push(k - a[n - 1] + a[0]);
+    let mut p = a[0];
+    for a_i in a.iter().copied().skip(1) {
+        b.push(a_i - p);
+        p = a_i;
     }
-    let ans = k - d;
+    b.sort();
+    let ans = b.iter().take(n - 1).sum::<usize>();
     println!("{}", ans);
 }
