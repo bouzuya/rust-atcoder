@@ -3,12 +3,20 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        d: [(i64, i64); n]
+        d: [(usize, usize); n],
     };
-    let b = d
-        .iter()
-        .map(|(d_i1, d_i2)| d_i1 == d_i2)
-        .collect::<Vec<bool>>();
-    let ans = b.windows(3).map(|w| w.iter().all(|&w_i| w_i)).any(|w| w);
-    println!("{}", if ans { "Yes" } else { "No" });
+    for i in 0..n - 2 {
+        let mut ok = true;
+        for j in 0..3 {
+            if d[i + j].0 != d[i + j].1 {
+                ok = false;
+                break;
+            }
+        }
+        if ok {
+            println!("Yes");
+            return;
+        }
+    }
+    println!("No");
 }

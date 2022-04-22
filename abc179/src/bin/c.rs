@@ -4,10 +4,10 @@ fn main() {
     input! {
         n: usize,
     };
-    let mut s = 0_usize;
+    let mut sum = 0_usize;
     for a in 1..=n {
-        s += (n - 1) / a;
+        sum += (n - 1) / a;
     }
-    let ans = s;
+    let ans = sum;
     println!("{}", ans);
 }
