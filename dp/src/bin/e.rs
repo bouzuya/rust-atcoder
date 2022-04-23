@@ -1,40 +1,29 @@
 use proconio::input;
 
-macro_rules! chmin {
-    ($min_v: expr, $v: expr) => {
-        if $v < $min_v {
-            $min_v = $v;
-            true
-        } else {
-            false
-        }
-    };
-}
-
 fn main() {
     input! {
         n: usize,
-        w: usize,
+        capital_w: usize,
         wv: [(usize, usize); n],
     };
-    let max_w = 1_000_000_000 * n;
-    let max_v = 1_000 * n;
-    let mut dp = vec![vec![max_w + 1; max_v + 1]; n + 1];
-    dp[0][0] = 0;
-    for (i, &(w_i, v_i)) in wv.iter().enumerate() {
-        for j in 0..max_v {
-            chmin!(dp[i + 1][j], dp[i][j]);
-            if j + v_i <= max_v {
-                chmin!(dp[i + 1][j + v_i], dp[i][j] + w_i);
+    let inf = 1 << 60;
+    let max_v = 100_000;
+    let mut dp = vec![inf; max_v + 1];
+    dp[0] = 0;
+    for (w, v) in wv {
+        for i in (0..=max_v).rev() {
+            if i + v <= max_v && dp[i] + w <= capital_w {
+                dp[i + v] = dp[i + v].min(dp[i] + w);
             }
         }
     }
-    let ans = dp[n]
+
+    let ans = dp
         .iter()
         .enumerate()
-        .filter(|&(_, &w_i)| w_i <= w)
-        .map(|(i, _)| i)
+        .filter(|(_, &dp_i)| dp_i != inf)
+        .map(|(v, _)| v)
         .max()
-        .unwrap();
+        .unwrap_or_default();
     println!("{}", ans);
 }
