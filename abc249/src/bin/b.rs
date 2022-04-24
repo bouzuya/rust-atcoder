@@ -6,37 +6,8 @@ fn main() {
     input! {
         s: Chars,
     };
-    let mut ok = false;
-    for i in 0..26 {
-        let c = (b'A' + i) as char;
-        if s.contains(&c) {
-            ok = true;
-            break;
-        }
-    }
-    if !ok {
-        println!("No");
-        return;
-    }
-
-    let mut ok = false;
-    for i in 0..26 {
-        let c = (b'a' + i) as char;
-        if s.contains(&c) {
-            ok = true;
-            break;
-        }
-    }
-    if !ok {
-        println!("No");
-        return;
-    }
-
-    let set = s.iter().collect::<BTreeSet<_>>();
-    if set.len() != s.len() {
-        println!("No");
-        return;
-    }
-
-    println!("Yes");
+    let ans = !(s.iter().find(|c| c.is_uppercase()).is_none()
+        || s.iter().find(|c| c.is_lowercase()).is_none()
+        || s.len() != s.iter().collect::<BTreeSet<_>>().len());
+    println!("{}", if ans { "Yes" } else { "No" });
 }

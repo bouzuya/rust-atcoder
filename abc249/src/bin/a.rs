@@ -11,36 +11,17 @@ fn main() {
         x: usize,
     };
 
-    let mut t = 0_usize;
-    let mut dist_t = 0_usize;
-    while t <= x {
-        if a <= x - t {
-            dist_t += a * b;
-            t += a + c;
-        } else {
-            dist_t += (x - t) * b;
-            t += a;
-        }
-    }
+    let g = |x: usize, a: usize, b: usize, c: usize| {
+        let q = a + c;
+        let p = x / q;
+        let r = x % q;
+        (p * a + r.min(a)) * b
+    };
 
-    let mut t = 0_usize;
-    let mut dist_a = 0_usize;
-    while t <= x {
-        if d <= x - t {
-            dist_a += d * e;
-            t += d + f;
-        } else {
-            dist_a += (x - t) * e;
-            t += d;
-        }
-    }
-
-    let ans = if dist_t == dist_a {
-        "Draw"
-    } else if dist_t > dist_a {
-        "Takahashi"
-    } else {
-        "Aoki"
+    let ans = match g(x, a, b, c).cmp(&g(x, d, e, f)) {
+        std::cmp::Ordering::Less => "Aoki",
+        std::cmp::Ordering::Equal => "Draw",
+        std::cmp::Ordering::Greater => "Takahashi",
     };
     println!("{}", ans);
 }

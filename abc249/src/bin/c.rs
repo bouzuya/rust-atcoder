@@ -1,3 +1,5 @@
+use std::collections::BTreeSet;
+
 use proconio::{input, marker::Chars};
 
 fn main() {
@@ -6,30 +8,19 @@ fn main() {
         k: usize,
         s: [Chars; n],
     };
+    let t = s
+        .into_iter()
+        .map(|s_i| s_i.into_iter().collect::<BTreeSet<_>>())
+        .collect::<Vec<_>>();
     let mut ans = 0_usize;
     for bits in 0..1 << n {
-        let mut is = vec![];
-        for i in 0..n {
-            if (bits >> i) & 1 == 1 {
-                is.push(i);
+        let mut count = vec![0; 26];
+        for (_, t_i) in t.iter().enumerate().filter(|(i, _)| ((bits >> i) & 1) == 1) {
+            for c in t_i.iter().copied() {
+                count[(c as u8 - b'a') as usize] += 1;
             }
         }
-
-        let mut count = 0;
-        for j in 0..26 {
-            let ch = (b'a' + j) as char;
-            let mut c = 0;
-            for i in is.iter().copied() {
-                if s[i].contains(&ch) {
-                    c += 1;
-                }
-            }
-            if c == k {
-                count += 1;
-            }
-        }
-
-        ans = ans.max(count);
+        ans = ans.max(count.into_iter().filter(|&c| c == k).count());
     }
     println!("{}", ans);
 }
