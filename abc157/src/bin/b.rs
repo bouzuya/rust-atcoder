@@ -2,16 +2,64 @@ use proconio::input;
 
 fn main() {
     input! {
-        avv: [[usize; 3]; 3],
+        a: [[usize; 3]; 3],
         n: usize,
-        bv: [usize; n]
+        b: [usize; n],
     };
-    let mut ans = false;
-    for i in 0..3 {
-        ans |= (0..3).all(|j| bv.contains(&avv[i][j]));
-        ans |= (0..3).all(|j| bv.contains(&avv[j][i]));
+    let mut c = vec![vec![false; 3]; 3];
+    for b_i in b {
+        for i in 0..3 {
+            for j in 0..3 {
+                if a[i][j] == b_i {
+                    c[i][j] = true;
+                }
+            }
+        }
     }
-    ans |= (0..3).all(|i| bv.contains(&avv[i][i]));
-    ans |= (0..3).all(|i| bv.contains(&avv[3 - (i + 1)][i]));
-    println!("{}", if ans { "Yes" } else { "No" });
+    for i in 0..3 {
+        let mut ok = true;
+        for j in 0..3 {
+            if !c[i][j] {
+                ok = false;
+            }
+        }
+        if ok {
+            println!("Yes");
+            return;
+        }
+    }
+    for j in 0..3 {
+        let mut ok = true;
+        for i in 0..3 {
+            if !c[i][j] {
+                ok = false;
+            }
+        }
+        if ok {
+            println!("Yes");
+            return;
+        }
+    }
+    let mut ok = true;
+    for i in 0..3 {
+        if !c[i][i] {
+            ok = false;
+        }
+    }
+    if ok {
+        println!("Yes");
+        return;
+    }
+    let mut ok = true;
+    for i in 0..3 {
+        if !c[i][3 - 1 - i] {
+            ok = false;
+        }
+    }
+    if ok {
+        println!("Yes");
+        return;
+    }
+
+    println!("No");
 }
