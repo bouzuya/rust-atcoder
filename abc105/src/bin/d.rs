@@ -1,5 +1,6 @@
-use proconio::input;
 use std::collections::BTreeMap;
+
+use proconio::input;
 
 fn main() {
     input! {
@@ -7,23 +8,23 @@ fn main() {
         m: usize,
         a: [usize; n],
     };
-
-    let s = a
-        .iter()
-        .scan(0_usize, |acc, &x| {
-            *acc += x;
+    let s = std::iter::once(0)
+        .chain(a.iter().scan(0, |acc, &i| {
+            *acc += i;
+            *acc %= m;
             Some(*acc)
-        })
+        }))
         .collect::<Vec<usize>>();
-    let b = s.iter().map(|&s_i| s_i % m).collect::<Vec<usize>>();
-    let mut map = BTreeMap::new();
-    for &b_i in b.iter() {
-        *map.entry(b_i).or_insert(0) += 1;
+    let mut c = BTreeMap::new();
+    for s_i in s {
+        *c.entry(s_i).or_insert(0) += 1;
     }
-    let mut count = 0_usize;
-    for (k, v) in map {
-        count += if k == 0 { v } else { 0 } + v * (v - 1) / 2;
+    let mut ans = 0_usize;
+    for (_, c_i) in c {
+        if c_i < 2 {
+            continue;
+        }
+        ans += c_i * (c_i - 1) / 2;
     }
-    let ans = count;
     println!("{}", ans);
 }

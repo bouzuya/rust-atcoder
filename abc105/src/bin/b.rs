@@ -4,9 +4,9 @@ fn main() {
     input! {
         n: usize,
     };
-    for x in 0..=n / 4 {
-        for y in 0..=n / 7 {
-            if x * 4 + y * 7 == n {
+    for a in 0..=100 {
+        for b in 0..=100 {
+            if a * 4 + b * 7 == n {
                 println!("Yes");
                 return;
             }

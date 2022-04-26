@@ -2,26 +2,31 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: i64,
+        mut n: i64,
     };
-    if n == 0 {
-        println!("{}", 0);
-        return;
-    }
-    let mut digits = vec![];
-    let mut m = n;
-    for k in 1.. {
-        if m == 0 {
+
+    let mut ans = vec![];
+    let mut sum = 0_i64;
+    for x in 0.. {
+        if n - sum == 0 {
             break;
         }
-        digits.push(if m % 2_i64.pow(k) == 0 {
-            0
+        let r = (n - sum) % 2_i64.pow(x + 1);
+        if r != 0 {
+            ans.push(1);
+            sum += (-2_i64).pow(x);
         } else {
-            m -= (-2_i64).pow(k - 1);
-            1
-        });
+            ans.push(0);
+        }
     }
-    digits.reverse();
-    let ans = digits.iter().map(|&c| format!("{}", c)).collect::<String>();
-    println!("{}", ans);
+    if ans.is_empty() {
+        ans.push(0);
+    }
+    ans.reverse();
+    println!(
+        "{}",
+        ans.into_iter()
+            .map(|i| (b'0' + i as u8) as char)
+            .collect::<String>()
+    );
 }
