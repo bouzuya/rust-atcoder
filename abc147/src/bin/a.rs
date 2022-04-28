@@ -2,9 +2,8 @@ use proconio::input;
 
 fn main() {
     input! {
-        a: [i64; 3],
+        a: [usize; 3],
     };
-    let sum = a.iter().sum::<i64>();
-    let ans = if sum >= 22 { "bust" } else { "win" };
-    println!("{}", ans);
+    let bust = a.iter().sum::<usize>() >= 22;
+    println!("{}", if bust { "bust" } else { "win" });
 }

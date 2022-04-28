@@ -1,15 +1,10 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        s: Chars
+        s: Chars,
     };
-    let ans = s
-        .iter()
-        .zip(s.iter().rev())
-        .take(s.len() / 2)
-        .map(|(s_i, s_j)| if s_i == s_j { 0 } else { 1 })
-        .sum::<i64>();
+    let n = s.len();
+    let ans = (0..n / 2).filter(|&i| s[i] != s[n - 1 - i]).count();
     println!("{}", ans);
 }
