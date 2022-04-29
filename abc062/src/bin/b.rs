@@ -1,5 +1,4 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
@@ -7,10 +6,7 @@ fn main() {
         w: usize,
         a: [Chars; h],
     };
-    for _ in 0..w + 2 {
-        print!("#");
-    }
-    println!();
+    println!("{}", "#".repeat(w + 2));
     for i in 0..h {
         print!("#");
         for j in 0..w {
@@ -18,9 +14,5 @@ fn main() {
         }
         println!("#");
     }
-
-    for _ in 0..w + 2 {
-        print!("#");
-    }
-    println!();
+    println!("{}", "#".repeat(w + 2));
 }

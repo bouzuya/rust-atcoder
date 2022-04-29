@@ -1,3 +1,5 @@
+use std::{cmp::Reverse, collections::BinaryHeap};
+
 use proconio::input;
 
 fn main() {
@@ -5,43 +7,51 @@ fn main() {
         n: usize,
         a: [i64; 3 * n],
     };
-    let mut pq_0 = std::collections::BinaryHeap::new();
-    let mut pq_1 = std::collections::BinaryHeap::new();
-    let mut s_0 = 0_i64;
-    let mut s_1 = 0_i64;
-    for i in 0..n {
-        let a_i = a[i];
-        pq_0.push(-a_i);
-        s_0 += a_i;
+    let inf = 1 << 60;
+    let first = {
+        let mut sum = 0_i64;
+        let mut pq = BinaryHeap::new();
+        for a_i in a.iter().copied().take(n) {
+            pq.push(Reverse(a_i));
+            sum += a_i;
+        }
+        let mut first = vec![-inf; n + 1];
+        first[0] = sum;
+        for i in 1..=n {
+            let Reverse(x) = pq.pop().unwrap();
+            sum -= x;
+            let x = x.max(a[n - 1 + i]);
+            sum += x;
+            pq.push(Reverse(x));
+            first[i] = sum;
+        }
+        first
+    };
 
-        let a_j = a[3 * n - i - 1];
-        pq_1.push(a_j);
-        s_1 -= a_j;
-    }
+    let second = {
+        let mut sum = 0_i64;
+        let mut pq = BinaryHeap::new();
+        for a_i in a.iter().copied().rev().take(n) {
+            pq.push(a_i);
+            sum += a_i;
+        }
+        let mut second = vec![inf; n + 1];
+        second[0] = sum;
+        for i in 1..=n {
+            let x = pq.pop().unwrap();
+            sum -= x;
+            let x = x.min(a[2 * n - i]);
+            sum += x;
+            pq.push(x);
+            second[i] = sum;
+        }
+        second.reverse();
+        second
+    };
 
-    let mut c_0 = vec![s_0];
-    for i in n..2 * n {
-        let a_l = a[i];
-        pq_0.push(-a_l);
-        s_0 += a_l;
-        let m_0 = pq_0.pop().unwrap();
-        s_0 -= -m_0;
-        c_0.push(s_0);
-    }
-
-    let mut c_1 = vec![s_1];
-    for i in (n..2 * n).rev() {
-        let a_r = a[i];
-        pq_1.push(a_r);
-        s_1 -= a_r;
-        let m_1 = pq_1.pop().unwrap();
-        s_1 += m_1;
-        c_1.push(s_1);
-    }
-
-    let mut ans = -1_000_000_000_000_000_i64;
-    for (&s_0, &s_1) in c_0.iter().zip(c_1.iter().rev()) {
-        ans = std::cmp::max(ans, s_0 + s_1);
+    let mut ans = -inf;
+    for i in 0..=n {
+        ans = ans.max(first[i] - second[i]);
     }
 
     println!("{}", ans);

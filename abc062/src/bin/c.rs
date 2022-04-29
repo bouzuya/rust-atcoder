@@ -1,42 +1,36 @@
 use proconio::input;
 
-fn f(h: i64, w: i64) -> i64 {
-    let mut res = 1_000_000_000_000;
-
-    // a|b|c
-    // a|b|c
-    // a|b|c
-    for i in 1..w - 1 {
-        let j = (w - i) / 2;
-        let s_a = i * h;
-        let s_b = j * h;
-        let s_c = h * w - s_a - s_b;
-        let s_max = std::cmp::max(s_a, std::cmp::max(s_b, s_c));
-        let s_min = std::cmp::min(s_a, std::cmp::min(s_b, s_c));
-        res = std::cmp::min(res, s_max - s_min);
-    }
-
-    // a|bb
-    // a+--
-    // a|cc
-    for i in 1..w {
-        let j = h / 2;
-        let s_a = i * h;
-        let s_b = j * (w - i);
-        let s_c = h * w - s_a - s_b;
-        let s_max = std::cmp::max(s_a, std::cmp::max(s_b, s_c));
-        let s_min = std::cmp::min(s_a, std::cmp::min(s_b, s_c));
-        res = std::cmp::min(res, s_max - s_min);
-    }
-
-    res
-}
-
 fn main() {
     input! {
-        h: i64,
-        w: i64
+        h: usize,
+        w: usize,
     };
-    let ans = std::cmp::min(f(h, w), f(w, h));
+    let f = |r: usize, c: usize| -> usize {
+        let mut min = r * c;
+        for i in 1..c {
+            let a1 = r * i;
+            let a2 = r / 2 * (c - i);
+            let a3 = r * c - a1 - a2;
+            if a1 == 0 || a2 == 0 || a3 == 0 {
+                continue;
+            }
+            min = min.min(a1.max(a2).max(a3) - a1.min(a2).min(a3));
+        }
+        min
+    };
+    let g = |r: usize, c: usize| -> usize {
+        let mut min = r * c;
+        for i in 1..=c {
+            let a1 = r * i;
+            let a2 = (c - i) / 2 * r;
+            let a3 = ((c - i) - ((c - i) / 2)) * r;
+            if a1 == 0 || a2 == 0 || a3 == 0 {
+                continue;
+            }
+            min = min.min(a1.max(a2).max(a3) - a1.min(a2).min(a3));
+        }
+        min
+    };
+    let ans = f(h, w).min(f(w, h)).min(g(h, w)).min(g(w, h));
     println!("{}", ans);
 }
