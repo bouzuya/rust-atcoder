@@ -7,7 +7,7 @@ fn main() {
         r: Usize1,
         c: Usize1,
     };
-    let mut count = 0;
+    let mut count = 0_usize;
     let dir = vec![(-1, 0), (0, -1), (0, 1), (1, 0)];
     for (dr, dc) in dir {
         let (nr, nc) = (r as i64 + dr, c as i64 + dc);
