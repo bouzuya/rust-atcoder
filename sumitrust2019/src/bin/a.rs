@@ -2,9 +2,9 @@ use proconio::input;
 
 fn main() {
     input! {
-        _: usize,
-        _: usize,
-        _: usize,
+        _m1: usize,
+        _d1: usize,
+        _m2: usize,
         d2: usize,
     };
     let ans = d2 == 1;

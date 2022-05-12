@@ -1,27 +1,26 @@
-use proconio::input;
-use proconio::marker::Chars;
+use std::collections::BTreeSet;
+
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        _: usize,
+        _n: usize,
         s: Chars,
     };
-    let mut count = 0;
-    for i in 0..=999 {
-        let d = format!("{:03}", i).chars().collect::<Vec<char>>();
-        let mut j = 0;
-        for &s_i in s.iter() {
-            if j == 3 {
-                break;
-            }
-            if d[j] == s_i {
-                j += 1;
-            }
+    let mut set1 = BTreeSet::new();
+    let mut set2 = BTreeSet::new();
+    let mut set3 = BTreeSet::new();
+    for c in s {
+        for (c1, c2) in set2.iter() {
+            set3.insert((*c1, *c2, c));
         }
-        if j == 3 {
-            count += 1;
+
+        for c1 in set1.iter() {
+            set2.insert((*c1, c));
         }
+
+        set1.insert(c);
     }
-    let ans = count;
+    let ans = set3.len();
     println!("{}", ans);
 }

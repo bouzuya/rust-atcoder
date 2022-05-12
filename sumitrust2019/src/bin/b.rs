@@ -4,12 +4,15 @@ fn main() {
     input! {
         n: usize,
     };
-    let x = n * 100 / 108;
-    for x_i in x.saturating_sub(1)..=x + 1 {
-        if x_i * 108 / 100 == n {
-            println!("{}", x_i);
+    for x in 1.. {
+        let y = x * 108 / 100;
+        if y > n {
+            println!(":(");
+            return;
+        }
+        if y == n {
+            println!("{}", x);
             return;
         }
     }
-    println!(":(");
 }
