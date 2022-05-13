@@ -2,15 +2,14 @@ use proconio::input;
 
 fn main() {
     input! {
-        a: i64,
-        b: i64,
+        a: usize,
+        b: usize,
     };
-    let mut found = false;
     for c in 1..=3 {
-        if a * b * c % 2 != 0 {
-            found = true;
+        if (a * b * c) % 2 != 0 {
+            println!("Yes");
+            return;
         }
     }
-    let ans = found;
-    println!("{}", if ans { "Yes" } else { "No" });
+    println!("No");
 }

@@ -1,21 +1,28 @@
-use proconio::input;
+use std::collections::BTreeSet;
+
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         n: usize,
-        w: [String; n],
+        w: [Chars; n]
     };
-    let mut ok = true;
-    let mut set = std::collections::BTreeSet::new();
-    set.insert(&w[0]);
-    let mut p = &w[0];
-    for w_i in w.iter().skip(1) {
-        if !set.insert(w_i) || p.chars().last() != w_i.chars().nth(0) {
-            ok = false;
-            break;
+    let mut used = BTreeSet::new();
+    let mut prev: Option<Vec<char>> = None;
+    for w_i in w {
+        if let Some(ref w_p) = prev {
+            let c_p = *w_p.last().unwrap();
+            let c_i = *w_i.first().unwrap();
+            if c_p != c_i {
+                println!("No");
+                return;
+            }
         }
-        p = w_i;
+        if !used.insert(w_i.clone()) {
+            println!("No");
+            return;
+        }
+        prev = Some(w_i);
     }
-    let ans = ok;
-    println!("{}", if ans { "Yes" } else { "No" });
+    println!("Yes");
 }
