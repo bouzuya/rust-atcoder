@@ -1,11 +1,12 @@
 use proconio::input;
-use std::cmp::{max, min};
 
 fn main() {
     input! {
-        x: i64,
-        y: i64,
+        x: usize,
+        y: usize,
     };
-    let ans = max(x, y) < min(x, y) + 3;
+    let max = x.max(y);
+    let min = x.min(y);
+    let ans = min + 3 > max;
     println!("{}", if ans { "Yes" } else { "No" });
 }

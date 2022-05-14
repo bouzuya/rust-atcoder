@@ -1,28 +1,11 @@
-// 解説 AC
-use proconio::input;
-use proconio::marker::Usize1;
-use std::cmp::min;
+use proconio::{input, marker::Usize1};
 
-macro_rules! chmax {
-    ($max_v: expr, $v: expr) => {
-        if $v > $max_v {
-            $max_v = $v;
-            true
-        } else {
-            false
-        }
-    };
-}
-
-macro_rules! chmin {
-    ($min_v: expr, $v: expr) => {
-        if $v < $min_v {
-            $min_v = $v;
-            true
-        } else {
-            false
-        }
-    };
+fn adjacency_list(n: usize, uv: &[(usize, usize)]) -> Vec<Vec<usize>> {
+    let mut e = vec![vec![]; n];
+    for (u, v) in uv.iter().copied() {
+        e[u].push(v);
+    }
+    e
 }
 
 fn main() {
@@ -32,19 +15,17 @@ fn main() {
         a: [i64; n],
         xy: [(Usize1, Usize1); m],
     };
-    let mut e = vec![vec![]; n];
-    for &(x_i, y_i) in xy.iter() {
-        e[x_i].push(y_i);
-    }
-
-    let inf = 1_000_000_000_000;
-    let mut dp = vec![inf; n];
-    let mut ans = -inf;
+    let edges = adjacency_list(n, &xy);
+    let inf = 1_i64 << 60;
+    let mut min = vec![inf; n];
     for u in 0..n {
-        chmax!(ans, a[u] - dp[u]);
-        for &v in e[u].iter() {
-            chmin!(dp[v], min(a[u], dp[u]));
+        for v in edges[u].iter().copied() {
+            min[v] = min[v].min(min[u].min(a[u]));
         }
+    }
+    let mut ans = -inf;
+    for v in 0..n {
+        ans = ans.max(a[v] - min[v]);
     }
     println!("{}", ans);
 }

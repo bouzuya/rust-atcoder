@@ -3,21 +3,12 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        a: [i64; 1 << n],
+        a: [usize; 2_usize.pow(n as u32)],
     };
-    let mut p = (0..1 << n).collect::<Vec<usize>>();
-    for i in 1..n {
-        let mut next = vec![];
-        for j in 1..=1 << (n - i) {
-            let x = if a[p[2 * j - 2]] < a[p[2 * j - 1]] {
-                p[2 * j - 1]
-            } else {
-                p[2 * j - 2]
-            };
-            next.push(x);
-        }
-        p = next;
-    }
-    let ans = if a[p[0]] < a[p[1]] { p[0] } else { p[1] };
-    println!("{}", ans + 1);
+    let n2 = 2_usize.pow(n as u32);
+    let v0 = *a[0..n2 / 2].iter().max().unwrap();
+    let v1 = *a[n2 / 2..n2].iter().max().unwrap();
+    let v = v0.min(v1);
+    let ans = a.iter().copied().position(|a_i| a_i == v).unwrap() + 1;
+    println!("{}", ans);
 }
