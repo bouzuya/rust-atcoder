@@ -8,10 +8,8 @@ fn main() {
     };
     let ans = if (x - a).abs() < (x - b).abs() {
         "A"
-    } else if (x - a).abs() > (x - b).abs() {
-        "B"
     } else {
-        unreachable!();
+        "B"
     };
     println!("{}", ans);
 }

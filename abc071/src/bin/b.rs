@@ -1,19 +1,17 @@
-use proconio::input;
-use proconio::marker::Bytes;
+use proconio::{input, marker::Chars};
+use std::collections::BTreeSet;
 
 fn main() {
     input! {
-        s: Bytes,
+        s: Chars,
     };
-    let set = s
-        .iter()
-        .map(|&c| c)
-        .collect::<std::collections::BTreeSet<u8>>();
-    for c in (0..26_u8).map(|i| 'a' as u8 + i) {
+    let set = s.into_iter().collect::<BTreeSet<_>>();
+    for i in 0..26 {
+        let c = (b'a' + i) as char;
         if !set.contains(&c) {
-            println!("{}", c as char);
+            println!("{}", c);
             return;
         }
     }
-    println!("{}", "None");
+    println!("None");
 }

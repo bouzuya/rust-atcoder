@@ -1,57 +1,47 @@
-use proconio::input;
-use proconio::marker::Chars;
-
-#[derive(Clone, Copy, Eq, PartialEq)]
-enum P {
-    // a
-    // a
-    V,
-    // aa
-    // bb
-    H,
-}
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         n: usize,
-        s1: Chars,
-        s2: Chars,
+        s_1: Chars,
+        s_2: Chars,
     };
-
-    let mut p = vec![];
-    let mut index = 0;
-    while index < n {
-        if s1[index] == s2[index] {
-            p.push(P::V);
-            index += 1;
+    let p = 1_000_000_007_usize;
+    let mut count = 1_usize;
+    let mut v; // true: |, false: =
+    let mut i = 0;
+    if s_1[i] == s_2[i] {
+        count *= 3;
+        v = true;
+        i += 1;
+    } else {
+        count *= 6;
+        v = false;
+        i += 2;
+    }
+    while i < n {
+        if s_1[i] == s_2[i] {
+            if v {
+                count *= 2;
+                count %= p;
+            } else {
+                count *= 1;
+                count %= p;
+            }
+            v = true;
+            i += 1;
         } else {
-            p.push(P::H);
-            index += 2;
+            if v {
+                count *= 2;
+                count %= p;
+            } else {
+                count *= 3;
+                count %= p;
+            }
+            v = false;
+            i += 2;
         }
     }
-
-    let modp = 1_000_000_007;
-    let mut ans = match p[0] {
-        P::V => 3_i64,
-        P::H => 6_i64,
-    };
-    for w in p.windows(2) {
-        match w {
-            [P::H, P::H] => {
-                ans *= 3;
-                ans %= modp;
-            }
-            [P::H, P::V] => {}
-            [P::V, P::H] => {
-                ans *= 2;
-                ans %= modp;
-            }
-            [P::V, P::V] => {
-                ans *= 2;
-                ans %= modp;
-            }
-            _ => unreachable!(),
-        }
-    }
+    let ans = count;
     println!("{}", ans);
 }
