@@ -2,11 +2,11 @@ use proconio::input;
 
 fn main() {
     input! {
+        capital_h: usize,
+        capital_w: usize,
         h: usize,
         w: usize,
-        h_h: usize,
-        w_w: usize,
     };
-    let ans = (h - h_h) * (w - w_w);
+    let ans = (capital_h - h) * (capital_w - w);
     println!("{}", ans);
 }

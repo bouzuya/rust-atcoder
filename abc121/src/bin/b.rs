@@ -6,13 +6,14 @@ fn main() {
         m: usize,
         c: i64,
         b: [i64; m],
-        a: [[i64; m]; n],
-    };
+        a: [[i64; m]; n]
+    }
     let ans = a
-        .iter()
+        .into_iter()
         .filter(|a_i| {
             a_i.iter()
-                .zip(b.iter())
+                .copied()
+                .zip(b.iter().copied())
                 .map(|(a_ij, b_j)| a_ij * b_j)
                 .sum::<i64>()
                 + c

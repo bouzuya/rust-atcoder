@@ -1,23 +1,26 @@
 use proconio::input;
 
-// F(0, n)
-fn f(n: u64) -> u64 {
-    if n % 2 == 0 {
-        if (n / 2) % 2 == 0 {
-            n ^ 0
-        } else {
-            n ^ 1
-        }
-    } else {
-        f(n - 1) ^ n
-    }
-}
-
 fn main() {
     input! {
-        a: u64,
-        b: u64,
+        a: usize,
+        b: usize,
     };
-    let ans = if a == 0 { b } else { f(a - 1) ^ f(b) };
+    let mut bits = vec![];
+    for i in 0..50 {
+        let cycle_half = 1_usize << i;
+        let cycle = cycle_half << 1;
+        let f = |x: usize| -> usize {
+            let p = (x + 1) / cycle;
+            let r = (x + 1) % cycle;
+            p * cycle_half + r.saturating_sub(cycle_half)
+        };
+        bits.push((f(b) - f(a.saturating_sub(1))) % 2);
+    }
+    bits.reverse();
+    let mut ans = 0_usize;
+    for b in bits {
+        ans <<= 1;
+        ans += b;
+    }
     println!("{}", ans);
 }
