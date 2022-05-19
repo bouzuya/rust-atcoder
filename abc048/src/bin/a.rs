@@ -1,12 +1,10 @@
 use proconio::input;
-use proconio::marker::Chars;
 
 fn main() {
     input! {
-        _: Chars,
-        s: Chars,
-        _: Chars,
+        _atcoder: String,
+        s: String,
+        _contest: String,
     };
-    let ans = format!("A{}C", s[0]);
-    println!("{}", ans);
+    println!("A{}C", s.chars().next().unwrap());
 }

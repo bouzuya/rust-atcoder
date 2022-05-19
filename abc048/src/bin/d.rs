@@ -4,6 +4,12 @@ fn main() {
     input! {
         s: Chars,
     };
-    let ans = (s[0] == s[s.len() - 1]) == (s.len() % 2 == 0);
+    let n = s.len();
+    let ans = match (s[0] == s[n - 1], n % 2 == 0) {
+        (true, true) => true,
+        (true, false) => false,
+        (false, true) => false,
+        (false, false) => true,
+    };
     println!("{}", if ans { "First" } else { "Second" });
 }

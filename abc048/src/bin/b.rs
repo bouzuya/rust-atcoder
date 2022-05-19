@@ -6,8 +6,8 @@ fn main() {
         b: i64,
         x: i64,
     };
-    let x_a = if a == 0 { -1 } else { (a - 1) / x };
-    let x_b = b / x;
-    let ans = x_b - x_a;
+    let c_b = b / x;
+    let c_a = a.saturating_sub(1) / x;
+    let ans = c_b - if a == 0 { -1 } else { c_a };
     println!("{}", ans);
 }
