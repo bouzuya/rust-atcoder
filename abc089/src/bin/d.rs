@@ -1,29 +1,45 @@
 use proconio::input;
-use proconio::marker::Usize1;
 
 fn main() {
     input! {
         h: usize,
         w: usize,
         d: usize,
-        a: [[Usize1; w]; h],
+        a: [[usize; w]; h],
         q: usize,
-        lr: [(Usize1, Usize1); q],
+        lr: [(usize, usize); q],
     };
-    let mut p = vec![(0, 0); h * w];
+
+    let mut pos = vec![(0, 0); h * w + 1];
     for i in 0..h {
         for j in 0..w {
-            p[a[i][j]] = (i, j);
+            pos[a[i][j]] = (i, j);
         }
     }
-    let mut c = vec![0; h * w];
-    for i in 0..h * w - d {
-        let (l_x, l_y) = p[i];
-        let (r_x, r_y) = p[i + d];
-        c[i + d] = c[i] + (r_x as i64 - l_x as i64).abs() + (r_y as i64 - l_y as i64).abs();
+
+    let mut mp = vec![0; h * w + 1];
+    for i in d..=h * w {
+        let (x_l, y_l) = pos[i - d];
+        let (x_r, y_r) = pos[i];
+        let f = |a: usize, b: usize| -> usize {
+            if a > b {
+                a - b
+            } else {
+                b - a
+            }
+        };
+        let d_d = f(x_r, x_l) + f(y_r, y_l);
+        mp[i] += mp[i - d] + d_d;
     }
-    for (l_i, r_i) in lr {
-        let ans = c[r_i] - c[l_i];
-        println!("{}", ans);
+
+    let mut cumsum = vec![0_usize; h * w + 1];
+    for i in 1..=d {
+        for j in (i..=h * w).step_by(d) {
+            cumsum[j] += mp[j];
+        }
+    }
+
+    for (l, r) in lr {
+        println!("{}", cumsum[r] - cumsum[l]);
     }
 }
