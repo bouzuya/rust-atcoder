@@ -17,18 +17,6 @@ fn main() {
         }))
         .collect::<Vec<usize>>();
 
-    // let mut p = a[0];
-    // let mut d = vec![];
-    // for a_i in a.iter().copied() {
-    //     d.push(a_i - p);
-    //     p = a_i;
-    // }
-
-    // let mut c = d.clone();
-    // for i in 1..n {
-    //     c[i] += c[i - 1];
-    // }
-
     for x_i in x {
         let c_l = a.lower_bound(&x_i);
         let c_r = n - a.upper_bound(&x_i);
