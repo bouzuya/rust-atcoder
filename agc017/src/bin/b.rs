@@ -1,11 +1,14 @@
 use proconio::input;
-use proconio::marker::Usize1;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        n: i64,
+        a: i64,
+        b: i64,
+        c: i64,
+        d: i64,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    let ans =
+        (0..n).any(|m| ((c * (n - 1 - m) - d * m)..=(d * (n - 1 - m) - c * m)).contains(&(b - a)));
+    println!("{}", if ans { "YES" } else { "NO" });
 }
