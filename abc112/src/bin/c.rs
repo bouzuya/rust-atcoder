@@ -1,5 +1,3 @@
-use std::cmp::max;
-
 use proconio::input;
 
 fn main() {
@@ -7,31 +5,22 @@ fn main() {
         n: usize,
         xyh: [(i64, i64, i64); n],
     };
-    let (x, y, h) = {
-        let mut p = (0, 0, 0);
-        for &(x_i, y_i, h_i) in xyh.iter() {
-            if h_i == 0 {
-                continue;
-            }
-            p = (x_i, y_i, h_i);
-            break;
-        }
-        p
-    };
-    for cx in 0..=100 {
-        for cy in 0..=100 {
-            let ch = (x - cx).abs() + (y - cy).abs() + h;
+    let (x_i, y_i, h_i) = xyh.iter().copied().find(|&(_, _, h_i)| h_i > 0).unwrap();
+    for c_x in 0..=100 {
+        for c_y in 0..=100 {
+            let h = h_i + (x_i - c_x).abs() + (y_i - c_y).abs();
             let mut ok = true;
-            for &(x_i, y_i, h_i) in xyh.iter() {
-                if max(ch - (x_i - cx).abs() - (y_i - cy).abs(), 0) != h_i {
+            for (x_j, y_j, h_j) in xyh.iter().copied() {
+                if (h - (x_j - c_x).abs() - (y_j - c_y).abs()).max(0) != h_j {
                     ok = false;
                     break;
                 }
             }
             if ok {
-                println!("{} {} {}", cx, cy, ch);
+                println!("{} {} {}", c_x, c_y, h);
                 return;
             }
         }
     }
+    unreachable!();
 }
