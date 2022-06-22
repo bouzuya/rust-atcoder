@@ -1,11 +1,16 @@
 use proconio::input;
-use proconio::marker::Usize1;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        m: usize,
+        dc: [(usize, usize); m],
     };
-    let ans = n - a.len();
+    let d = dc.iter().copied().map(|(_, c_i)| c_i).sum::<usize>();
+    let s = dc
+        .iter()
+        .copied()
+        .map(|(d_i, c_i)| d_i * c_i)
+        .sum::<usize>();
+    let ans = d.saturating_sub(1) + s.saturating_sub(1) / 9;
     println!("{}", ans);
 }
