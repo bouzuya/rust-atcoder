@@ -6,7 +6,6 @@ fn main() {
         a: usize,
         b: usize,
     };
-    // b / k * k は b 以下で最大の k の倍数
-    let ans = if a <= b / k * k { "OK" } else { "NG" };
-    println!("{}", ans);
+    let ans = (a..=b).any(|x| x % k == 0);
+    println!("{}", if ans { "OK" } else { "NG" });
 }

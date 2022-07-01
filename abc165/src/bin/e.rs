@@ -2,20 +2,20 @@ use proconio::input;
 
 fn main() {
     input! {
-        _: usize,
+        _n: usize,
         m: usize,
     };
     let mut ans = vec![];
-    let es = m / 2; // 偶数個ズレた組の部屋の個数 (切り捨て)
-    for i in 1..=es {
-        ans.push((i, 2 * es + 1 - (i - 1)));
+    let mo = m / 2;
+    let me = m - mo;
+    for i in 0..me {
+        ans.push((i, 2 * me - 1 - i));
     }
-    let os = (m + (2 - 1)) / 2; // 奇数個ズレた組の部屋の個数 (切り上げ)
-    for i in 1..=os {
-        let b = 2 * es + 1;
-        ans.push((b + i, b + 2 * os - (i - 1)));
+    let offset = 2 * me;
+    for i in 0..mo {
+        ans.push((offset + i, offset + 2 * mo + 1 - 1 - i));
     }
-    for (l, r) in ans {
-        println!("{} {}", l, r);
+    for (a, b) in ans {
+        println!("{} {}", a + 1, b + 1);
     }
 }

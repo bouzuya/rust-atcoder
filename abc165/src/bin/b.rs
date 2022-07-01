@@ -2,13 +2,14 @@ use proconio::input;
 
 fn main() {
     input! {
-        x: u64
+        x: usize,
     };
-    let mut ans = 0;
-    let mut n = 100;
-    while n < x {
-        ans += 1;
-        n += n / 100;
+    let mut y = 100;
+    for i in 1.. {
+        y += y / 100;
+        if y >= x {
+            println!("{}", i);
+            break;
+        }
     }
-    println!("{}", ans);
 }

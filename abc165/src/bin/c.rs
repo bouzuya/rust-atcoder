@@ -1,27 +1,30 @@
-use proconio::input;
-use proconio::marker::Usize1;
+use proconio::{input, marker::Usize1};
 
 fn dfs(
-    ais: &mut Vec<usize>,
+    res: &mut usize,
+    capital_a: &mut Vec<usize>,
     n: usize,
     m: usize,
-    abcds: &Vec<(usize, usize, usize, usize)>,
-) -> usize {
-    if ais.len() == n {
-        return abcds
-            .iter()
-            .map(|&(a, b, c, d)| if ais[b] - ais[a] == c { d } else { 0 })
-            .sum();
+    q: usize,
+    abcd: &[(usize, usize, usize, usize)],
+    i: usize,
+) {
+    if capital_a.len() == n {
+        let mut r = 0;
+        for (a, b, c, d) in abcd.iter().copied() {
+            if capital_a[b] - capital_a[a] == c {
+                r += d;
+            }
+        }
+        *res = (*res).max(r);
+        return;
     }
 
-    let &ai = ais.last().unwrap_or(&1);
-    let mut res = 0;
-    for aj in ai..=m {
-        ais.push(aj);
-        res = std::cmp::max(res, dfs(ais, n, m, abcds));
-        ais.pop();
+    for j in i..=m {
+        capital_a.push(j);
+        dfs(res, capital_a, n, m, q, abcd, j);
+        capital_a.pop();
     }
-    res
 }
 
 fn main() {
@@ -29,10 +32,10 @@ fn main() {
         n: usize,
         m: usize,
         q: usize,
-        abcds: [(Usize1, Usize1, usize, usize); q],
+        abcd: [(Usize1, Usize1, usize, usize); q]
     };
-
-    let mut ais = vec![];
-    let ans = dfs(&mut ais, n, m, &abcds);
+    let mut ans = 0;
+    let mut capital_a = vec![];
+    dfs(&mut ans, &mut capital_a, n, m, q, &abcd, 1);
     println!("{}", ans);
 }
