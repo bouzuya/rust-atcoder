@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::HashMap;
 
 use proconio::{input, marker::Usize1};
 
@@ -10,60 +10,44 @@ fn main() {
         w: [usize; n],
         k: [Usize1; q],
     };
+
     let sum_w = w.iter().sum::<usize>();
-    let (offset_c, x) = if sum_w == x {
-        println!("{}", n);
-        return;
-    } else if sum_w < x {
-        ((x / sum_w) * n, x % sum_w)
-    } else {
-        (0, x)
-    };
-    let w2 = w
-        .iter()
-        .copied()
-        .chain(w.iter().copied())
-        .collect::<Vec<usize>>();
-    let mut y = vec![0; n];
-    let mut r = 0;
-    let mut s = 0_usize;
-    for l in 0..n {
-        while (r < 2 * n) && (s + w2[r] < x) {
-            s += w2[r];
-            r += 1;
+    let w = w.repeat(2);
+    let b = (x / sum_w) * n;
+    let x = x % sum_w;
+    let mut next = vec![0; n];
+    let mut sum = 0;
+    let mut j = 0;
+    for i in 0..n {
+        while sum < x {
+            sum += w[j];
+            j += 1;
         }
-        y[l] = offset_c + r - l + 1;
-        if r == l {
-            r += 1;
-        } else {
-            s -= w2[l];
-        }
+        next[i] = j;
+        sum -= w[i];
     }
 
-    // FIXME
-    // let mut set = HashSet::new();
-    // let prev = 0;
-    // let mut start = 0;
-    // let mut index = y[prev % n];
-    // set.insert(prev);
-    // let mut z = vec![prev];
-    // for _ in 0..n {
-    //     let prev = index;
-    //     index = (index + y[prev % n]) % n;
-    //     if set.contains(&index) {
-    //         start = z.iter().position(|z_i| *z_i == prev).unwrap();
-    //         break;
-    //     } else {
-    //         set.insert(index);
-    //         z.push(prev);
-    //     }
-    // }
-    // let cycle = z.len() - start;
-    // for k_i in k {
-    //     if k_i <= start {
-    //         println!("{}", y[z[k_i % z.len()]]);
-    //     } else {
-    //         println!("{}", y[z[(start + (k_i - start) % cycle) % z.len()]]);
-    //     }
-    // }
+    let mut boxes = vec![];
+    let mut index = 0;
+    let mut map = HashMap::new();
+    let (head, cycle) = loop {
+        match map.insert(index, boxes.len()) {
+            Some(prev) => {
+                break boxes.split_at(prev);
+            }
+            None => {
+                boxes.push(next[index] - index);
+                index = next[index] % n;
+            }
+        }
+    };
+
+    for k_i in k {
+        let ans = if k_i < head.len() {
+            head[k_i]
+        } else {
+            cycle[(k_i - head.len()) % cycle.len()]
+        } + b;
+        println!("{}", ans);
+    }
 }
