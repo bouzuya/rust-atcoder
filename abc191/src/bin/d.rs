@@ -25,21 +25,21 @@ fn main() {
     };
 
     let p = 10_000_i128;
-    let cx = f(x);
-    let cy = f(y);
+    let cx = f(x) + 10_000_000_000;
+    let cy = f(y) + 10_000_000_000;
     let r = f(r);
 
-    let c = |n: i128, d: i128| -> i128 { (n + if n > 0 { d - 1 } else { 0 }) / d };
-    let f = |n: i128, d: i128| -> i128 { (n - if n > 0 { 0 } else { d - 1 }) / d };
+    // let c = |n: i128, d: i128| -> i128 { (n + if n > 0 { d - 1 } else { 0 }) / d };
+    // let f = |n: i128, d: i128| -> i128 { (n - if n > 0 { 0 } else { d - 1 }) / d };
 
-    let left = c(cx - r, p);
-    let right = f(cx + r, p);
+    let left = (cx - r + p - 1) / p;
+    let right = (cx + r) / p;
     let mut ans = 0;
     for x in left..=right {
         let dx = cx - x * p;
         let dy = (r.pow(2) - dx.pow(2)).sqrt();
-        let top = f(cy + dy, p);
-        let bottom = c(cy - dy, p);
+        let top = (cy + dy) / p;
+        let bottom = (cy - dy + p - 1) / p;
         let count = top - bottom + 1;
         ans += count;
     }
