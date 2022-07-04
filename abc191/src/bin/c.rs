@@ -1,43 +1,41 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         h: usize,
         w: usize,
-        s: [Chars; h],
+        s: [Chars; h]
     };
-
-    let mut tbl = vec![vec![false; w + 1]; h + 1];
-    for i in 1..h {
-        for j in 1..w {
-            if s[i - 1][j - 1] == '#'
-                || s[i - 1][j + 0] == '#'
-                || s[i + 0][j - 1] == '#'
-                || s[i + 0][j + 0] == '#'
-            {
-                tbl[i][j] = true;
-            }
-        }
-    }
-
     let mut ans = 0;
-    for i in 1..h {
-        for j in 1..w {
-            if !tbl[i][j] {
+    for i in 0..h {
+        for j in 0..w {
+            if s[i][j] != '.' {
                 continue;
             }
-            let count = vec![
-                s[i - 1][j - 1] == '#',
-                s[i - 1][j + 0] == '#',
-                s[i + 0][j - 1] == '#',
-                s[i + 0][j + 0] == '#',
+            let e = vec![
+                (-1, 0),
+                (-1, 1),
+                (0, 1),
+                (1, 1),
+                (1, 0),
+                (1, -1),
+                (0, -1),
+                (-1, -1),
             ]
-            .iter()
-            .filter(|&&x| x)
-            .count();
-            if count % 2 != 0 {
-                ans += 1;
+            .into_iter()
+            .map(|(dr, dc)| {
+                let (nr, nc) = (i as i64 + dr, j as i64 + dc);
+                if !(0..h as i64).contains(&nr) || !(0..w as i64).contains(&nc) {
+                    return false;
+                }
+                let (nr, nc) = (nr as usize, nc as usize);
+                s[nr][nc] == '#'
+            })
+            .collect::<Vec<bool>>();
+            for i in (1..8).step_by(2) {
+                if (!e[i - 1] && e[i] && !e[(i + 1) % 8]) || (e[i - 1] && e[i] && e[(i + 1) % 8]) {
+                    ans += 1;
+                }
             }
         }
     }

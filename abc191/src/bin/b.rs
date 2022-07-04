@@ -3,16 +3,15 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        x: i64,
-        a: [i64; n],
+        x: usize,
+        a: [usize; n],
     };
-    let mut first = true;
-    for &a_i in a.iter() {
-        if a_i == x {
-            continue;
-        }
-        print!("{}{}", if first { "" } else { " " }, a_i);
-        first = false;
-    }
-    println!();
+    println!(
+        "{}",
+        a.into_iter()
+            .filter(|a_i| a_i != &x)
+            .map(|a_i| a_i.to_string())
+            .collect::<Vec<String>>()
+            .join(" ")
+    );
 }
