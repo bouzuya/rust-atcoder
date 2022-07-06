@@ -1,4 +1,4 @@
-use std::collections::VecDeque;
+use std::collections::BinaryHeap;
 
 use proconio::{input, marker::Usize1};
 
@@ -6,35 +6,31 @@ fn main() {
     input! {
         n: usize,
     };
-    let mut tech = vec![];
+    let mut t = vec![];
+    let mut a = vec![];
     for _ in 0..n {
         input! {
-            t: usize,
-            k: usize,
-            a: [Usize1; k],
-        }
-        tech.push((t, a));
+            t_i: usize,
+            k_i: usize,
+            a_i: [Usize1; k_i]
+        };
+        t.push(t_i);
+        a.push(a_i);
     }
 
-    let mut sum = 0_usize;
-    let mut h = vec![false; n];
-    let mut q = VecDeque::new();
-    h[n - 1] = true;
-    sum += tech[n - 1].0;
-    for v in tech[n - 1].1.iter().copied() {
-        q.push_back(v);
-    }
-    while let Some(x) = q.pop_front() {
-        if h[x] {
-            continue;
-        }
-        h[x] = true;
-        sum += tech[x].0;
-
-        for v in tech[x].1.iter().copied() {
-            if !h[v] {
-                q.push_back(v);
+    let mut pq = BinaryHeap::new();
+    let mut used = vec![false; n];
+    let mut sum = t[n - 1];
+    used[n - 1] = true;
+    pq.push(n - 1);
+    while let Some(i) = pq.pop() {
+        for j in a[i].iter().copied() {
+            if used[j] {
+                continue;
             }
+            sum += t[j];
+            used[j] = true;
+            pq.push(j);
         }
     }
 

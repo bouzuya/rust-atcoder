@@ -10,9 +10,9 @@ fn main() {
     for _ in 0..n {
         input! {
             l: usize,
-            a: [usize; l],
-        };
-        set.insert(a);
+            a_i: [usize; l]
+        }
+        set.insert(a_i);
     }
     let ans = set.len();
     println!("{}", ans);

@@ -1,15 +1,9 @@
-use proconio::{input, marker::Chars};
+use proconio::input;
 
 fn main() {
     input! {
-        x: Chars,
+        x: f64,
     };
-    let x = x
-        .into_iter()
-        .filter(|&c| c != '.')
-        .collect::<String>()
-        .parse::<usize>()
-        .unwrap();
-    let ans = (x + 500) / 1000;
+    let ans = x.round();
     println!("{}", ans);
 }
