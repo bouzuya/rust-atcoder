@@ -2,17 +2,22 @@ use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        s: Chars
+        s: Chars,
     };
-    let ans = s.iter().filter(|&&c| c == 'R').count();
-    let ans = if ans != 2 {
-        ans
-    } else {
+    let mut count = 0;
+    for s_i in s.iter().copied() {
+        if s_i == 'R' {
+            count += 1;
+        }
+    }
+    let ans = if count == 2 {
         if s[1] == 'R' {
             2
         } else {
             1
         }
+    } else {
+        count
     };
     println!("{}", ans);
 }

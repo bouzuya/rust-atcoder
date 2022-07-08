@@ -7,16 +7,14 @@ fn main() {
         d: i64,
     };
     let x = x.abs();
-    let k1 = x / d;
-    if k <= k1 {
-        println!("{}", x - d * k);
+    let count = x / d;
+    if k <= count {
+        println!("{}", x - k * d);
         return;
     }
-    let ans = (if (k - k1) % 2 == 0 {
-        x - d * k1
-    } else {
-        x - d * (k1 + 1)
-    })
-    .abs();
+
+    let x = x - count * d;
+    let k = k - count;
+    let ans = (x - (k % 2) * d).abs();
     println!("{}", ans);
 }
