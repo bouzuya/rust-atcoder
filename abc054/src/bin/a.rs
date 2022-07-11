@@ -1,22 +1,16 @@
 use proconio::input;
-use proconio::marker::Usize1;
 
 fn main() {
     input! {
-        a: Usize1,
-        b: Usize1,
+        a: usize,
+        b: usize,
     };
-    let s = vec![13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    let s_a = s[a];
-    let s_b = s[b];
-    let ans = if s_a == s_b {
-        "Draw"
-    } else if s_a > s_b {
-        "Alice"
-    } else if s_b > s_a {
-        "Bob"
-    } else {
-        unreachable!()
+    let a = if a == 1 { 14 } else { a };
+    let b = if b == 1 { 14 } else { b };
+    let ans = match a.cmp(&b) {
+        std::cmp::Ordering::Less => "Bob",
+        std::cmp::Ordering::Equal => "Draw",
+        std::cmp::Ordering::Greater => "Alice",
     };
     println!("{}", ans);
 }

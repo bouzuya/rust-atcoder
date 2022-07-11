@@ -1,9 +1,12 @@
 use proconio::input;
 
 macro_rules! chmin {
-    ($e: expr, $v: expr) => {
-        if $v < $e {
-            $e = $v;
+    ($min_v: expr, $v: expr) => {
+        if $v < $min_v {
+            $min_v = $v;
+            true
+        } else {
+            false
         }
     };
 }
@@ -11,36 +14,32 @@ macro_rules! chmin {
 fn main() {
     input! {
         n: usize,
-        m_a: usize,
-        m_b: usize,
+        m: (usize, usize),
         abc: [(usize, usize, usize); n],
     };
-    let inf = 100 * n + 1;
-    let max_ab = 10 * n;
-    let mut dp = vec![vec![vec![inf; max_ab + 1]; max_ab + 1]; n + 1];
-    dp[0][0][0] = 0;
-    for (i, &(a_i, b_i, c_i)) in abc.iter().enumerate() {
-        for j in 0..=max_ab {
-            for k in 0..=max_ab {
-                chmin!(dp[i + 1][j][k], dp[i][j][k]);
-                if j + a_i <= max_ab && k + b_i <= max_ab {
-                    chmin!(dp[i + 1][j + a_i][k + b_i], dp[i][j][k] + c_i);
+
+    let inf = 1 << 40;
+    let mut dp = vec![vec![inf; 400 + 1]; 400 + 1];
+    dp[0][0] = 0;
+    for (a_i, b_i, c_i) in abc.iter().copied() {
+        let mut tmp = vec![vec![inf; 400 + 1]; 400 + 1];
+        for i in 0..=400 {
+            for j in 0..=400 {
+                chmin!(tmp[i][j], dp[i][j]);
+                if i + a_i <= 400 && j + b_i <= 400 {
+                    chmin!(tmp[i + a_i][j + b_i], dp[i][j] + c_i);
                 }
             }
         }
+        dp = tmp;
     }
     let mut ans = inf;
-    for i in 0..=max_ab {
-        for j in 0..=max_ab {
-            if i < m_a || j < m_b || i * m_b != j * m_a {
-                continue;
+    for i in 0..=400 {
+        for j in 0..=400 {
+            if ((i != 0) || (j != 0)) && (i * m.1 == j * m.0) {
+                chmin!(ans, dp[i][j]);
             }
-            ans = std::cmp::min(ans, dp[n][i][j]);
         }
     }
-    if ans == inf {
-        println!("-1");
-    } else {
-        println!("{}", ans);
-    }
+    println!("{}", if ans == inf { -1 } else { ans as i64 });
 }

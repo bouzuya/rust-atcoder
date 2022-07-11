@@ -1,14 +1,35 @@
-use proconio::input;
-use proconio::marker::Usize1;
-use superslice::*;
+use proconio::{input, marker::Usize1};
 
-fn adjacency_list(n: usize, uv: &Vec<(usize, usize)>) -> Vec<Vec<usize>> {
+fn adjacency_list(n: usize, uv: &[(usize, usize)]) -> Vec<Vec<usize>> {
     let mut e = vec![vec![]; n];
-    for &(u, v) in uv.iter() {
+    for (u, v) in uv.iter().copied() {
         e[u].push(v);
         e[v].push(u);
     }
     e
+}
+
+fn dfs(
+    ans: &mut usize,
+    used: &mut Vec<bool>,
+    edges: &[Vec<usize>],
+    len: usize,
+    u: usize,
+    p: usize,
+) {
+    if len == used.len() {
+        *ans += 1;
+        return;
+    }
+
+    for v in edges[u].iter().copied() {
+        if v == p || used[v] {
+            continue;
+        }
+        used[v] = true;
+        dfs(ans, used, edges, len + 1, v, u);
+        used[v] = false;
+    }
 }
 
 fn main() {
@@ -17,26 +38,11 @@ fn main() {
         m: usize,
         ab: [(Usize1, Usize1); m],
     };
-    let e = adjacency_list(n, &ab);
-    let mut vs = (1..n).collect::<Vec<usize>>();
-    let mut count = 0;
-    loop {
-        let mut is_ok = true;
-        let mut u = 0;
-        for &v_i in vs.iter() {
-            if !e[u].contains(&v_i) {
-                is_ok = false;
-                break;
-            }
-            u = v_i;
-        }
-        if is_ok {
-            count += 1;
-        }
-        if !vs.next_permutation() {
-            break;
-        }
-    }
-    let ans = count;
+
+    let edges = adjacency_list(n, &ab);
+    let mut ans = 0;
+    let mut used = vec![false; n];
+    used[0] = true;
+    dfs(&mut ans, &mut used, &edges, 1, 0, 0);
     println!("{}", ans);
 }

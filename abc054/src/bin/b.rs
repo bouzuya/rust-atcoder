@@ -1,5 +1,4 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
@@ -8,23 +7,21 @@ fn main() {
         a: [Chars; n],
         b: [Chars; m],
     };
-    let mut ans = false;
-    for y_t in 0..n - m + 1 {
-        for x_l in 0..n - m + 1 {
-            let mut eq = true;
-            for y in 0..m {
-                for x in 0..m {
-                    if a[y_t + y][x_l + x] != b[y][x] {
-                        eq = false;
-                        break;
+    for oy in 0..n - m + 1 {
+        for ox in 0..n - m + 1 {
+            let mut ok = true;
+            for i in 0..m {
+                for j in 0..m {
+                    if a[oy + i][ox + j] != b[i][j] {
+                        ok = false;
                     }
                 }
             }
-            if eq {
-                ans = eq;
-                break;
+            if ok {
+                println!("Yes");
+                return;
             }
         }
     }
-    println!("{}", if ans { "Yes" } else { "No" });
+    println!("No");
 }
