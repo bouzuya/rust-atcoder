@@ -1,63 +1,65 @@
-use proconio::input;
-use proconio::marker::{Chars, Usize1};
+use std::collections::VecDeque;
+
+use proconio::{
+    input,
+    marker::{Chars, Usize1},
+};
 
 fn main() {
     input! {
         h: usize,
         w: usize,
-        c_h: Usize1,
-        c_w: Usize1,
-        d_h: Usize1,
-        d_w: Usize1,
-        s: [Chars; h]
+        c: (Usize1, Usize1),
+        d: (Usize1, Usize1),
+        s: [Chars; h],
     };
-
-    let inf = 1_000_000_000_001_i64;
-    let mut d = vec![vec![inf; w]; h];
-    let mut pq = std::collections::BinaryHeap::new();
-    pq.push(std::cmp::Reverse((0, c_h, c_w)));
-    d[c_h][c_w] = 0;
-    while let Some(std::cmp::Reverse((t_d, t_h, t_w))) = pq.pop() {
-        if d[t_h][t_w] < t_d {
+    let inf = h * w + 1;
+    let mut dist = vec![vec![inf; w]; h];
+    let mut deque = VecDeque::new();
+    deque.push_back((c.0, c.1, 0));
+    while let Some((r, c, d)) = deque.pop_front() {
+        if dist[r][c] != inf {
             continue;
         }
+        dist[r][c] = d;
 
-        let dhw = vec![(-1, 0), (0, -1), (0, 1), (1, 0)];
-        for (d_h, d_w) in dhw.iter() {
-            let u_h = t_h as i64 + d_h;
-            let u_w = t_w as i64 + d_w;
-            if (0..h as i64).contains(&u_h) && (0..w as i64).contains(&u_w) {
-                let u_h = u_h as usize;
-                let u_w = u_w as usize;
-                let u_d = t_d;
-                if s[u_h][u_w] == '.' && d[u_h][u_w] > u_d {
-                    d[u_h][u_w] = u_d;
-                    pq.push(std::cmp::Reverse((u_d, u_h, u_w)));
-                }
+        let dir = vec![(-1, 0), (0, -1), (0, 1), (1, 0)];
+        for (dr, dc) in dir {
+            let (nr, nc) = (r as i64 + dr, c as i64 + dc);
+            if !(0..h as i64).contains(&nr) || !(0..w as i64).contains(&nc) {
+                continue;
             }
+            let (nr, nc) = (nr as usize, nc as usize);
+            if s[nr][nc] != '.' {
+                continue;
+            }
+            if dist[nr][nc] != inf {
+                continue;
+            }
+            deque.push_front((nr, nc, dist[r][c]));
         }
-        {
-            let t_h = t_h as i64;
-            let t_w = t_w as i64;
-            for u_h in t_h - 2..=t_h + 2 {
-                for u_w in t_w - 2..=t_w + 2 {
-                    let u_d = t_d + 1;
-                    if (0..h as i64).contains(&u_h) && (0..w as i64).contains(&u_w) {
-                        let u_h = u_h as usize;
-                        let u_w = u_w as usize;
-                        if s[u_h][u_w] == '.' && d[u_h][u_w] > u_d {
-                            d[u_h][u_w] = u_d;
-                            pq.push(std::cmp::Reverse((u_d, u_h, u_w)));
-                        }
-                    }
+
+        for dr in -2..=2 {
+            for dc in -2..=2 {
+                let (nr, nc) = (r as i64 + dr, c as i64 + dc);
+                if !(0..h as i64).contains(&nr) || !(0..w as i64).contains(&nc) {
+                    continue;
                 }
+                let (nr, nc) = (nr as usize, nc as usize);
+                if s[nr][nc] != '.' {
+                    continue;
+                }
+                if dist[nr][nc] != inf {
+                    continue;
+                }
+                deque.push_back((nr, nc, dist[r][c] + 1));
             }
         }
     }
-
-    if d[d_h][d_w] == inf {
-        println!("-1");
+    let ans = if dist[d.0][d.1] == inf {
+        -1
     } else {
-        println!("{}", d[d_h][d_w]);
-    }
+        dist[d.0][d.1] as i64
+    };
+    println!("{}", ans);
 }

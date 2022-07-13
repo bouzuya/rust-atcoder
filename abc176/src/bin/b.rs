@@ -1,15 +1,15 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Bytes};
 
 fn main() {
     input! {
-        n: Chars,
+        n: Bytes,
     };
-    let mut sum = 0_i64;
-    for &n_i in n.iter() {
-        let d = (n_i as usize - '0' as usize) as i64;
-        sum += d;
+
+    let mut x = 0_usize;
+    for n_i in n {
+        x += (n_i - b'0') as usize;
+        x %= 9;
     }
-    let ans = sum % 9 == 0;
+    let ans = x == 0;
     println!("{}", if ans { "Yes" } else { "No" });
 }
