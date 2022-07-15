@@ -1,12 +1,12 @@
+use std::collections::HashSet;
+
 use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        mut ss: [String; n],
+        a: [String; n],
     };
-    ss.sort();
-    ss.dedup();
-    let ans = ss.len();
+    let ans = a.into_iter().collect::<HashSet<_>>().len();
     println!("{}", ans);
 }

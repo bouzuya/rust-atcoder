@@ -1,16 +1,15 @@
 use proconio::input;
 
-fn f(h: i64, s: i64) -> i64 {
-    (h + s - 1) / s
-}
-
 fn main() {
     input! {
-        a: i64,
-        b: i64,
-        c: i64,
-        d: i64,
+        a: usize,
+        b: usize,
+        c: usize,
+        d: usize,
     };
-    let ans = if f(c, b) <= f(a, d) { "Yes" } else { "No" };
-    println!("{}", ans);
+
+    let count_t = (a + d - 1) / d;
+    let count_a = (c + b - 1) / b;
+    let ans = count_t >= count_a;
+    println!("{}", if ans { "Yes" } else { "No" });
 }
