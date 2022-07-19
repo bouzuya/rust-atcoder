@@ -1,3 +1,6 @@
+use std::collections::HashSet;
+
+use num::rational::Ratio;
 use proconio::input;
 
 fn main() {
@@ -9,36 +12,59 @@ fn main() {
         e: usize,
         f: usize,
     };
-    let mut ans = (0_f64, 0, 0);
-    for x_a in 0..=f {
-        if a * x_a * 100 > f {
+
+    let mut set_w = HashSet::new();
+    for x in 0.. {
+        let g_a = 100 * a * x;
+        if g_a > f {
+            break;
+        }
+        for y in 0.. {
+            let g_b = 100 * b * y;
+            let g_w = g_a + g_b;
+            if g_w > f {
+                break;
+            }
+            set_w.insert(g_w);
+        }
+    }
+
+    let mut set_s = HashSet::new();
+    for x in 0.. {
+        let g_c = c * x;
+        if g_c > f {
+            break;
+        }
+        for y in 0.. {
+            let g_d = d * y;
+            let g_s = g_c + g_d;
+            if g_s > f {
+                break;
+            }
+            set_s.insert(g_s);
+        }
+    }
+
+    let mut max = Ratio::new(0, 1);
+    let mut ans = (0, 0);
+    for a in set_w {
+        if a == 0 {
             continue;
         }
-        for x_b in 0..=(f - a * x_a * 100) {
-            if b * x_b * 100 > f {
+        for b in set_s.iter().copied() {
+            if b * 100 > a * e {
                 continue;
             }
-            let w = (a * x_a + b * x_b) * 100;
-            if w == 0 || w > f {
+            if a + b > f {
                 continue;
             }
-            for x_c in 0..=f - w {
-                if w + c * x_c > f {
-                    continue;
-                }
-                for x_d in 0..=f - w {
-                    if w + d * x_d > f {
-                        continue;
-                    }
-                    let s = c * x_c + d * x_d;
-                    if w + s > f || s * 100 > w * e {
-                        continue;
-                    }
-                    let x = s as f64 * 100_f64 / (s as f64 + w as f64);
-                    ans = if ans.0 <= x { (x, s + w, s) } else { ans };
-                }
+            let r = Ratio::new(b, a + b);
+            if r >= max {
+                max = r;
+                ans = (a + b, b);
             }
         }
     }
-    println!("{} {}", ans.1, ans.2);
+
+    println!("{} {}", ans.0, ans.1);
 }

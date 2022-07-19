@@ -1,60 +1,55 @@
-use proconio::input;
+use std::collections::HashSet;
 
-fn f(n: usize, e: &Vec<Vec<(usize, usize)>>, u: usize, v: usize) -> Option<usize> {
-    let mut c = vec![None; n];
-    let mut pq = std::collections::BinaryHeap::new();
-    pq.push(std::cmp::Reverse((0, u)));
-    while let Some(std::cmp::Reverse((c_u, u))) = pq.pop() {
-        if c[u].is_some() && Some(c_u) > c[u] {
-            continue;
-        }
-        for &(v, c_v1) in e[u].iter() {
-            let c_v2 = c_u + c_v1;
-            if c[v].is_none() || Some(c_v2) < c[v] {
-                c[v] = Some(c_v2);
-                pq.push(std::cmp::Reverse((c_v2, v)));
-            }
-        }
-    }
-    c[v]
-}
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [[usize; n]; n],
+        a: [[usize; n]; n]
     };
+    let mut d = a.clone();
+    for k in 0..n {
+        for u in 0..n {
+            for v in 0..n {
+                if d[u][k] + d[k][v] < d[u][v] {
+                    d[u][v] = d[u][k] + d[k][v];
+                }
+            }
+        }
+    }
+    if a != d {
+        println!("-1");
+        return;
+    }
 
-    let mut e_a = vec![];
+    let mut edges = vec![];
     for u in 0..n {
-        for v in u + 1..n {
-            e_a.push((a[u][v], u, v));
+        for v in 0..n {
+            edges.push((d[u][v], u, v));
         }
     }
-    e_a.sort();
+    edges.sort();
+    edges.reverse();
 
-    let mut ans = 0;
-    let mut e = vec![vec![]; n];
-    for &(a_i, u, v) in e_a.iter() {
-        match f(n, &e, u, v) {
-            None => {
-                e[u].push((v, a_i));
-                e[v].push((u, a_i));
-                ans += a_i;
+    let mut set = HashSet::new();
+    for (i, (dist, u, v)) in edges.iter().copied().enumerate() {
+        for k in 0..n {
+            if k == u || k == v {
+                continue;
             }
-            Some(d) => {
-                if d < a_i {
-                    println!("-1");
-                    return;
-                }
-                // d == a_i はほかから辿れるため不要な辺
-                if d > a_i {
-                    e[u].push((v, a_i));
-                    e[v].push((u, a_i));
-                    ans += a_i;
-                }
+            if dist == d[u][k] + d[k][v] {
+                set.insert(i);
             }
         }
     }
+
+    let mut sum = 0_usize;
+    for (i, (dist, _, _)) in edges.iter().copied().enumerate() {
+        if set.contains(&i) {
+            continue;
+        }
+        sum += dist;
+    }
+    let ans = sum / 2;
     println!("{}", ans);
 }

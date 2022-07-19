@@ -5,6 +5,6 @@ fn main() {
         n: usize,
         a: usize,
     };
-    let ans = n * n - a;
+    let ans = n.pow(2) - a;
     println!("{}", ans);
 }
