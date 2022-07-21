@@ -2,16 +2,12 @@ use proconio::input;
 
 fn main() {
     input! {
-        mut abc: [usize; 3],
+        a: usize,
+        b: usize,
+        c: usize,
         k: usize,
     };
-    let max = *abc.iter().max().unwrap();
-    abc.remove(abc.iter().position(|x| *x == max).unwrap());
-    let mut m = max;
-    for _ in 0..k {
-        m += m;
-    }
-    abc.push(m);
-    let ans = abc.iter().sum::<usize>();
+    let max = a.max(b).max(c);
+    let ans = a + b + c - max + max * 2_usize.pow(k as u32);
     println!("{}", ans);
 }
