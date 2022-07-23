@@ -5,20 +5,14 @@ fn main() {
         n: usize,
         x: [i64; n],
     };
-    let mut m = 0;
-    for &x_i in x.iter() {
-        m += x_i.abs();
-    }
-    let mut u = 0;
-    for &x_i in x.iter() {
-        u += x_i.pow(2);
-    }
-    let u = (u as f64).sqrt();
-    let mut c = x[0].abs();
-    for &x_i in x.iter() {
-        c = std::cmp::max(c, x_i.abs());
-    }
-    println!("{}", m);
-    println!("{}", u);
-    println!("{}", c);
+    println!("{}", x.iter().copied().map(|x_i| x_i.abs()).sum::<i64>());
+    println!(
+        "{}",
+        x.iter()
+            .copied()
+            .map(|x_i| x_i.pow(2) as f64)
+            .sum::<f64>()
+            .sqrt()
+    );
+    println!("{}", x.iter().copied().map(|x_i| x_i.abs()).max().unwrap());
 }

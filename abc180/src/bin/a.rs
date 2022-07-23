@@ -2,10 +2,10 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: i64,
-        a: i64,
-        b: i64,
+        n: usize,
+        a: usize,
+        b: usize,
     };
-    let ans = std::cmp::max(0, n - a) + b;
+    let ans = n - a + b;
     println!("{}", ans);
 }

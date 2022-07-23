@@ -2,19 +2,26 @@ use proconio::input;
 
 fn main() {
     input! {
-        x: i64,
-        y: i64,
-        a: i64,
-        b: i64,
+        x: usize,
+        y: usize,
+        a: usize,
+        b: usize,
     };
-    let ans = {
-        let mut c = 0_i64;
-        let mut n = x;
-        while n.checked_mul(a).is_some() && n * a < n + b && n * a < y {
-            n *= a;
-            c += 1;
+    let mut ans = 0;
+    let mut cur = x;
+    for i in 1.. {
+        if cur.checked_mul(a).is_some() && cur * a <= cur + b && cur * a < y {
+            ans = i;
+            cur *= a;
+        } else {
+            let ans = match (cur * a >= y, cur + b >= y) {
+                (true, true) => i - 1,
+                (false, true) => unreachable!(),
+                (_, false) => i - 1 + (y - 1 - cur) / b,
+            };
+            println!("{}", ans);
+            return;
         }
-        c + ((y - 1 - n) / b)
-    };
+    }
     println!("{}", ans);
 }

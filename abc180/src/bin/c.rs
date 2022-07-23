@@ -21,7 +21,8 @@ fn main() {
     input! {
         n: usize,
     };
-    for d in divisors(n) {
-        println!("{}", d);
+    let ans = divisors(n);
+    for a in ans {
+        println!("{}", a);
     }
 }
