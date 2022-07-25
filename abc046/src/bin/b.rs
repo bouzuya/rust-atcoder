@@ -5,10 +5,6 @@ fn main() {
         n: usize,
         k: usize,
     };
-    let mut x = k;
-    for _ in 1..n {
-        x *= k - 1;
-    }
-    let ans = x;
+    let ans = k * (k - 1).pow((n - 1) as u32);
     println!("{}", ans);
 }

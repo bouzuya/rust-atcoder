@@ -1,11 +1,9 @@
-use proconio::input;
-use proconio::marker::Usize1;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        s: Chars,
     };
-    let ans = n - a.len();
+    let ans = (s.len() / 2).saturating_sub(s.iter().copied().filter(|s_i| s_i == &'p').count());
     println!("{}", ans);
 }

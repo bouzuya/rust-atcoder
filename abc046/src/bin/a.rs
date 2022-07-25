@@ -1,13 +1,11 @@
+use std::collections::HashSet;
+
 use proconio::input;
-use std::collections::BTreeSet;
 
 fn main() {
     input! {
-        a: usize,
-        b: usize,
-        c: usize,
+        abc: [usize; 3]
     };
-    let set = [a, b, c].iter().map(|&x| x).collect::<BTreeSet<usize>>();
-    let ans = set.len();
+    let ans = abc.into_iter().collect::<HashSet<_>>().len();
     println!("{}", ans);
 }
