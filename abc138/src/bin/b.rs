@@ -1,14 +1,10 @@
-use proconio::input;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
         n: usize,
-        a: [i64; n],
+        a: [Usize1; n],
     };
-    let mut s = 0_f64;
-    for &a_i in a.iter() {
-        s += 1_f64 / a_i as f64;
-    }
-    let ans = 1_f64 / s;
+    let ans = n - a.len();
     println!("{}", ans);
 }
