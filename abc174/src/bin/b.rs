@@ -1,17 +1,10 @@
-use proconio::input;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
         n: usize,
-        d: i64,
-        xy: [(i64, i64); n],
+        a: [Usize1; n],
     };
-    let mut count = 0;
-    for (x_i, y_i) in xy {
-        if x_i * x_i + y_i * y_i <= d * d {
-            count += 1;
-        }
-    }
-    let ans = count;
+    let ans = n - a.len();
     println!("{}", ans);
 }

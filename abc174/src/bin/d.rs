@@ -1,11 +1,10 @@
-use proconio::{input, marker::Chars};
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
-        _n: usize,
-        c: Chars,
+        n: usize,
+        a: [Usize1; n],
     };
-    let count_r = c.iter().filter(|&&c_i| c_i == 'R').count();
-    let ans = c.iter().take(count_r).filter(|&&c_i| c_i == 'W').count();
+    let ans = n - a.len();
     println!("{}", ans);
 }
