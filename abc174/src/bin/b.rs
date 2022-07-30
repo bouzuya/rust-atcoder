@@ -1,10 +1,14 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        d: i64,
+        xy: [(i64, i64); n],
     };
-    let ans = n - a.len();
+    let ans = xy
+        .into_iter()
+        .filter(|(x, y)| x.pow(2) + y.pow(2) <= d.pow(2))
+        .count();
     println!("{}", ans);
 }
