@@ -1,26 +1,24 @@
-use std::cmp;
-
 use proconio::input;
 
 fn main() {
     input! {
         x: usize,
     };
-    let mut max_v = 1;
+    let mut max = 1_usize;
     for b in 1..=x {
-        for p in 2..=x {
+        for p in 2..=1_000 {
             match b.checked_pow(p as u32) {
-                None => break,
-                Some(v) => {
-                    if v <= x {
-                        max_v = cmp::max(max_v, v);
-                    } else {
+                Some(a) => {
+                    if a > x {
                         break;
+                    } else {
+                        max = max.max(a);
                     }
                 }
+                None => break,
             }
         }
     }
-    let ans = max_v;
+    let ans = max;
     println!("{}", ans);
 }

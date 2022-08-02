@@ -1,27 +1,32 @@
-use std::collections::BTreeSet;
+use std::collections::HashSet;
 
 use dsu::*;
-use proconio::input;
-use proconio::marker::Usize1;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
         n: usize,
         m: usize,
         p: [Usize1; n],
-        xy: [(Usize1, Usize1); m],
+        xy: [(Usize1, Usize1); m]
     };
+
     let mut dsu = Dsu::new(n);
-    for (x_i, y_i) in xy {
-        dsu.merge(x_i, y_i);
+    for (x, y) in xy {
+        dsu.merge(x, y);
     }
-    let mut count = 0;
+
+    let mut ans = 0_usize;
     for group in dsu.groups() {
-        let x = group.iter().cloned().collect::<BTreeSet<usize>>();
-        let y = group.iter().map(|&i| p[i]).collect::<BTreeSet<usize>>();
-        count += x.intersection(&y).cloned().collect::<Vec<usize>>().len();
+        let s1 = group.iter().copied().collect::<HashSet<usize>>();
+        let s2 = group
+            .iter()
+            .copied()
+            .map(|g| p[g])
+            .collect::<HashSet<usize>>();
+        ans += s1.intersection(&s2).collect::<HashSet<_>>().len();
     }
-    let ans = count;
+
     println!("{}", ans);
 }
 

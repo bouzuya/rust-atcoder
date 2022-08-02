@@ -7,14 +7,18 @@ fn main() {
         s: Chars,
         k: usize,
     };
-    let mut t = BTreeSet::new();
-    for l in 1..=5 {
-        if s.len() < l {
-            continue;
-        }
-        for i in 0..s.len() - l + 1 {
-            t.insert(s[i..i + l].iter().cloned().collect::<String>());
+
+    let mut set = BTreeSet::new();
+    let n = s.len();
+    for len in 1..=k {
+        for i in 0..n {
+            if i + len > n {
+                continue;
+            }
+            set.insert(s[i..i + len].iter().collect::<String>());
         }
     }
-    println!("{}", t.iter().skip(k - 1).next().unwrap());
+
+    let ans = set.iter().take(k).last().unwrap();
+    println!("{}", ans);
 }
