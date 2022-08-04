@@ -5,36 +5,35 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        mut ab: [(u64, u64); n],
-        mut cd: [(u64, u64); n],
+        ab: [(usize, usize); n],
+        cd: [(usize, usize); n],
     };
-    ab.sort();
-    cd.sort();
 
-    let mut used = BTreeSet::new();
-    for (c_i, d_i) in cd {
-        let mut max_b = None;
-        for (j, &(a_j, b_j)) in ab.iter().enumerate() {
-            if a_j >= c_i {
-                break;
+    // 0: red, 1: blue
+    let mut pt = ab
+        .into_iter()
+        .map(|(a, b)| (a, b, 0))
+        .chain(cd.into_iter().map(|(c, d)| (c, d, 1)))
+        .collect::<Vec<(usize, usize, usize)>>();
+    pt.sort_by_key(|&(x, y, c)| (x, c, y));
+
+    let mut count = 0_usize;
+    let mut ry = BTreeSet::new();
+    for (_, y, c) in pt {
+        match c {
+            0 => {
+                ry.insert(y);
             }
-            if used.contains(&j) || b_j >= d_i {
-                continue;
-            }
-            match max_b {
-                None => max_b = Some((b_j, j)),
-                Some((b_k, _)) => {
-                    if b_j > b_k {
-                        max_b = Some((b_j, j));
-                    }
+            1 => {
+                if let Some(&ty) = ry.range(0..y).rev().next() {
+                    count += 1;
+                    ry.remove(&ty);
                 }
             }
-        }
-        if let Some((_, j)) = max_b {
-            used.insert(j);
+            _ => unreachable!(),
         }
     }
 
-    let ans = used.len();
+    let ans = count;
     println!("{}", ans);
 }

@@ -1,4 +1,4 @@
-use std::{cmp, collections::BTreeMap};
+use std::collections::HashMap;
 
 use proconio::input;
 
@@ -9,19 +9,22 @@ fn main() {
         m: usize,
         t: [String; m],
     };
-    let mut map = BTreeMap::new();
+
+    let mut map_s = HashMap::new();
     for s_i in s {
-        *map.entry(s_i).or_insert(0) += 1;
+        *map_s.entry(s_i).or_insert(0) += 1_usize;
     }
+
+    let mut map_t = HashMap::new();
     for t_i in t {
-        *map.entry(t_i).or_insert(0) -= 1;
+        *map_t.entry(t_i).or_insert(0) += 1_usize;
     }
 
-    let mut max_v = 0;
-    for (_, v) in map {
-        max_v = cmp::max(max_v, v);
+    let mut max = 0_usize;
+    for (s_i, count_s) in map_s {
+        let count_t = *map_t.get(&s_i).unwrap_or(&0);
+        max = max.max(count_s.saturating_sub(count_t));
     }
-
-    let ans = max_v;
+    let ans = max;
     println!("{}", ans);
 }
