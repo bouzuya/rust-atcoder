@@ -1,17 +1,12 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         x: Chars,
     };
-    let mut s = vec![];
-    for &c in x.iter() {
-        if c == '.' {
-            break;
-        }
-        s.push(c);
-    }
-    let ans = s.iter().collect::<String>();
+    let ans = match x.iter().position(|c| c == &'.') {
+        None => x.into_iter().collect::<String>(),
+        Some(i) => x[0..i].iter().collect::<String>(),
+    };
     println!("{}", ans);
 }
