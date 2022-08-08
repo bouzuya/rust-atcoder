@@ -1,21 +1,16 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        s: Chars,
+        mut s: Chars,
         t: Chars,
     };
-    let mut ans = false;
-    let mut deque = s
-        .iter()
-        .map(|&x| x)
-        .collect::<std::collections::VecDeque<_>>();
     for _ in 0..s.len() {
-        if deque.iter().zip(t.iter()).all(|(s_i, t_i)| s_i == t_i) {
-            ans = true;
+        if s == t {
+            println!("Yes");
+            return;
         }
-        deque.rotate_left(1);
+        s.rotate_right(1);
     }
-    println!("{}", if ans { "Yes" } else { "No" });
+    println!("No");
 }
