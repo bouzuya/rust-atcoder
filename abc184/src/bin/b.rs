@@ -1,23 +1,18 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         n: usize,
-        x: i64,
+        x: usize,
         s: Chars,
     };
-    let mut sum = x;
+    let mut ans = x;
     for s_i in s {
-        if s_i == 'o' {
-            sum += 1
-        } else {
-            sum -= 1;
-            if sum < 0 {
-                sum = 0;
-            }
+        match s_i {
+            'o' => ans += 1,
+            'x' => ans = ans.saturating_sub(1),
+            _ => unreachable!(),
         }
     }
-    let ans = sum;
     println!("{}", ans);
 }

@@ -1,25 +1,29 @@
 use proconio::input;
 
+fn f(memo: &mut Vec<Vec<Vec<Option<f64>>>>, a: usize, b: usize, c: usize) -> f64 {
+    if a == 100 || b == 100 || c == 100 {
+        return 0_f64;
+    }
+    if let Some(x) = memo[a][b][c] {
+        return x;
+    }
+
+    let res = (a as f64 * f(memo, a + 1, b, c)
+        + b as f64 * f(memo, a, b + 1, c)
+        + c as f64 * f(memo, a, b, c + 1))
+        / (a + b + c) as f64
+        + 1_f64;
+    memo[a][b][c] = Some(res);
+    res
+}
+
 fn main() {
     input! {
         a: usize,
         b: usize,
         c: usize,
     };
-
-    // dp[x][y][z]: 袋に金貨 x 枚 銀貨 y 枚 銅貨 z 枚が入っているときの残りの操作回数の期待値
-    let mut dp = vec![vec![vec![0_f64; 100 + 1]; 100 + 1]; 100 + 1];
-    for x in (a..100).rev() {
-        for y in (b..100).rev() {
-            for z in (c..100).rev() {
-                let p_x = x as f64 / (x + y + z) as f64 * (dp[x + 1][y][z] + 1_f64);
-                let p_y = y as f64 / (x + y + z) as f64 * (dp[x][y + 1][z] + 1_f64);
-                let p_z = z as f64 / (x + y + z) as f64 * (dp[x][y][z + 1] + 1_f64);
-                dp[x][y][z] += p_x + p_y + p_z;
-            }
-        }
-    }
-
-    let ans = dp[a][b][c];
-    println!("{:.10}", ans);
+    let mut memo = vec![vec![vec![None; 100 + 1]; 100 + 1]; 100 + 1];
+    let ans = f(&mut memo, a, b, c);
+    println!("{}", ans);
 }
