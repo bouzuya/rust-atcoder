@@ -5,7 +5,7 @@ fn main() {
     input! {
         n: usize,
         m: usize,
-        xyz: [(Usize1, Usize1, u64); m],
+        xyz: [(Usize1, Usize1, Usize1); m],
     };
     let mut dsu = Dsu::new(n);
     for (x_i, y_i, _) in xyz {

@@ -7,9 +7,19 @@ fn main() {
     input! {
         _n: usize,
         k: Usize1,
-        mut s: Chars,
+        s: Chars,
     };
-    s[k] = s[k].to_ascii_lowercase();
-    let ans = s.iter().collect::<String>();
+    let ans = s
+        .iter()
+        .copied()
+        .enumerate()
+        .map(|(i, s_i)| {
+            if i == k {
+                s_i.to_lowercase().next().unwrap()
+            } else {
+                s_i
+            }
+        })
+        .collect::<String>();
     println!("{}", ans);
 }
