@@ -4,6 +4,6 @@ fn main() {
     input! {
         n: usize,
     };
-    let ans = (n + 100 - 1) / 100;
+    let ans = (n - 1) / 100 + 1;
     println!("{}", ans);
 }
