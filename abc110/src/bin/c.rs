@@ -7,35 +7,27 @@ fn main() {
         s: Chars,
         t: Chars,
     };
-
-    let mut rev = HashMap::new();
-    let mut map = HashMap::new();
+    let mut ans = true;
+    let mut m_s = HashMap::new();
+    let mut m_t = HashMap::new();
     for (s_i, t_i) in s.iter().copied().zip(t.iter().copied()) {
-        match map.get(&s_i) {
-            Some(x) => {
-                if x == &t_i {
-                    continue;
+        match (m_s.get(&s_i), m_t.get(&t_i)) {
+            (None, None) => {
+                let j = m_s.len();
+                m_s.insert(s_i, j);
+                m_t.insert(t_i, j);
+            }
+            (None, Some(_)) | (Some(_), None) => {
+                ans = false;
+                break;
+            }
+            (Some(j1), Some(j2)) => {
+                if j1 != j2 {
+                    ans = false;
+                    break;
                 }
-                println!("No");
-                return;
-            }
-            None => {
-                map.insert(s_i, t_i);
-            }
-        }
-        match rev.get(&t_i) {
-            Some(x) => {
-                if x == &s_i {
-                    continue;
-                }
-                println!("No");
-                return;
-            }
-            None => {
-                rev.insert(t_i, s_i);
             }
         }
     }
-
-    println!("Yes");
+    println!("{}", if ans { "Yes" } else { "No" });
 }
