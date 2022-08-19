@@ -4,29 +4,27 @@ fn main() {
     input! {
         s: Chars,
     };
-    let count_h = s.iter().copied().take_while(|&c| c == 'a').count();
-    let count_t = s.iter().copied().rev().take_while(|&c| c == 'a').count();
-    if count_h > count_t {
+    let count_prefix_a = s.iter().take_while(|s_i| s_i == &&'a').count();
+    let count_suffix_a = s.iter().rev().take_while(|s_i| s_i == &&'a').count();
+    if count_prefix_a > count_suffix_a {
         println!("No");
-    } else {
-        let t = s
-            .iter()
-            .copied()
-            .skip_while(|&c| c == 'a')
-            .collect::<Vec<char>>();
-        let t = t
-            .iter()
-            .copied()
-            .rev()
-            .skip_while(|&c| c == 'a')
-            .collect::<Vec<char>>();
-        let n = t.len();
-        for i in 0..n / 2 {
-            if t[i] != t[n - 1 - i] {
-                println!("No");
-                return;
-            }
-        }
-        println!("Yes");
+        return;
     }
+    if count_prefix_a == s.len() {
+        println!("Yes");
+        return;
+    }
+
+    let t = s[count_prefix_a..s.len() - count_suffix_a]
+        .iter()
+        .copied()
+        .collect::<Vec<char>>();
+    for i in 0..t.len() / 2 {
+        if t[i] != t[t.len() - 1 - i] {
+            println!("No");
+            return;
+        }
+    }
+
+    println!("Yes");
 }

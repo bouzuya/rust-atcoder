@@ -1,4 +1,4 @@
-use std::collections::BinaryHeap;
+use std::{cmp::Reverse, collections::BinaryHeap};
 
 use proconio::{input, marker::Usize1};
 
@@ -9,36 +9,37 @@ fn main() {
         h: [i64; n],
         uv: [(Usize1, Usize1); m],
     };
+
     let mut edges = vec![vec![]; n];
-    for (u, v) in uv {
-        let f = |h_x, h_y| -> i64 {
-            if h_x >= h_y {
-                h_x - h_y
-            } else {
-                -2 * (h_y - h_x)
-            }
-        };
-        edges[u].push((v, f(h[u], h[v])));
-        edges[v].push((u, f(h[v], h[u])));
+    for (u, v) in uv.iter().copied() {
+        edges[u].push((v, (h[u] - h[v]).abs()));
+        edges[v].push((u, (h[u] - h[v]).abs()));
     }
 
-    let inf = 1 << 60;
-    let mut ans = vec![-inf; n];
+    let inf = 1_i64 << 60;
+    let mut d = vec![inf; n];
+    d[0] = 0_i64;
     let mut pq = BinaryHeap::new();
-    pq.push((0, 0));
-    ans[0] = 0;
-    while let Some((w_u, u)) = pq.pop() {
-        if ans[u] != w_u {
+    pq.push((Reverse(0), 0));
+    while let Some((Reverse(w), u)) = pq.pop() {
+        if d[u] != w {
             continue;
         }
 
-        for (v, w_v) in edges[u].iter().copied() {
-            if w_u + w_v > ans[v] {
-                ans[v] = w_u + w_v;
-                pq.push((w_u + w_v, v));
+        for (v, v_w) in edges[u].iter().copied() {
+            let next_w = w + v_w;
+            if next_w < d[v] {
+                d[v] = next_w;
+                pq.push((Reverse(next_w), v));
             }
         }
     }
-    let ans = *ans.iter().max().unwrap();
+    let ans = d
+        .iter()
+        .enumerate()
+        .map(|(i, d_i)| -d_i - 3 * (h[i] - h[0]))
+        .max()
+        .unwrap()
+        / 2;
     println!("{}", ans);
 }
