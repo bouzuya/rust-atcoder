@@ -1,48 +1,44 @@
 use proconio::input;
 
 fn dfs(
+    max: &mut usize,
+    used: &mut Vec<bool>,
+    pairs: &mut Vec<(usize, usize)>,
     n: usize,
     a: &[Vec<usize>],
-    ans: &mut usize,
-    pairs: &mut Vec<(usize, usize)>,
-    used: &mut Vec<bool>,
     index: usize,
+    i: usize,
 ) {
-    if index == 2 * n {
+    if pairs.len() == n {
         let mut b = 0_usize;
         for (i, j) in pairs.iter().copied() {
             b ^= a[i][j];
         }
-        *ans = (*ans).max(b);
+        *max = (*max).max(b);
         return;
     }
 
     if index % 2 == 0 {
-        for (l, used_l) in used.iter().copied().enumerate() {
-            if used_l {
+        for i in 0..2 * n {
+            if used[i] {
                 continue;
             }
-
-            pairs.push((l, 2 * n));
-            used[l] = true;
-            dfs(n, a, ans, pairs, used, index + 1);
-            pairs.pop();
-            used[l] = false;
+            used[i] = true;
+            dfs(max, used, pairs, n, a, index + 1, i);
+            used[i] = false;
             break;
         }
     } else {
-        let l = pairs.pop().unwrap().0;
-        for r in l + 1..2 * n {
-            if used[r] {
+        for j in i + 1..2 * n {
+            if used[j] {
                 continue;
             }
-            pairs.push((l, r));
-            used[r] = true;
-            dfs(n, a, ans, pairs, used, index + 1);
+            pairs.push((i, j));
+            used[j] = true;
+            dfs(max, used, pairs, n, a, index + 1, i);
             pairs.pop();
-            used[r] = false;
+            used[j] = false;
         }
-        pairs.push((l, 2 * n));
     }
 }
 
@@ -50,28 +46,22 @@ fn main() {
     input! {
         n: usize,
     };
-    let a = {
-        let mut a = vec![];
-        for i in 0..2 * n {
-            input! {
-                a_i: [usize; 2 * n - i - 1]
-            }
-            a.push(a_i);
+    let mut a = vec![];
+    for i in 1..=2 * n - 1 {
+        input! {
+            a_i: [usize; 2 * n - i]
         }
-        let mut a2 = vec![vec![0; 2 * n]; 2 * n];
-        for i in 0..2 * n {
-            for j in 0..2 * n - i - 1 {
-                a2[i][i + 1 + j] = a[i][j];
-                a2[i + 1 + j][i] = a[i][j];
-            }
+        let mut a_i2 = vec![0; 2 * n];
+        for j in 0..2 * n - i {
+            a_i2[j + i] = a_i[j];
         }
-        a2
-    };
+        a.push(a_i2);
+    }
 
-    let mut ans = 0_usize;
-    let mut pairs = vec![];
+    let mut max = 0_usize;
     let mut used = vec![false; 2 * n];
-    dfs(n, &a, &mut ans, &mut pairs, &mut used, 0);
-
+    let mut pairs = vec![];
+    dfs(&mut max, &mut used, &mut pairs, n, &a, 0, 0);
+    let ans = max;
     println!("{}", ans);
 }

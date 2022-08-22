@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use proconio::input;
 
 fn main() {
@@ -7,15 +9,9 @@ fn main() {
         s: [String; n],
         t: [String; m],
     };
-    let mut ans = vec![false; n];
-    let mut j = 0;
-    for (i, s_i) in s.iter().enumerate() {
-        if s_i == &t[j] {
-            ans[i] = true;
-            j += 1;
-        }
-    }
-    for a in ans {
-        println!("{}", if a { "Yes" } else { "No" });
+    let set = t.into_iter().collect::<HashSet<_>>();
+    for s_i in s {
+        let ans = set.contains(&s_i);
+        println!("{}", if ans { "Yes" } else { "No" });
     }
 }

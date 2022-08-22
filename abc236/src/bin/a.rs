@@ -10,5 +10,6 @@ fn main() {
         b: Usize1,
     };
     s.swap(a, b);
-    println!("{}", s.iter().collect::<String>());
+    let ans = s.into_iter().collect::<String>();
+    println!("{}", ans);
 }
