@@ -2,7 +2,7 @@ use proconio::input;
 
 fn main() {
     input! {
-        r: u64,
+        r: usize,
     };
     let ans = if r < 1200 {
         "ABC"

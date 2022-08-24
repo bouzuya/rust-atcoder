@@ -1,52 +1,50 @@
 use proconio::input;
 
-macro_rules! chmin {
-    ($e: expr, $v: expr) => {
-        if $v < $e {
-            $e = $v;
-        }
-    };
-}
-
 fn main() {
     input! {
         d: usize,
-        g: i64,
-        pc: [(i64, i64); d],
+        g: usize,
+        pc: [(usize, usize); d],
     };
-    let mut ans = pc.iter().map(|(p_i, _)| p_i).sum::<i64>();
+
+    let mut min = pc.iter().map(|(p_i, _)| p_i).sum::<usize>();
     for bits in 0..1 << d {
-        let mut use_c = vec![false; d];
+        let b = (0..d).map(|i| (bits >> i) & 1 == 1).collect::<Vec<bool>>();
+
+        let mut score = 0_usize;
+        let mut count = 0_usize;
         for i in 0..d {
-            use_c[i] = (bits >> i) & 1 == 1;
+            let point = 100 * (i + 1);
+            if b[i] {
+                count += pc[i].0;
+                score += pc[i].1 + pc[i].0 * point;
+            }
         }
-        let mut score = 0;
-        let mut count = 0;
-        for (i, &(p_i, c_i)) in pc.iter().enumerate() {
-            if !use_c[i] {
+
+        for i in (0..d).rev() {
+            if b[i] {
                 continue;
             }
-            let s_i = 100 * (i + 1) as i64;
-            score += c_i + p_i * s_i;
-            count += p_i;
-        }
-        if score >= g {
-            chmin!(ans, count);
-        } else {
-            for (i, &(p_i, c_i)) in pc.iter().enumerate().rev() {
-                if use_c[i] {
-                    continue;
-                }
-                let s_i = 100 * (i + 1) as i64;
-                let p = std::cmp::min(((g - score) + (s_i - 1)) / s_i, p_i);
-                score += p * s_i + if p == p_i { c_i } else { 0 };
-                count += p;
-                if score >= g {
-                    break;
-                }
+
+            if score >= g {
+                break;
             }
-            chmin!(ans, count);
+
+            let point = 100 * (i + 1);
+            if (pc[i].0 - 1) * point + score < g {
+                count += pc[i].0 - 1;
+                score += (pc[i].0 - 1) * point;
+            } else {
+                let c = (g - score + point - 1) / point;
+                count += c;
+                score += c * point;
+            }
+        }
+
+        if score >= g {
+            min = min.min(count);
         }
     }
+    let ans = min;
     println!("{}", ans);
 }
