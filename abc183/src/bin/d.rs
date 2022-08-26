@@ -6,21 +6,16 @@ fn main() {
         w: i64,
         stp: [(usize, usize, i64); n],
     };
-    let max_t = 2 * 100_000;
-    let mut sum = vec![0_i64; max_t + 1];
-    for (s_i, t_i, p_i) in stp {
-        sum[s_i] += p_i;
-        sum[t_i] -= p_i;
+    let mut used = vec![0; 200_000 + 1];
+    for (s, t, p) in stp {
+        used[s] += p;
+        used[t] -= p;
     }
-    for i in 0..sum.len() - 1 {
-        sum[i + 1] += sum[i];
+
+    for i in (0..used.len()).skip(1) {
+        used[i] += used[i - 1];
     }
-    let mut all = true;
-    for &sum_i in sum.iter() {
-        if sum_i > w {
-            all = false;
-        }
-    }
-    let ans = all;
+
+    let ans = used.into_iter().all(|u| u <= w);
     println!("{}", if ans { "Yes" } else { "No" });
 }

@@ -4,6 +4,6 @@ fn main() {
     input! {
         x: i64,
     };
-    let ans = std::cmp::max(x, 0);
+    let ans = x.max(0);
     println!("{}", ans);
 }

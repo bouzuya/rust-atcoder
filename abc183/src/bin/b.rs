@@ -2,13 +2,15 @@ use proconio::input;
 
 fn main() {
     input! {
-        s_x: i64,
-        s_y: i64,
-        g_x: i64,
-        g_y: i64,
+        s: (f64, f64),
+        g: (f64, f64),
     };
-    let a = (g_y + s_y) as f64 / (g_x - s_x) as f64;
-    let b = g_y as f64 - a * g_x as f64;
-    let ans = -b / a;
+    let g = (g.0, -g.1);
+    let dx = g.0 - s.0;
+    let dy = g.1 - s.1;
+    let a = dy / dx;
+    let b = -a * g.0 + g.1;
+    let x = -b / a;
+    let ans = x;
     println!("{:.10}", ans);
 }

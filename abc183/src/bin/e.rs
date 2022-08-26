@@ -1,6 +1,5 @@
 use modint::ModInt1000000007 as ModInt;
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
@@ -8,37 +7,37 @@ fn main() {
         w: usize,
         s: [Chars; h],
     };
-    let z = ModInt::new(0);
-    let o = ModInt::new(1);
-    let mut dp = vec![vec![z; w]; h];
-    let mut dp_x = vec![vec![z; w]; h];
-    let mut dp_y = vec![vec![z; w]; h];
-    let mut dp_z = vec![vec![z; w]; h];
-    dp[0][0] = o;
-    dp_x[0][0] = o;
-    dp_y[0][0] = o;
-    dp_z[0][0] = o;
-    for r in 0..h {
-        for c in 0..w {
-            if r == 0 && c == 0 {
+    let zero = ModInt::new(0);
+    let mut dp_x = vec![vec![zero; w]; h];
+    let mut dp_y = vec![vec![zero; w]; h];
+    let mut dp_z = vec![vec![zero; w]; h];
+    let mut dp = vec![vec![zero; w]; h];
+    dp[0][0] = ModInt::new(1);
+    dp_x[0][0] = ModInt::new(1);
+    dp_y[0][0] = ModInt::new(1);
+    dp_z[0][0] = ModInt::new(1);
+    for i in 0..h {
+        for j in 0..w {
+            if i == 0 && j == 0 {
                 continue;
             }
-            if s[r][c] == '#' {
+            if s[i][j] == '#' {
                 continue;
             }
-            dp_x[r][c] = if c > 0 { dp_x[r][c - 1] } else { z };
-            dp_y[r][c] = if r > 0 { dp_y[r - 1][c] } else { z };
-            dp_z[r][c] = if c > 0 && r > 0 {
-                dp_z[r - 1][c - 1]
+            let x = if j > 0 { dp_x[i][j - 1] } else { zero };
+            let y = if i > 0 { dp_y[i - 1][j] } else { zero };
+            let z = if i > 0 && j > 0 {
+                dp_z[i - 1][j - 1]
             } else {
-                z
+                zero
             };
-            dp[r][c] = dp_x[r][c] + dp_y[r][c] + dp_z[r][c];
-            dp_x[r][c] += dp[r][c];
-            dp_y[r][c] += dp[r][c];
-            dp_z[r][c] += dp[r][c];
+            dp[i][j] = x + y + z;
+            dp_x[i][j] = x + dp[i][j];
+            dp_y[i][j] = y + dp[i][j];
+            dp_z[i][j] = z + dp[i][j];
         }
     }
+
     let ans = dp[h - 1][w - 1];
     println!("{}", ans);
 }

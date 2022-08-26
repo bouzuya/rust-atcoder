@@ -4,26 +4,30 @@ use superslice::Ext;
 fn main() {
     input! {
         n: usize,
-        k: u64,
-        t: [[u64; n]; n],
+        k: usize,
+        t: [[usize; n]; n],
     };
-    let mut count = 0;
+
+    let mut count = 0_usize;
     let mut is = (1..n).collect::<Vec<usize>>();
     loop {
-        let mut sum = 0_u64;
-        let mut i = 0;
-        for &j in is.iter() {
-            sum += t[i][j];
-            i = j;
+        let mut time = 0_usize;
+        let mut prev = 0_usize;
+        for next in is.iter().copied() {
+            time += t[prev][next];
+            prev = next;
         }
-        sum += t[i][0];
-        if sum == k {
+        time += t[prev][0];
+
+        if time == k {
             count += 1;
         }
+
         if !is.next_permutation() {
             break;
         }
     }
+
     let ans = count;
     println!("{}", ans);
 }
