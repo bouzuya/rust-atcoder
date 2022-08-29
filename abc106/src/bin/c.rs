@@ -1,25 +1,17 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         s: Chars,
-        mut k: usize,
+        k: usize,
     };
-    for c in s {
-        match c {
-            '1' => {
-                k -= 1;
-                if k == 0 {
-                    println!("{}", c);
-                    return;
-                }
-            }
-            _ => {
-                println!("{}", c);
-                return;
-            }
+    for i in 0..k {
+        if s[i] == '1' {
+            continue;
+        } else {
+            println!("{}", s[i]);
+            return;
         }
     }
-    unreachable!();
+    println!("1");
 }
