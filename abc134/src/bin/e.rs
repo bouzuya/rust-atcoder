@@ -4,20 +4,17 @@ use superslice::Ext;
 fn main() {
     input! {
         n: usize,
-        mut a: [i64; n],
+        a: [usize; n],
     };
-    a.reverse();
-
     let mut lis = vec![];
-    for a_i in a.iter() {
-        let j = lis.upper_bound(&a_i);
-        if j < lis.len() {
-            lis[j] = a_i;
-        } else {
+    for a_i in a.into_iter().rev() {
+        let index = lis.lower_bound(&(a_i + 1));
+        if index == lis.len() {
             lis.push(a_i);
+        } else {
+            lis[index] = a_i;
         }
     }
-
     let ans = lis.len();
     println!("{}", ans);
 }

@@ -5,7 +5,6 @@ fn main() {
         n: usize,
         d: usize,
     };
-    let r = 2 * d + 1;
-    let ans = (n + r - 1) / r;
+    let ans = (n + (2 * d + 1) - 1) / (2 * d + 1);
     println!("{}", ans);
 }

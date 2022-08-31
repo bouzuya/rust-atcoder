@@ -1,34 +1,41 @@
 use proconio::input;
 
+fn divisors(n: usize) -> Vec<usize> {
+    let mut d = vec![];
+    for i in 1.. {
+        if i * i > n {
+            break;
+        }
+        if n % i == 0 {
+            d.push(i);
+            if i != n / i {
+                d.push(n / i);
+            }
+        }
+    }
+    // d.sort();
+    d
+}
+
 fn main() {
     input! {
         n: usize,
-        a: [u8; n],
+        a: [usize; n],
     };
-    let mut b = vec![0; n];
-    for (i, &a_i) in a.iter().enumerate().rev() {
-        let k = i + 1;
-        let s_i = {
-            let mut sum = 0;
-            for j in (k + k..n + 1).step_by(k) {
-                sum += b[j - 1];
+    let mut b = vec![];
+    let mut c = vec![0_usize; n + 1];
+    for (i, a_i) in a.iter().copied().enumerate().rev() {
+        let i = i + 1;
+        if (a_i + c[i]) % 2 == 1 {
+            for j in divisors(i) {
+                c[j] += 1;
             }
-            sum % 2 == 0
-        };
-        match (a_i == 0, s_i) {
-            (false, false) | (true, true) => {}
-            (false, true) | (true, false) => b[i] = 1,
+            b.push(i);
         }
     }
 
-    let b = b
-        .iter()
-        .enumerate()
-        .filter(|&(_, &b_i)| b_i == 1)
-        .map(|(i, _)| i + 1)
-        .collect::<Vec<usize>>();
     println!("{}", b.len());
-    for (i, &b_i) in b.iter().enumerate() {
-        print!("{}{}", b_i, if i == b.len() - 1 { "\n" } else { " " });
+    for b_i in b {
+        println!("{}", b_i);
     }
 }
