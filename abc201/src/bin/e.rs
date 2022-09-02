@@ -1,9 +1,9 @@
+use modint::ModInt1000000007 as ModInt;
 use std::collections::VecDeque;
 
-use modint::ModInt1000000007 as ModInt;
 use proconio::{input, marker::Usize1};
 
-fn adjacency_list(n: usize, uvw: &[(usize, usize, u64)]) -> Vec<Vec<(usize, u64)>> {
+fn adjacency_list(n: usize, uvw: &[(usize, usize, usize)]) -> Vec<Vec<(usize, usize)>> {
     let mut e = vec![vec![]; n];
     for (u, v, w) in uvw.iter().copied() {
         e[u].push((v, w));
@@ -15,33 +15,36 @@ fn adjacency_list(n: usize, uvw: &[(usize, usize, u64)]) -> Vec<Vec<(usize, u64)
 fn main() {
     input! {
         n: usize,
-        uvw: [(Usize1, Usize1, u64); n - 1],
+        uvw: [(Usize1, Usize1, usize); n - 1],
     };
 
     let edges = adjacency_list(n, &uvw);
-    let mut d = vec![None; n];
+
+    let inf = 1 << 60;
+    let mut dist = vec![inf; n];
     let mut deque = VecDeque::new();
     deque.push_back(0);
-    d[0] = Some(0);
+    dist[0] = 0;
     while let Some(u) = deque.pop_front() {
         for (v, w) in edges[u].iter().copied() {
-            if d[v].is_none() {
-                d[v] = Some(w ^ d[u].unwrap());
+            if dist[v] == inf {
+                dist[v] = dist[u] ^ w;
                 deque.push_back(v);
             }
         }
     }
-    let mut b = ModInt::new(1);
+
     let mut ans = ModInt::new(0);
     for i in 0..60 {
-        let mut count = vec![0; 2];
-        for d_u in d.iter().copied() {
-            count[((d_u.unwrap() >> i) & 1) as usize] += 1;
+        let mut count_ones = 0;
+        for d in dist.iter().copied() {
+            if ((d >> i) & 1) == 1 {
+                count_ones += 1;
+            }
         }
-        ans += ModInt::new(count[0]) * ModInt::new(count[1]) * b;
-        b *= 2;
+        let count_zeros = n - count_ones;
+        ans += ModInt::new(count_zeros) * ModInt::new(count_ones) * ModInt::new(2).pow(i);
     }
-
     println!("{}", ans);
 }
 
