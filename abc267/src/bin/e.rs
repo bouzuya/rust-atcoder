@@ -1,5 +1,3 @@
-use std::collections::BTreeSet;
-
 use proconio::{input, marker::Usize1};
 
 fn adjacency_list(n: usize, uv: &[(usize, usize)]) -> Vec<Vec<usize>> {
@@ -31,26 +29,24 @@ fn main() {
 
         let mut w = weights.clone();
         let mut removed = vec![false; n];
-        let mut set = BTreeSet::new();
+        let mut set = vec![];
         for (i, w_i) in weights.iter().copied().enumerate() {
             if w_i <= mid {
-                set.insert(i);
+                set.push(i);
             }
         }
-        while !set.is_empty() {
-            let u = *set.iter().next().unwrap();
+        while let Some(u) = set.pop() {
             if !removed[u] {
                 removed[u] = true;
                 for v in edges[u].iter().copied() {
                     if !removed[v] {
                         w[v] -= a[u];
                         if w[v] <= mid {
-                            set.insert(v);
+                            set.push(v);
                         }
                     }
                 }
             }
-            set.remove(&u);
         }
         if removed.into_iter().all(|b| b) {
             ok = mid;
