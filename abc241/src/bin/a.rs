@@ -4,10 +4,10 @@ fn main() {
     input! {
         a: [usize; 10],
     };
-    let mut c = 0;
+    let mut cur = 0;
     for _ in 0..3 {
-        c = a[c];
+        cur = a[cur];
     }
-    let ans = c;
+    let ans = cur;
     println!("{}", ans);
 }

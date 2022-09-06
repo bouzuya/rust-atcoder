@@ -1,5 +1,5 @@
 use fenwicktree::*;
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::{BTreeSet, HashMap};
 
 use proconio::input;
 
@@ -7,96 +7,108 @@ fn main() {
     input! {
         q: usize,
     };
-    let mut r = vec![];
+    let mut query = vec![];
     for _ in 0..q {
-        input! { t: usize }
-        r.push(match t {
+        input! {
+            t: usize,
+        }
+        match t {
             1 => {
-                input! { x: usize }
-                (t, x, 0)
+                input! {
+                    x: usize,
+                }
+                query.push((1, x, 0));
             }
             2 => {
-                input! { x: usize, k: usize }
-                (t, x, k)
+                input! {
+                    x: usize,
+                    k: usize,
+                }
+                query.push((2, x, k));
             }
             3 => {
-                input! { x: usize, k: usize }
-                (t, x, k)
+                input! {
+                    x: usize,
+                    k: usize,
+                }
+                query.push((3, x, k));
             }
             _ => unreachable!(),
-        });
+        }
     }
 
-    let map = r
+    let mx = query
         .iter()
         .copied()
         .map(|(_, x, _)| x)
         .collect::<BTreeSet<_>>()
         .into_iter()
         .enumerate()
-        .fold(BTreeMap::new(), |mut m, (i, k)| {
+        .fold(HashMap::new(), |mut m, (i, k)| {
             m.insert(k, i);
             m
         });
-    let mut rev = vec![0; q];
-    for (&k, &v) in map.iter() {
-        rev[v] = k;
+    let mut rx = HashMap::new();
+    for (k, v) in mx.iter() {
+        rx.insert(*v, *k);
     }
-    // println!("{:?}", map);
-    // println!("{:?}", rev);
 
-    let mut bit = FenwickTree::new(q + 2, 0);
-    for (t, x, k) in r {
-        let i = *map.get(&x).unwrap();
+    let n = mx.len();
+    let mut count = FenwickTree::new(n + 1, 0);
+    for (t, x, k) in query {
+        let y = *mx.get(&x).unwrap();
         match t {
             1 => {
-                bit.add(i, 1);
+                count.add(y, 1);
             }
-            2 => {
-                let count = bit.sum(0, i + 1);
-                if count < k {
+            2 => match count.sum(0, y + 1).cmp(&k) {
+                std::cmp::Ordering::Less => {
                     println!("-1");
-                } else {
+                }
+                std::cmp::Ordering::Equal | std::cmp::Ordering::Greater => {
                     let mut l = 0;
-                    let mut r = i + 1;
+                    let mut r = y + 1;
                     while r - l > 1 {
-                        let m = l + (r - l) / 2;
-                        let count = bit.sum(m, i + 1);
-                        if count >= k {
-                            l = m;
-                        } else {
-                            r = m;
+                        let mid = l + (r - l) / 2;
+                        match count.sum(mid, y + 1).cmp(&k) {
+                            std::cmp::Ordering::Less => {
+                                r = mid;
+                            }
+                            std::cmp::Ordering::Equal | std::cmp::Ordering::Greater => {
+                                l = mid;
+                            }
                         }
                     }
-                    println!("{}", rev[l]);
+                    let ans = rx.get(&l).unwrap();
+                    println!("{}", ans);
                 }
-            }
-            3 => {
-                let count = bit.sum(i, q + 1);
-                if count < k {
+            },
+            3 => match count.sum(y, n + 1).cmp(&k) {
+                std::cmp::Ordering::Less => {
                     println!("-1");
-                } else {
-                    let mut l = i;
-                    let mut r = q + 1;
+                }
+                std::cmp::Ordering::Equal | std::cmp::Ordering::Greater => {
+                    let mut l = y;
+                    let mut r = n + 1;
                     while r - l > 1 {
-                        let m = l + (r - l) / 2;
-                        let c = bit.sum(i, m);
-                        // println!("{} {} {} {}", l, r, m, c);
-                        if c >= k {
-                            r = m;
-                        } else {
-                            l = m;
+                        let mid = l + (r - l) / 2;
+                        match count.sum(y, mid).cmp(&k) {
+                            std::cmp::Ordering::Less => {
+                                l = mid;
+                            }
+                            std::cmp::Ordering::Equal | std::cmp::Ordering::Greater => {
+                                r = mid;
+                            }
                         }
                     }
-                    // println!("{} {} {} {}", l, r, rev[l], rev[r]);
-                    println!("{}", rev[l]);
+                    let ans = rx.get(&l).unwrap();
+                    println!("{}", ans);
                 }
-            }
+            },
             _ => unreachable!(),
         }
     }
 }
-
 //https://github.com/rust-lang-ja/ac-library-rs
 
 pub mod fenwicktree {

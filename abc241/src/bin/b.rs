@@ -9,24 +9,23 @@ fn main() {
         a: [usize; n],
         b: [usize; m],
     };
-    let mut map = HashMap::new();
+    let mut map_a = HashMap::new();
     for a_i in a {
-        *map.entry(a_i).or_insert(0) += 1;
+        *map_a.entry(a_i).or_insert(0) += 1;
+    }
+    let mut map_b = HashMap::new();
+    for b_i in b {
+        *map_b.entry(b_i).or_insert(0) += 1;
     }
 
-    for b_i in b {
-        match map.get_mut(&b_i) {
-            Some(count) => {
-                if *count == 0 {
-                    println!("No");
-                    return;
-                }
-                *count -= 1;
-            }
-            None => {
-                println!("No");
-                return;
-            }
+    for (k, v) in map_b {
+        let ok = match map_a.get(&k) {
+            None => false,
+            Some(&count) => count >= v,
+        };
+        if !ok {
+            println!("No");
+            return;
         }
     }
     println!("Yes");
