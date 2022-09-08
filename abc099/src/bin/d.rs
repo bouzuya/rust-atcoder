@@ -1,42 +1,43 @@
-use std::cmp;
+use proconio::{input, marker::Usize1};
 
-use proconio::input;
-use proconio::marker::Usize1;
+fn dfs(ans: &mut usize, choice: &mut Vec<usize>, sum: &[Vec<usize>], c: usize) {
+    if choice.len() == 3 {
+        let mut x = 0_usize;
+        for (i, choice_i) in choice.iter().copied().enumerate() {
+            x += sum[choice_i][i];
+        }
+        *ans = (*ans).min(x);
+        return;
+    }
+
+    for i in 0..c {
+        if choice.contains(&i) {
+            continue;
+        }
+        choice.push(i);
+        dfs(ans, choice, sum, c);
+        choice.pop();
+    }
+}
 
 fn main() {
     input! {
-        large_n: usize,
-        large_c: usize,
-        d: [[u64; large_c]; large_c],
-        c: [[Usize1; large_n]; large_n],
+        n: usize,
+        capital_c: usize,
+        d: [[usize; capital_c]; capital_c],
+        c: [[Usize1; n]; n]
     };
-
-    let mut count = vec![vec![0; large_c]; 3];
-    for i in 0..large_n {
-        for j in 0..large_n {
-            count[(i + j) % 3][c[i][j]] += 1;
-        }
-    }
-
-    let mut min_v = 1_000_000_000;
-    for c1 in 0..large_c {
-        for c2 in 0..large_c {
-            for c3 in 0..large_c {
-                if c1 == c2 || c1 == c3 || c2 == c3 {
-                    continue;
-                }
-                let colors = vec![c1, c2, c3];
-                let mut v = 0;
-                let cs = colors.iter().take(3).cloned().collect::<Vec<usize>>();
-                for (i, &c_i) in cs.iter().enumerate() {
-                    for p in 0..large_c {
-                        v += count[i][p] * d[p][c_i];
-                    }
-                }
-                min_v = cmp::min(min_v, v);
+    let mut sum = vec![vec![0_usize; 3]; capital_c];
+    for color in 0..capital_c {
+        for i in 0..n {
+            for j in 0..n {
+                sum[color][(i + j) % 3] += d[c[i][j]][color];
             }
         }
     }
-    let ans = min_v;
+
+    let mut ans = 1 << 60;
+    let mut choice = vec![];
+    dfs(&mut ans, &mut choice, &sum, capital_c);
     println!("{}", ans);
 }

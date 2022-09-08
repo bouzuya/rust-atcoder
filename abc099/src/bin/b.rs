@@ -2,11 +2,10 @@ use proconio::input;
 
 fn main() {
     input! {
-        a: u64,
-        b: u64,
+        a: usize,
+        b: usize,
     };
     let d = b - a;
-    let sum = (1..=d).sum::<u64>();
-    let ans = sum - b;
+    let ans = (d - 1) * d / 2 - a;
     println!("{}", ans);
 }

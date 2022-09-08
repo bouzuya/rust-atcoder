@@ -1,44 +1,46 @@
-use std::cmp;
+use std::collections::BTreeSet;
 
 use proconio::input;
 
-fn dfs(min_count: &mut usize, n: usize, cs: &Vec<usize>, i: usize, count: usize, sum: usize) {
-    if sum > n {
-        return;
-    }
-    if i == cs.len() {
-        *min_count = cmp::min(*min_count, count + n - sum);
-        return;
-    }
-    for j in 0..=if cs[i] % 6 == 0 { 6 } else { 9 } {
-        if sum + cs[i] * j > n {
-            break;
+macro_rules! chmin {
+    ($min_v: expr, $v: expr) => {
+        if $v < $min_v {
+            $min_v = $v;
+            true
+        } else {
+            false
         }
-        dfs(min_count, n, cs, i + 1, count + j, sum + cs[i] * j);
-    }
+    };
 }
 
 fn main() {
     input! {
         n: usize,
     };
-    let max_n = 100_000_usize;
-    let mut cs = vec![];
-    let mut i = 6;
-    while i <= max_n {
-        cs.push(i);
-        i *= 6;
+    let mut set = BTreeSet::new();
+    let mut x = 6;
+    while x <= n {
+        set.insert(x);
+        x *= 6;
     }
-    let mut i = 9;
-    while i <= max_n {
-        cs.push(i);
-        i *= 9;
+    let mut x = 9;
+    while x <= n {
+        set.insert(x);
+        x *= 9;
     }
-    cs.sort();
-    cs.reverse();
+    set.insert(1);
+    let coins = set.into_iter().collect::<Vec<usize>>();
 
-    let mut min_count = max_n + 1;
-    dfs(&mut min_count, n, &cs, 0, 0, 0);
-    let ans = min_count;
+    let mut dp = vec![n; n + 1];
+    dp[0] = 0;
+    for i in 1..=n {
+        for c in coins.iter().copied() {
+            if i < c {
+                continue;
+            }
+            chmin!(dp[i], dp[i - c] + 1);
+        }
+    }
+    let ans = dp[n];
     println!("{}", ans);
 }
