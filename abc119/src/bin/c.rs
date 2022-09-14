@@ -1,37 +1,45 @@
 use proconio::input;
 
-fn f(a: u64, b: u64) -> u64 {
-    if a >= b {
-        a - b
-    } else {
-        b - a
-    }
-}
-
-fn dfs(n: usize, abc: &Vec<u64>, l: &Vec<u64>, i: usize, a: u64, b: u64, c: u64, mp: u64) -> u64 {
-    if i == n {
-        if a == 0 || b == 0 || c == 0 {
-            return 3_000;
+fn dfs(ans: &mut usize, x: &mut Vec<usize>, n: usize, abc: &[usize], l: &[usize], i: usize) {
+    if x.len() == n {
+        let mut ls = vec![vec![]; 3];
+        let mut sum = vec![0; 3];
+        for (i, x_i) in x.iter().copied().enumerate() {
+            if x_i < ls.len() {
+                ls[x_i].push(l[i]);
+                sum[x_i] += l[i];
+            }
         }
-        return mp + f(a, abc[0]) - 10 + f(b, abc[1]) - 10 + f(c, abc[2]) - 10;
+        let mut a = 0_usize;
+        for i in 0..3 {
+            if ls[i].is_empty() {
+                return;
+            }
+            a += if abc[i] >= sum[i] {
+                abc[i] - sum[i]
+            } else {
+                sum[i] - abc[i]
+            } + (ls[i].len() - 1) * 10;
+        }
+        *ans = (*ans).min(a);
+        return;
     }
-    *vec![
-        dfs(n, abc, l, i + 1, a + l[i], b, c, mp + 10),
-        dfs(n, abc, l, i + 1, a, b + l[i], c, mp + 10),
-        dfs(n, abc, l, i + 1, a, b, c + l[i], mp + 10),
-        dfs(n, abc, l, i + 1, a, b, c, mp),
-    ]
-    .iter()
-    .min()
-    .unwrap()
+    for j in 0..4 {
+        x.push(j);
+        dfs(ans, x, n, abc, l, i + 1);
+        x.pop();
+    }
 }
 
 fn main() {
     input! {
         n: usize,
-        abc: [u64; 3],
-        l: [u64; n],
+        abc: [usize; 3],
+        l: [usize; n],
     };
-    let ans = dfs(n, &abc, &l, 0, 0, 0, 0, 0);
+
+    let mut ans = 1_usize << 60;
+    let mut x = vec![];
+    dfs(&mut ans, &mut x, n, &abc, &l, 0);
     println!("{}", ans);
 }

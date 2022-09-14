@@ -5,13 +5,14 @@ fn main() {
         n: usize,
         xu: [(f64, String); n],
     };
-    let mut ans = 0_f64;
+    let mut y = 0_f64;
     for (x, u) in xu {
-        ans += match u.as_str() {
+        y += match u.as_str() {
             "JPY" => x,
-            "BTC" => x * 380000_f64,
+            "BTC" => x * 380_000_f64,
             _ => unreachable!(),
-        }
+        };
     }
+    let ans = y;
     println!("{}", ans);
 }
