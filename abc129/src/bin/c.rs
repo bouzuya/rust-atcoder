@@ -6,21 +6,20 @@ fn main() {
         m: usize,
         a: [usize; m],
     };
-    let mut ok = vec![true; n + 1];
-    for &a_i in a.iter() {
-        ok[a_i] = false;
-    }
-    let p = 1_000_000_007_i64;
-    let mut dp = vec![0; n + 1];
+    let p = 1_000_000_007_usize;
+    let mut j = 0_usize;
+    let mut dp = vec![0_usize; n + 1];
     dp[0] = 1;
-    for i in 0..n {
-        if i + 1 <= n && ok[i + 1] {
-            dp[i + 1] += dp[i];
-            dp[i + 1] %= p;
+    for i in 1..=n {
+        if j < m && i == a[j] {
+            j += 1;
+            continue;
         }
-        if i + 2 <= n && ok[i + 2] {
-            dp[i + 2] += dp[i];
-            dp[i + 2] %= p;
+        dp[i] += dp[i - 1];
+        dp[i] %= p;
+        if i >= 2 {
+            dp[i] += dp[i - 2];
+            dp[i] %= p;
         }
     }
     let ans = dp[n];

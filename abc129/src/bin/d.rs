@@ -1,5 +1,3 @@
-use std::cmp;
-
 use proconio::{input, marker::Chars};
 
 fn main() {
@@ -8,99 +6,69 @@ fn main() {
         w: usize,
         s: [Chars; h],
     };
-    let sl = {
-        let mut sl = vec![vec![0; w]; h];
-        for i in 0..h {
-            let mut c = 0;
-            for j in 0..w {
-                match s[i][j] {
-                    '.' => {
-                        c += 1;
-                        sl[i][j] = c;
-                    }
-                    '#' => {
-                        c = 0;
-                    }
-                    _ => unreachable!(),
-                }
-            }
-        }
-        sl
-    };
 
-    let sr = {
-        let mut sr = vec![vec![0; w]; h];
-        for i in 0..h {
-            let mut c = 0;
-            for j in (0..w).rev() {
-                match s[i][j] {
-                    '.' => {
-                        c += 1;
-                        sr[i][j] = c;
-                    }
-                    '#' => {
-                        c = 0;
-                    }
-                    _ => unreachable!(),
-                }
-            }
-        }
-        sr
-    };
-
-    let st = {
-        let mut st = vec![vec![0; w]; h];
+    let mut left = vec![vec![0; w]; h];
+    for i in 0..h {
+        let mut count = 0;
         for j in 0..w {
-            let mut c = 0;
-            for i in 0..h {
-                match s[i][j] {
-                    '.' => {
-                        c += 1;
-                        st[i][j] = c;
-                    }
-                    '#' => {
-                        c = 0;
-                    }
-                    _ => unreachable!(),
-                }
+            if s[i][j] == '.' {
+                left[i][j] = count;
+                count += 1;
+            } else {
+                count = 0;
             }
         }
-        st
-    };
+    }
 
-    let sb = {
-        let mut sb = vec![vec![0; w]; h];
-        for j in 0..w {
-            let mut c = 0;
-            for i in (0..h).rev() {
-                match s[i][j] {
-                    '.' => {
-                        c += 1;
-                        sb[i][j] = c;
-                    }
-                    '#' => {
-                        c = 0;
-                    }
-                    _ => unreachable!(),
-                }
+    let mut right = vec![vec![0; w]; h];
+    for i in 0..h {
+        let mut count = 0;
+        for j in (0..w).rev() {
+            if s[i][j] == '.' {
+                right[i][j] = count;
+                count += 1;
+            } else {
+                count = 0;
             }
         }
-        sb
-    };
+    }
 
-    let mut max_v = None;
+    let mut up = vec![vec![0; w]; h];
+    for j in 0..w {
+        let mut count = 0;
+        for i in 0..h {
+            if s[i][j] == '.' {
+                up[i][j] = count;
+                count += 1;
+            } else {
+                count = 0;
+            }
+        }
+    }
+
+    let mut down = vec![vec![0; w]; h];
+    for j in 0..w {
+        let mut count = 0;
+        for i in (0..h).rev() {
+            if s[i][j] == '.' {
+                down[i][j] = count;
+                count += 1;
+            } else {
+                count = 0;
+            }
+        }
+    }
+
+    let mut ans = 0;
     for i in 0..h {
         for j in 0..w {
             if s[i][j] == '#' {
                 continue;
             }
-            let v = sl[i][j] + sr[i][j] + st[i][j] + sb[i][j] + 1 - 4;
-            max_v = Some(match max_v {
-                None => v,
-                Some(pv) => cmp::max(pv, v),
-            });
+
+            ans = ans.max(1 + left[i][j] + right[i][j] + up[i][j] + down[i][j]);
         }
     }
-    let ans = max_v.unwrap();
+
     println!("{}", ans);
 }

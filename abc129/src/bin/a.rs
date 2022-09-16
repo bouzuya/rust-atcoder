@@ -6,6 +6,6 @@ fn main() {
         q: usize,
         r: usize,
     };
-    let ans = *vec![p + q, p + r, q + r].iter().min().unwrap();
+    let ans = (p + q).min(p + r).min(q + r);
     println!("{}", ans);
 }

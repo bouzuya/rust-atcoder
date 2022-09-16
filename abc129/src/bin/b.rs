@@ -5,13 +5,12 @@ fn main() {
         n: usize,
         w: [i64; n],
     };
-    let ans = (0..n)
-        .map(|i| {
-            let s1 = w[0..i].iter().sum::<i64>();
-            let s2 = w[i..].iter().sum::<i64>();
-            (s1 - s2).abs()
-        })
-        .min()
-        .unwrap();
+    let sum = w.iter().sum::<i64>();
+    let mut s_1 = 0_i64;
+    let mut ans = sum;
+    for w_i in w {
+        s_1 += w_i;
+        ans = ans.min((s_1 - (sum - s_1)).abs());
+    }
     println!("{}", ans);
 }
