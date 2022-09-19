@@ -2,18 +2,14 @@ use proconio::input;
 
 fn main() {
     input! {
-        a: i64,
-        b: i64,
-        c: i64,
+        (a, b, c): (i64, i64, i64)
     };
     let ans = if a == b {
         c
     } else if a == c {
         b
-    } else if b == c {
-        a
     } else {
-        unreachable!()
+        a
     };
     println!("{}", ans);
 }
