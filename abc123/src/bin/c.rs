@@ -2,10 +2,11 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: i64,
-        abcde: [i64; 5],
+        n: usize,
+        abcde: [usize; 5],
     };
-    let m = abcde.iter().min().unwrap();
-    let ans = (n + (m - 1)) / m + 4;
+    let x = abcde.iter().copied().min().unwrap();
+    let count = (n + x - 1) / x;
+    let ans = count + 4;
     println!("{}", ans);
 }

@@ -2,13 +2,16 @@ use proconio::input;
 
 fn main() {
     input! {
-        a: i64,
-        _: i64,
-        _: i64,
-        _: i64,
-        e: i64,
-        k: i64,
+        abcde: [usize; 5],
+        k: usize,
     };
-    let ans = e - a <= k;
-    println!("{}", if ans { "Yay!" } else { ":(" });
+    for (i, p) in abcde.iter().copied().enumerate() {
+        for q in abcde.iter().copied().skip(i) {
+            if q - p > k {
+                println!(":(");
+                return;
+            }
+        }
+    }
+    println!("Yay!");
 }

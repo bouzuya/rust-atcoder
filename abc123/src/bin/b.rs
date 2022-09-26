@@ -1,23 +1,29 @@
 use proconio::input;
-use superslice::*;
+use superslice::Ext;
 
 fn main() {
     input! {
-        abcde: [i64; 5],
+        mut abcde: [usize; 5],
     };
-    let inf = 130 * 5_i64;
-    let mut ans = inf;
-    let mut index = (0..abcde.len()).collect::<Vec<usize>>();
+    abcde.sort();
+    let mut min = 1 << 60;
     loop {
-        let mut t = 0;
-        for &i in index.iter() {
-            t += if t % 10 == 0 { 0 } else { 10 - t % 10 };
-            t += abcde[i];
+        let mut now = 0;
+        for (i, x) in abcde.iter().copied().enumerate() {
+            now += x;
+            if i == 5 - 1 {
+                break;
+            }
+            if now % 10 != 0 {
+                now += 10 - now % 10;
+            }
         }
-        ans = std::cmp::min(ans, t);
-        if !index.next_permutation() {
+        min = min.min(now);
+        if !abcde.next_permutation() {
             break;
         }
     }
+
+    let ans = min;
     println!("{}", ans);
 }
