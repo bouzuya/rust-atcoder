@@ -1,16 +1,19 @@
+use std::collections::HashSet;
+
 use proconio::input;
 
 fn main() {
     input! {
-        a: u64,
-        b: u64,
-        c: u64,
+        a: usize,
+        b: usize,
+        c: usize,
     };
-    for x in 1..b {
-        if (x * a) % b == c {
-            println!("YES");
-            return;
-        }
+    let mut x = a;
+    let mut set = HashSet::new();
+    while set.insert(x % b) {
+        x += a;
+        x %= b;
     }
-    println!("NO");
+    let ans = set.contains(&c);
+    println!("{}", if ans { "YES" } else { "NO" });
 }

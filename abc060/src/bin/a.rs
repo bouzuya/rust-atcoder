@@ -1,5 +1,4 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
@@ -7,6 +6,6 @@ fn main() {
         b: Chars,
         c: Chars,
     };
-    let ans = a[a.len() - 1] == b[0] && b[b.len() - 1] == c[0];
+    let ans = a.last() == b.first() && b.last() == c.first();
     println!("{}", if ans { "YES" } else { "NO" });
 }
