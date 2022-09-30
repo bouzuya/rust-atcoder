@@ -1,6 +1,9 @@
 use proconio::input;
 
 fn main() {
-    input! { l: f64 };
-    println!("{}", (l / 3.0).powi(3));
+    input! {
+        l: f64,
+    };
+    let ans = (l / 3_f64).powf(3_f64);
+    println!("{}", ans);
 }

@@ -1,51 +1,56 @@
-use proconio::input;
-use proconio::marker::Bytes;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         h: usize,
         w: usize,
         k: usize,
-        svv: [Bytes; h],
+        s: [Chars; h],
     };
 
-    let inf = h * w;
-    let mut ans = inf;
-    for hdbits in 0..(1 << (h - 1)) {
-        let mut rgv = vec![0; h]; // gv[y] = row_group_index
-        let mut hdc = 0;
-        for y in 0..h {
-            rgv[y] = hdc;
-            if ((hdbits >> y) & 1) == 1 {
-                hdc += 1;
+    let mut ans = (w - 1) * (h - 1);
+    'outer: for bits in 0..1 << h {
+        let is = (0..h).map(|i| (bits >> i) & 1 == 1).collect::<Vec<bool>>();
+        let mut lines = 0_usize;
+        let mut sum = vec![0_usize; h];
+        for j in 0..w {
+            let mut count = vec![0_usize; h];
+            let mut prev = is[0];
+            let mut l = 0;
+            for (i, b) in is.iter().copied().enumerate() {
+                if prev != b {
+                    l += 1;
+                }
+                count[l] += (s[i][j] as u8 - b'0') as usize;
+                prev = b;
             }
-        }
 
-        let mut rgcv = vec![vec![0_usize; w]; hdc + 1];
-        for y in 0..h {
-            for x in 0..w {
-                rgcv[rgv[y]][x] += if svv[y][x] == b'1' { 1 } else { 0 };
-            }
-        }
-
-        let mut vdc = 0;
-        let mut gcv = vec![0_usize; rgcv.len()];
-        for x in 0..w {
-            if (0..rgcv.len()).any(|g| rgcv[g][x] > k) {
-                vdc = inf;
-                break;
-            }
-            for g in 0..rgcv.len() {
-                gcv[g] += rgcv[g][x];
-            }
-            if (0..rgcv.len()).any(|g| gcv[g] > k) {
-                vdc += 1;
-                for g in 0..rgcv.len() {
-                    gcv[g] = rgcv[g][x];
+            let mut ok = true;
+            for i in 0..h {
+                if count[i] > k {
+                    continue 'outer;
+                }
+                if sum[i] + count[i] > k {
+                    ok = false;
                 }
             }
+            if ok {
+                for i in 0..h {
+                    sum[i] += count[i];
+                }
+            } else {
+                lines += 1;
+                sum = count;
+            }
         }
-        ans = std::cmp::min(ans, hdc + vdc);
+        let mut prev = is[0];
+        for b in is.iter().copied() {
+            if prev != b {
+                lines += 1;
+            }
+            prev = b;
+        }
+        ans = ans.min(lines);
     }
     println!("{}", ans);
 }
