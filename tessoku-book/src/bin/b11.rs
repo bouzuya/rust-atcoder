@@ -1,10 +1,16 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
+use superslice::Ext;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        mut a: [usize; n],
+        q: usize,
+        x: [usize; q],
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    a.sort();
+    for x_i in x {
+        let ans = a.lower_bound(&x_i);
+        println!("{}", ans);
+    }
 }

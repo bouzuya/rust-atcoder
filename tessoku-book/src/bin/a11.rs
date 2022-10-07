@@ -1,10 +1,21 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        x: usize,
+        a: [usize; n],
     };
-    let ans = n - a.len();
+    let mut ok = 0;
+    let mut ng = n;
+    while ng - ok > 1 {
+        let mid = ok + (ng - ok) / 2;
+        if a[mid] <= x {
+            ok = mid;
+        } else {
+            ng = mid;
+        }
+    }
+    let ans = ok + 1;
     println!("{}", ans);
 }
