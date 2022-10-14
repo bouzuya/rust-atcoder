@@ -1,10 +1,19 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        ta: [(char, usize); n],
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    let mut ans = 0_usize;
+    for (t, a) in ta {
+        ans = match t {
+            '+' => ans + a,
+            '-' => ans + 10000 - a,
+            '*' => ans * a,
+            _ => unreachable!(),
+        };
+        ans %= 10000;
+        println!("{}", ans);
+    }
 }

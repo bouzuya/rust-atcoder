@@ -1,10 +1,24 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        q: usize,
+        x: [usize; q],
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    let mut ps = vec![true; 300_000 + 1];
+    ps[0] = false;
+    ps[1] = false;
+    for i in 2..ps.len() {
+        if !ps[i] {
+            continue;
+        }
+        for j in ((i + i)..ps.len()).step_by(i) {
+            ps[j] = false;
+        }
+    }
+
+    for x_i in x {
+        let ans = ps[x_i];
+        println!("{}", if ans { "Yes" } else { "No" });
+    }
 }
