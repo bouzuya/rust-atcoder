@@ -1,10 +1,12 @@
-use proconio::{input, marker::Usize1};
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        _n: usize,
+        k: usize,
+        s: Chars,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    let count_on = s.into_iter().filter(|&c| c == '1').count();
+    let ans = count_on % 2 == k % 2;
+    println!("{}", if ans { "Yes" } else { "No" });
 }
