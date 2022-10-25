@@ -1,10 +1,14 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        m: usize,
+        b: usize,
+        a: [usize; n],
+        c: [usize; m]
     };
-    let ans = n - a.len();
+    let sum_c = c.iter().sum::<usize>();
+    let ans = a.iter().map(|a_i| a_i * m).sum::<usize>() + b * n * m + sum_c * n;
     println!("{}", ans);
 }
