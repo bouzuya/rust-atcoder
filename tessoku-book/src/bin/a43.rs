@@ -1,10 +1,19 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        l: usize,
+        ab: [(usize, char); n],
     };
-    let ans = n - a.len();
+    let ans = ab
+        .into_iter()
+        .map(|(a, b)| match b {
+            'E' => l - a,
+            'W' => a,
+            _ => unreachable!(),
+        })
+        .max()
+        .unwrap();
     println!("{}", ans);
 }
