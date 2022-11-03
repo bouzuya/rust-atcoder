@@ -1,10 +1,10 @@
 use proconio::input;
 
-fn f(n: usize) -> usize {
-    if n == 0 {
+fn f(x: usize) -> usize {
+    if x == 0 {
         1
     } else {
-        n * f(n - 1)
+        x * f(x - 1)
     }
 }
 
