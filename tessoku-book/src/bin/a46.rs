@@ -1,10 +1,9 @@
 use proconio::input;
+use rand::{thread_rng, Rng};
 
-fn main() {
-    input! {
-        n: usize,
-        xy: [(i64, i64); n],
-    };
+// 貪欲法
+#[allow(dead_code)]
+fn f1(n: usize, xy: &[(i64, i64)]) -> Vec<usize> {
     let mut used = vec![false; n];
     used[0] = true;
     let mut ans = vec![0];
@@ -37,7 +36,62 @@ fn main() {
     }
 
     ans.push(0);
+    ans
+}
 
+// 局所探索法
+#[allow(dead_code)]
+fn f2(n: usize, xy: &[(i64, i64)]) -> Vec<usize> {
+    let dist = |i: usize, j: usize| -> i64 {
+        let (x1, y1) = xy[i];
+        let (x2, y2) = xy[j];
+        (x1 - x2).pow(2) + (y1 - y2).pow(2)
+    };
+
+    let score = |a: &[usize]| -> i64 {
+        let mut sum = 0_i64;
+        for i in 0..n - 1 {
+            sum += dist(a[i], a[i + 1]);
+        }
+        sum
+    };
+
+    let reverse = |a: &mut Vec<usize>, mut l: usize, mut r: usize| {
+        while l < r {
+            a.swap(l, r);
+            l += 1;
+            r = r.saturating_sub(1);
+        }
+    };
+
+    let mut rng = thread_rng();
+    let mut ans = (0..n).collect::<Vec<usize>>();
+    let mut cur = score(&ans);
+    for _ in 0..200_000 {
+        let l = 1 + rng.gen::<usize>() % (n - 1);
+        let r = 1 + rng.gen::<usize>() % (n - 1);
+        let (l, r) = if l > r { (r, l) } else { (l, r) };
+        reverse(&mut ans, l, r);
+        let new = score(&ans);
+        if new < cur {
+            cur = new;
+        } else {
+            reverse(&mut ans, l, r);
+        }
+    }
+
+    ans.push(0);
+    ans
+}
+
+fn main() {
+    input! {
+        n: usize,
+        xy: [(i64, i64); n],
+    };
+
+    // let ans = f1(n, &xy);
+    let ans = f2(n, &xy);
     for a in ans {
         println!("{}", a + 1);
     }
