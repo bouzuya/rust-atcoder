@@ -2,23 +2,25 @@ use std::collections::HashMap;
 
 use proconio::input;
 
-fn f(memo: &mut HashMap<usize, usize>, x: usize) -> usize {
-    if x == 0 {
-        return 1;
-    }
-    if memo.contains_key(&x) {
-        return *memo.get(&x).unwrap();
+fn f(memo: &mut HashMap<usize, usize>, k: usize) -> usize {
+    if let Some(f_k) = memo.get(&k) {
+        return *f_k;
     }
 
-    let v = f(memo, x / 2) + f(memo, x / 3);
-    memo.insert(x, v);
-    v
+    if k == 0 {
+        return 1;
+    }
+
+    let f_k = f(memo, k / 2) + f(memo, k / 3);
+    memo.insert(k, f_k);
+    f_k
 }
 
 fn main() {
     input! {
         n: usize,
     };
-    let ans = f(&mut HashMap::default(), n);
+    let mut memo = HashMap::new();
+    let ans = f(&mut memo, n);
     println!("{}", ans);
 }

@@ -1,5 +1,5 @@
 use modint::ModInt998244353 as ModInt;
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
@@ -10,8 +10,15 @@ fn main() {
         e: usize,
         f: usize,
     };
-    let ans = ModInt::new(a) * ModInt::new(b) * ModInt::new(c)
-        - ModInt::new(d) * ModInt::new(e) * ModInt::new(f);
+    let (a, b, c, d, e, f) = (
+        ModInt::new(a),
+        ModInt::new(b),
+        ModInt::new(c),
+        ModInt::new(d),
+        ModInt::new(e),
+        ModInt::new(f),
+    );
+    let ans = (a * b * c) - (d * e * f);
     println!("{}", ans);
 }
 

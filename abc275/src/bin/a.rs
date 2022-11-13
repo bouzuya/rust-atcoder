@@ -3,9 +3,9 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        h: [usize; n],
+        a: [usize; n],
     };
-    let max_h = h.iter().max().unwrap();
-    let ans = h.iter().position(|h_i| h_i == max_h).unwrap() + 1;
+    let max = a.iter().max().unwrap();
+    let ans = a.iter().position(|a_i| a_i == max).unwrap() + 1;
     println!("{}", ans);
 }
