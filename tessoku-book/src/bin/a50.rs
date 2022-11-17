@@ -16,7 +16,7 @@ fn f1(n: usize, _a: &[Vec<i64>]) -> Vec<(usize, usize, i64)> {
     ans
 }
 
-// 7995220589
+// 9779318053
 #[allow(dead_code)]
 fn f2(n: usize, a: &[Vec<i64>]) -> Vec<(usize, usize, i64)> {
     let get_score = |b: &[Vec<i64>]| -> i64 {

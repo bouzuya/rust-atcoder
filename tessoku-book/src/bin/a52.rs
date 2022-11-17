@@ -1,10 +1,31 @@
-use proconio::{input, marker::Usize1};
+use std::collections::VecDeque;
+
+use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        q: usize,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+
+    let mut queue = VecDeque::new();
+    for _ in 0..q {
+        input! {
+            t: usize
+        }
+        match t {
+            1 => {
+                input! {
+                    x: String
+                }
+                queue.push_back(x);
+            }
+            2 => {
+                println!("{}", queue.front().unwrap());
+            }
+            3 => {
+                queue.pop_front();
+            }
+            _ => unreachable!(),
+        }
+    }
 }
