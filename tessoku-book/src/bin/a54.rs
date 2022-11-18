@@ -1,10 +1,32 @@
-use proconio::{input, marker::Usize1};
+use std::collections::HashMap;
+
+use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        q: usize,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+
+    let mut map = HashMap::new();
+    for _ in 0..q {
+        input! {
+            t: usize
+        }
+        match t {
+            1 => {
+                input! {
+                    x: String,
+                    y: usize,
+                }
+                map.insert(x, y);
+            }
+            2 => {
+                input! {
+                    x: String,
+                }
+                println!("{}", map.get(&x).unwrap());
+            }
+            _ => unreachable!(),
+        }
+    }
 }

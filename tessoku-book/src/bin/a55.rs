@@ -1,10 +1,26 @@
-use proconio::{input, marker::Usize1};
+use std::collections::BTreeSet;
+
+use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        q: usize,
+        tx: [(usize, i64); q],
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+
+    let mut set = BTreeSet::new();
+    for (t, x) in tx {
+        match t {
+            1 => {
+                set.insert(x);
+            }
+            2 => {
+                set.remove(&x);
+            }
+            3 => {
+                println!("{}", set.range(x..).next().unwrap_or(&-1));
+            }
+            _ => unreachable!(),
+        }
+    }
 }
