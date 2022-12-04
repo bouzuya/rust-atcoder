@@ -5,14 +5,17 @@ fn main() {
         n: usize,
         s: [i64; n],
     };
-    let mut cur = s[0];
-    let mut a = vec![s[0]];
-    for s_i in s.iter().copied().skip(1) {
-        let d = s_i - cur;
-        a.push(d);
-        cur = s_i;
+    let mut a = vec![];
+    for (i, s_i) in s.iter().copied().enumerate() {
+        a.push(if i == 0 { s_i } else { s_i - s[i - 1] });
     }
-    for ans in a {
-        println!("{}", ans);
+    let mut s = String::new();
+    for (i, a_i) in a.iter().copied().enumerate() {
+        s.push_str(&format!(
+            "{}{}",
+            a_i.to_string(),
+            if i == a.len() - 1 { '\n' } else { ' ' }
+        ));
     }
+    print!("{}", s);
 }
