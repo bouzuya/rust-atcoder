@@ -31,10 +31,7 @@ fn main() {
                 cur = 0;
             }
         }
-        if cur > 0 {
-            let l = ys.len();
-            ys[l - 1] += cur;
-        }
+        *ys.last_mut().unwrap() += cur;
         if ys.len() > k {
             ok = x;
         } else {
