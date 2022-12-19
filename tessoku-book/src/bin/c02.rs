@@ -1,10 +1,12 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        mut a: [usize; n],
     };
-    let ans = n - a.len();
+    a.sort();
+    a.reverse();
+    let ans = a[0] + a[1];
     println!("{}", ans);
 }

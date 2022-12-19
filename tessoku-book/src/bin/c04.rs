@@ -1,10 +1,27 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
+
+fn divisors(n: usize) -> Vec<usize> {
+    let mut d = vec![];
+    for i in 1.. {
+        if i * i > n {
+            break;
+        }
+        if n % i == 0 {
+            d.push(i);
+            if i != n / i {
+                d.push(n / i);
+            }
+        }
+    }
+    d.sort();
+    d
+}
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    for ans in divisors(n) {
+        println!("{}", ans);
+    }
 }
