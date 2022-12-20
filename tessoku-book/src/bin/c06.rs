@@ -1,10 +1,11 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    println!("{}", n);
+    for i in 0..n {
+        println!("{} {}", i + 1, (i + 1) % n + 1);
+    }
 }
