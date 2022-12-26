@@ -82,15 +82,14 @@ fn main() {
         edges[v].push((u, 0));
     }
 
-    let mut ans = 0_usize;
     let mut dp = vec![0_usize; map.len()];
     for (t, i) in vertices {
         let v = map[&(t, i)];
         for (u, w) in edges[v].iter().copied() {
             chmax!(dp[v], dp[u] + w);
         }
-        ans = ans.max(dp[v]);
     }
 
+    let ans = dp[map[&(max_t + 1, goal)]];
     println!("{}", ans);
 }
