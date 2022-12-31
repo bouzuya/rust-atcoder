@@ -1,10 +1,10 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
-        s: Chars,
+        n: usize,
+        a: [Usize1; n],
     };
-    let ans: String = s.iter().map(|_| 'x').collect();
+    let ans = n - a.len();
     println!("{}", ans);
 }

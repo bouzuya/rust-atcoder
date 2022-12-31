@@ -1,45 +1,54 @@
-use proconio::input;
-use proconio::marker::Bytes;
-
-fn c(n: usize, k: usize) -> usize {
-    return if k > n {
-        0
-    } else if k == 1 {
-        n
-    } else if k == 2 {
-        n * (n - 1) / 2
-    } else if k == 3 {
-        n * (n - 1) * (n - 2) / 6
-    } else {
-        unreachable!()
-    };
-}
-
-fn f(s: &Vec<usize>, i: usize, k: usize, l: bool) -> usize {
-    if k == 0 {
-        return 1;
-    }
-    if i == s.len() {
-        return 0;
-    }
-    if l {
-        return c(s.len() - i, k) * 9usize.pow(k as u32);
-    }
-    if s[i] == 0 {
-        return f(s, i + 1, k, false);
-    }
-    return f(s, i + 1, k, true) // 0xxxxx
-        + f(s, i + 1, k - 1, true) * (s[i] - 1) // (1-(d-1))xxxxx
-        + f(s, i + 1, k - 1, false) // dxxxxx
-        ;
-}
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        mut s: Bytes,
-        nzc: usize
+        n: Chars,
+        k: usize,
     };
-    let bs = s.into_iter().map(|b| (b - b'0') as usize).collect();
-    let ans = f(&bs, 0, nzc, false);
+    let ds = n
+        .iter()
+        .copied()
+        .map(|c| (c as u8 - b'0') as usize)
+        .collect::<Vec<usize>>();
+    let mut dp = vec![vec![0_usize; k + 1]; 2];
+    let d = ds[0];
+    for x in (0..=9).rev() {
+        if x > d {
+            continue;
+        }
+        let ni = if x < d { 1 } else { 0 };
+        let nj = if x != 0 { 1 } else { 0 };
+        dp[ni][nj] += 1;
+    }
+
+    for d in ds.into_iter().skip(1) {
+        let mut next = vec![vec![0_usize; k + 1]; 2];
+        for j in 0..=k {
+            // 0 -> 0 or 1
+            for x in (0..=9).rev() {
+                if x > d {
+                    continue;
+                }
+                let ni = if x < d { 1 } else { 0 };
+                let nj = if x != 0 { 1 } else { 0 } + j;
+                if nj <= k {
+                    next[ni][nj] += dp[0][j];
+                }
+            }
+
+            // 1 -> 1
+            for x in (0..=9).rev() {
+                let ni = 1;
+                let nj = if x != 0 { 1 } else { 0 } + j;
+                if nj <= k {
+                    next[ni][nj] += dp[1][j];
+                }
+            }
+        }
+
+        dp = next;
+    }
+
+    let ans = dp[0][k] + dp[1][k];
     println!("{}", ans);
 }

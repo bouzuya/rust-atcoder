@@ -1,12 +1,10 @@
-use proconio::input;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
         n: usize,
-        mut av: [usize; n]
+        a: [Usize1; n],
     };
-    av.sort();
-    av.dedup();
-    let ans = if av.len() == n { "YES" } else { "NO" };
+    let ans = n - a.len();
     println!("{}", ans);
 }
