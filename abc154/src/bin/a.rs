@@ -1,10 +1,19 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        s: String,
+        t: String,
+        a: usize,
+        b: usize,
+        u: String,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    let (a, b) = if s == u {
+        (a - 1, b)
+    } else if t == u {
+        (a, b - 1)
+    } else {
+        unreachable!()
+    };
+    println!("{} {}", a, b);
 }
