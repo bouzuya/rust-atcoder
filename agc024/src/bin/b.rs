@@ -1,28 +1,29 @@
-use proconio::input;
-use proconio::marker::Usize1;
-use std::cmp::max;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
         n: usize,
         p: [Usize1; n],
     };
-    let mut q = vec![0; n];
-    for (i, p_i) in p.into_iter().enumerate() {
+
+    let mut q = vec![n; n];
+    for (i, p_i) in p.iter().copied().enumerate() {
         q[p_i] = i;
     }
-    let mut max_l = 1;
-    let mut l = 1;
-    let mut p = q[0];
+
+    let mut max = 1_usize;
+    let mut count = 1_usize;
+    let mut prev = q[0];
     for q_i in q.into_iter().skip(1) {
-        if p > q_i {
-            max_l = max(max_l, l);
-            l = 0;
+        if prev < q_i {
+            count += 1;
+        } else {
+            count = 1;
         }
-        p = q_i;
-        l += 1;
+        prev = q_i;
+        max = max.max(count);
     }
-    max_l = max(max_l, l);
-    let ans = n - max_l;
+
+    let ans = n - max;
     println!("{}", ans);
 }

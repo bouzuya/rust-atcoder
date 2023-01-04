@@ -2,11 +2,9 @@ use proconio::input;
 
 fn main() {
     input! {
-        a: i64,
-        b: i64,
-        _: i64,
-        k: i64,
+        (a, b, _c): (i64, i64, i64),
+        k: usize,
     };
-    let ans = if k % 2 == 0 { a - b } else { b - a };
+    let ans = if k % 2 == 0 { a - b } else { -a + b };
     println!("{}", ans);
 }
