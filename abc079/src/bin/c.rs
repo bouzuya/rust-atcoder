@@ -1,48 +1,31 @@
-use proconio::input;
-use proconio::marker::Chars;
-
-fn dfs(d: &Vec<i64>, o: &mut Vec<bool>) -> Option<Vec<bool>> {
-    if o.len() == d.len() - 1 {
-        let mut r = d[0];
-        for (&o_i, &d_i) in o.iter().zip(d.iter().skip(1)) {
-            if o_i {
-                r += d_i;
-            } else {
-                r -= d_i;
-            }
-        }
-        return if r == 7 { Some(o.to_vec()) } else { None };
-    }
-
-    o.push(true);
-    if let Some(o) = dfs(d, o) {
-        return Some(o);
-    }
-    o.pop();
-    o.push(false);
-    if let Some(o) = dfs(d, o) {
-        return Some(o);
-    }
-    o.pop();
-    None
-}
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        abcd: Chars
+        abcd: Chars,
     };
-    let d = abcd
-        .iter()
-        .map(|&c| c.to_digit(10).unwrap() as i64)
-        .collect::<Vec<i64>>();
-    match dfs(&d, &mut vec![]) {
-        None => unreachable!(),
-        Some(o) => {
-            print!("{}", d[0]);
-            for (&o_i, &d_i) in o.iter().zip(d.iter().skip(1)) {
-                print!("{}{}", if o_i { "+" } else { "-" }, d_i);
+    let a = (abcd[0] as u8 - b'0') as i64;
+    let b = (abcd[1] as u8 - b'0') as i64;
+    let c = (abcd[2] as u8 - b'0') as i64;
+    let d = (abcd[3] as u8 - b'0') as i64;
+
+    for op_1 in vec![1, -1] {
+        for op_2 in vec![1, -1] {
+            for op_3 in vec![1, -1] {
+                if (((a + op_1 * b) + op_2 * c) + op_3 * d) == 7 {
+                    println!(
+                        "{}{}{}{}{}{}{}=7",
+                        a,
+                        if op_1 == 1 { '+' } else { '-' },
+                        b,
+                        if op_2 == 1 { '+' } else { '-' },
+                        c,
+                        if op_3 == 1 { '+' } else { '-' },
+                        d
+                    );
+                    return;
+                }
             }
-            println!("=7");
         }
     }
 }
