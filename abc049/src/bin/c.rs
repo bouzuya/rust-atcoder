@@ -1,55 +1,55 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
-fn main() {
-    input! {
-        mut s: Chars
-    };
-    s.reverse();
-    let dream = "dream".chars().rev().collect::<Vec<char>>();
-    let dreamer = "dreamer".chars().rev().collect::<Vec<char>>();
-    let erase = "erase".chars().rev().collect::<Vec<char>>();
-    let eraser = "eraser".chars().rev().collect::<Vec<char>>();
-    let n = s.len();
-    let mut i = 0;
-    while i < n {
-        let s_i = s[i];
-        match s_i {
+fn f(s: &mut Vec<char>) -> bool {
+    let w = vec!["dream", "dreamer", "erase", "eraser"]
+        .iter()
+        .map(|w_i| w_i.chars().collect::<Vec<char>>())
+        .collect::<Vec<_>>();
+    while !s.is_empty() {
+        match s.last().unwrap() {
             'm' => {
-                let n_s = dream.len();
-                if i + n_s <= n && &s[i..i + n_s] == dream.as_slice() {
-                    i += n_s;
+                if s.ends_with(&w[0]) {
+                    for _ in 0..w[0].len() {
+                        s.pop();
+                    }
                 } else {
-                    println!("NO");
-                    return;
+                    return false;
                 }
             }
             'e' => {
-                let n_s = erase.len();
-                if i + n_s <= n && &s[i..i + n_s] == erase.as_slice() {
-                    i += n_s;
+                if s.ends_with(&w[2]) {
+                    for _ in 0..w[2].len() {
+                        s.pop();
+                    }
                 } else {
-                    println!("NO");
-                    return;
+                    return false;
                 }
             }
             'r' => {
-                let n_s1 = dreamer.len();
-                let n_s2 = eraser.len();
-                if i + n_s1 <= n && &s[i..i + n_s1] == dreamer.as_slice() {
-                    i += n_s1;
-                } else if i + n_s2 <= n && &s[i..i + n_s2] == eraser.as_slice() {
-                    i += n_s2;
+                if s.ends_with(&w[1]) {
+                    for _ in 0..w[1].len() {
+                        s.pop();
+                    }
+                } else if s.ends_with(&w[3]) {
+                    for _ in 0..w[3].len() {
+                        s.pop();
+                    }
                 } else {
-                    println!("NO");
-                    return;
+                    return false;
                 }
             }
             _ => {
-                println!("NO");
-                return;
+                return false;
             }
         }
     }
-    println!("YES");
+    true
+}
+
+fn main() {
+    input! {
+        mut s: Chars,
+    };
+    let ans = f(&mut s);
+    println!("{}", if ans { "YES" } else { "NO" });
 }

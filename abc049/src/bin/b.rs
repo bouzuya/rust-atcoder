@@ -1,20 +1,13 @@
 use proconio::input;
-use proconio::marker::Chars;
 
 fn main() {
     input! {
         h: usize,
-        w: usize,
-        c: [Chars; h],
+        _w: usize,
+        c: [String; h],
     };
-    for i in 0..h {
-        for j in 0..w {
-            print!("{}", c[i][j]);
-        }
-        println!();
-        for j in 0..w {
-            print!("{}", c[i][j]);
-        }
-        println!();
+    for c_i in c {
+        println!("{}", c_i);
+        println!("{}", c_i);
     }
 }

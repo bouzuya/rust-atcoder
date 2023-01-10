@@ -4,9 +4,6 @@ fn main() {
     input! {
         c: char,
     };
-    let ans = match c {
-        'a' | 'i' | 'u' | 'e' | 'o' => true,
-        _ => false,
-    };
+    let ans = "aeiou".chars().any(|x| x == c);
     println!("{}", if ans { "vowel" } else { "consonant" });
 }
