@@ -1,42 +1,46 @@
 use proconio::input;
 
-fn main() {
-    input! {
-        q: usize,
-        lr: [(i64, i64); q],
-    };
-
-    let n = *lr.iter().map(|(_, r)| r).max().unwrap() as usize;
-
-    let mut sieve = vec![true; n + 1];
-    sieve[0] = false;
-    sieve[1] = false;
+fn sieve_of_eratosthenes(n: usize) -> Vec<bool> {
+    let mut p = vec![];
+    let mut b = vec![true; n + 1];
     for i in 2.. {
         if i * i > n {
+            for j in i..=n {
+                if b[j] {
+                    p.push(j);
+                }
+            }
             break;
         }
-        if sieve[i] {
+        if b[i] {
+            p.push(i);
             for j in (i + i..=n).step_by(i) {
-                sieve[j] = false;
+                b[j] = false;
             }
         }
     }
+    b
+}
 
-    let mut c = vec![0; n + 2];
-    for i in 1..=n {
-        c[i] = c[i - 1]
-            + if i % 2 == 0 {
-                0
-            } else {
-                if sieve[i] && sieve[(i + 1) / 2] {
-                    1
-                } else {
-                    0
-                }
-            };
+fn main() {
+    input! {
+        q: usize,
+        lr: [(usize, usize); q],
+    };
+    let max = 100_000;
+    let sieve = sieve_of_eratosthenes(max);
+    let mut count = vec![0_usize; max + 1];
+    for i in 3..=max {
+        count[i] = if i % 2 != 0 && sieve[i] && sieve[(i + 1) / 2] {
+            1
+        } else {
+            0
+        };
     }
-
-    for &(l_i, r_i) in lr.iter() {
-        println!("{}", c[r_i as usize] - c[(l_i - 1) as usize]);
+    for i in 1..max {
+        count[i + 1] += count[i];
+    }
+    for (l, r) in lr {
+        println!("{}", count[r] - count[l - 1]);
     }
 }

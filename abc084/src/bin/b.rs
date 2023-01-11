@@ -1,30 +1,14 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         a: usize,
-        _: usize,
-        s: Chars
+        _b: usize,
+        s: Chars,
     };
-    let mut is_ok = true;
-    for (i, &s_i) in s.iter().enumerate() {
-        if i < a {
-            if !s_i.is_digit(10) {
-                is_ok = false;
-                break;
-            }
-        } else if i == a {
-            if s_i != '-' {
-                is_ok = false;
-                break;
-            }
-        } else {
-            if !s_i.is_digit(10) {
-                is_ok = false;
-                break;
-            }
-        }
-    }
-    println!("{}", if is_ok { "Yes" } else { "No" });
+    let ans = s
+        .into_iter()
+        .enumerate()
+        .all(|(i, c)| (i == a && c == '-') || (i != a && c.is_ascii_digit()));
+    println!("{}", if ans { "Yes" } else { "No" });
 }

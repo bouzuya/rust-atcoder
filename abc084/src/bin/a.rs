@@ -2,8 +2,8 @@ use proconio::input;
 
 fn main() {
     input! {
-        m: i64,
+        n: usize,
     };
-    let ans = (24 - m) + 24;
+    let ans = 48 - n;
     println!("{}", ans);
 }

@@ -3,25 +3,25 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        csf: [(i64, i64, i64); n - 1],
+        csf: [(usize, usize, usize); n - 1],
     };
+    let mut ans = vec![0_usize; n];
     for i in 0..n - 1 {
-        let mut t = csf[i].1 + csf[i].0;
-        for &(c_j, s_j, f_j) in csf.iter().skip(i + 1) {
-            if t < s_j {
-                t = s_j;
-            } else if t >= s_j {
-                if (t - s_j) % f_j == 0 {
-                    // do nothing
-                } else {
-                    t += f_j - (t - s_j) % f_j;
-                }
-            } else {
-                unreachable!();
+        let (c, s, _) = csf[i];
+        let mut x = c + s;
+        for j in i + 1..n - 1 {
+            let (c, s, f) = csf[j];
+            if x <= s {
+                x = s;
+            } else if (x - s) % f != 0 {
+                x += f - (x - s) % f;
             }
-            t += c_j;
+            x += c;
         }
-        println!("{}", t);
+        ans[i] = x;
     }
-    println!("{}", 0);
+
+    for a in ans {
+        println!("{}", a);
+    }
 }
