@@ -7,17 +7,19 @@ fn main() {
         ab: [(i64, i64); n],
         cd: [(i64, i64); m],
     };
-
-    for &(a_i, b_i) in ab.iter() {
-        let mut min_dist = 1_000_000_000_000_000_i64;
-        let mut x = 0;
-        for (i, &(c_i, d_i)) in cd.iter().enumerate() {
-            let dist = (a_i - c_i).abs() + (b_i - d_i).abs();
-            if dist < min_dist {
-                min_dist = dist;
-                x = i + 1;
+    let mut ans = vec![m; n];
+    for (i, (a, b)) in ab.iter().copied().enumerate() {
+        let mut min = 1_i64 << 60;
+        for (j, (c, d)) in cd.iter().copied().enumerate() {
+            let dist = (a - c).abs() + (b - d).abs();
+            if dist < min {
+                min = dist;
+                ans[i] = j;
             }
         }
-        println!("{}", x);
+    }
+
+    for a in ans {
+        println!("{}", a + 1);
     }
 }
