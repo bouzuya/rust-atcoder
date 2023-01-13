@@ -1,19 +1,18 @@
-use proconio::input;
-use proconio::marker::Usize1;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
         n: usize,
         q: usize,
-        lrt: [(Usize1, Usize1, i64); q],
+        lrt: [(Usize1, Usize1, usize); q],
     };
-    let mut a = vec![0_i64; n];
-    for &(l_i, r_i, t_i) in lrt.iter() {
-        for j in l_i..=r_i {
-            a[j] = t_i;
+    let mut a = vec![0_usize; n];
+    for (l, r, t) in lrt {
+        for i in l..=r {
+            a[i] = t;
         }
     }
-    for &a_i in a.iter() {
+    for a_i in a {
         println!("{}", a_i);
     }
 }

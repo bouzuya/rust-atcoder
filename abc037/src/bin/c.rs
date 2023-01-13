@@ -4,14 +4,18 @@ fn main() {
     input! {
         n: usize,
         k: usize,
-        a: [i64; n],
+        a: [usize; n],
     };
-    let mut s = a[0..k].iter().sum::<i64>();
-    let mut ans = s;
-    for i_l in 0..n - k {
-        s -= a[i_l];
-        s += a[i_l + k];
-        ans += s;
+    let mut sum = 0_usize;
+    for i in 0..k {
+        sum += a[i];
     }
+    let mut ans = sum;
+    for i in k..n {
+        sum += a[i];
+        sum -= a[i - k];
+        ans += sum;
+    }
+
     println!("{}", ans);
 }
