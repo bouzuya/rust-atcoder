@@ -18,17 +18,23 @@ fn main() {
         k: usize,
         ab: [(usize, usize); n],
     };
-    let mut dp = vec![vec![vec![0; k + 1]; w + 1]; n + 1];
-    for (i, &(a_i, b_i)) in ab.iter().enumerate() {
-        for w_i in 0..=w {
-            for k_i in 0..=k {
-                chmax!(dp[i + 1][w_i][k_i], dp[i][w_i][k_i]);
-                if w_i + a_i <= w && k_i + 1 <= k {
-                    chmax!(dp[i + 1][w_i + a_i][k_i + 1], dp[i][w_i][k_i] + b_i);
+    let mut dp = vec![vec![0_usize; k + 1]; w + 1];
+    for (a, b) in ab.iter().copied() {
+        let mut next = vec![vec![0_usize; k + 1]; w + 1];
+        for j in 0..=k {
+            for l in 0..=w {
+                chmax!(next[l][j], dp[l][j]);
+                if j + 1 <= k && l + a <= w {
+                    chmax!(next[l + a][j + 1], dp[l][j] + b);
                 }
             }
         }
+        dp = next;
     }
-    let ans = dp[n][w][k];
+    let ans = dp
+        .iter()
+        .map(|dp_i| dp_i.iter().max().unwrap())
+        .max()
+        .unwrap();
     println!("{}", ans);
 }

@@ -5,12 +5,6 @@ fn main() {
         a: String,
         b: String,
     };
-    let ans = if a.len() == b.len() {
-        unreachable!()
-    } else if a.len() > b.len() {
-        a
-    } else {
-        b
-    };
+    let ans = if a.len() < b.len() { b } else { a };
     println!("{}", ans);
 }

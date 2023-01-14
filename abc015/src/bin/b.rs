@@ -3,16 +3,10 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        a: [i64; n],
+        a: [usize; n],
     };
-    let mut c = 0;
-    let mut s = 0;
-    for &a_i in a.iter() {
-        if a_i > 0 {
-            c += 1;
-            s += a_i;
-        }
-    }
-    let ans = (s + c - 1) / c;
+    let count = a.iter().copied().filter(|a_i| a_i != &0).count();
+    let sum = a.iter().sum::<usize>();
+    let ans = (sum + count - 1) / count;
     println!("{}", ans);
 }
