@@ -1,89 +1,132 @@
-use self::union_find::UnionFind;
-use proconio::input;
-use proconio::marker::Usize1;
+use std::cmp::Reverse;
 
-enum D {
-    E { a: usize, b: usize, y: isize },
-    Q { i: usize, v: usize, w: isize },
-}
+use dsu::*;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
         n: usize,
         m: usize,
-        mut abyv: [(Usize1, Usize1, isize); m],
+        mut aby: [(Usize1, Usize1, usize); m],
         q: usize,
-        vwv: [(Usize1, isize); q],
+        mut vw: [(Usize1, usize); q],
     };
+    let mut ivw = vw
+        .into_iter()
+        .enumerate()
+        .map(|(i, (v, w))| (i, v, w))
+        .collect::<Vec<_>>();
 
-    // 道路と人をまとめて、年の降順、年が同じとき人が前にくるよう並べる
-    let mut dv: Vec<D> = abyv
-        .iter()
-        .map(|&(a, b, y)| D::E { a, b, y })
-        .chain(vwv.iter().enumerate().map(|(i, &(v, w))| D::Q { i, v, w }))
-        .collect();
-    dv.sort_by_key(|d| match d {
-        D::E { a: _, b: _, y } => (-y, 1),
-        D::Q { i: _, v: _, w } => (-w, 0),
-    });
+    aby.sort_by_key(|&(_, _, y)| Reverse(y));
+    ivw.sort_by_key(|&(_, _, y)| Reverse(y));
 
-    let mut av = vec![0_usize; q];
-    let mut uf = UnionFind::new(n);
-    for d in dv {
-        match d {
-            D::E { a, b, y: _ } => uf.unite(a, b),
-            D::Q { i, v, w: _ } => av[i] = uf.size(v),
+    let mut dsu = Dsu::new(n);
+    let mut ans = vec![0_usize; q];
+    let mut index = 0_usize;
+    for (i, v, w) in ivw {
+        while index < m && aby[index].2 > w {
+            let (a, b, _) = aby[index];
+            dsu.merge(a, b);
+            index += 1;
         }
+        ans[i] = dsu.size(v);
     }
 
-    for ans in av {
-        println!("{}", ans);
+    for a in ans {
+        println!("{}", a);
     }
 }
 
-mod union_find {
-    pub struct UnionFind {
-        p: Vec<usize>,
-        s: Vec<usize>,
+//https://github.com/rust-lang-ja/ac-library-rs
+
+pub mod dsu {
+    /// Implement (union by size) + (path compression)
+    /// Reference:
+    /// Zvi Galil and Giuseppe F. Italiano,
+    /// Data structures and algorithms for disjoint set union problems
+    pub struct Dsu {
+        n: usize,
+        // root node: -1 * component size
+        // otherwise: parent
+        parent_or_size: Vec<i32>,
     }
 
-    impl UnionFind {
-        pub fn new(n: usize) -> Self {
-            let mut p = vec![0; n];
-            for i in 0..n {
-                p[i] = i;
+    impl Dsu {
+        // 0 <= size <= 10^8 is constrained.
+        pub fn new(size: usize) -> Self {
+            Self {
+                n: size,
+                parent_or_size: vec![-1; size],
             }
-            let s = vec![1; n];
-            Self { p, s }
         }
-
-        pub fn root(&mut self, x: usize) -> usize {
-            if self.p[x] == x {
+        pub fn merge(&mut self, a: usize, b: usize) -> usize {
+            assert!(a < self.n);
+            assert!(b < self.n);
+            let (mut x, mut y) = (self.leader(a), self.leader(b));
+            if x == y {
                 return x;
-            } else {
-                self.p[x] = self.root(self.p[x]);
-                self.p[x]
             }
+            if -self.parent_or_size[x] < -self.parent_or_size[y] {
+                std::mem::swap(&mut x, &mut y);
+            }
+            self.parent_or_size[x] += self.parent_or_size[y];
+            self.parent_or_size[y] = x as i32;
+            x
         }
 
-        pub fn size(&mut self, x: usize) -> usize {
-            let rx = self.root(x);
-            self.s[rx]
+        pub fn same(&mut self, a: usize, b: usize) -> bool {
+            assert!(a < self.n);
+            assert!(b < self.n);
+            self.leader(a) == self.leader(b)
         }
-
-        pub fn unite(&mut self, x: usize, y: usize) {
-            let rx = self.root(x);
-            let ry = self.root(y);
-            if rx == ry {
-                return;
-            };
-            if self.s[rx] >= self.s[ry] {
-                self.s[rx] += self.s[ry];
-                self.p[ry] = rx;
-            } else {
-                self.s[ry] += self.s[rx];
-                self.p[rx] = ry;
+        pub fn leader(&mut self, a: usize) -> usize {
+            assert!(a < self.n);
+            if self.parent_or_size[a] < 0 {
+                return a;
             }
+            self.parent_or_size[a] = self.leader(self.parent_or_size[a] as usize) as i32;
+            self.parent_or_size[a] as usize
+        }
+        pub fn size(&mut self, a: usize) -> usize {
+            assert!(a < self.n);
+            let x = self.leader(a);
+            -self.parent_or_size[x] as usize
+        }
+        pub fn groups(&mut self) -> Vec<Vec<usize>> {
+            let mut leader_buf = vec![0; self.n];
+            let mut group_size = vec![0; self.n];
+            for i in 0..self.n {
+                leader_buf[i] = self.leader(i);
+                group_size[leader_buf[i]] += 1;
+            }
+            let mut result = vec![Vec::new(); self.n];
+            for i in 0..self.n {
+                result[i].reserve(group_size[i]);
+            }
+            for i in 0..self.n {
+                result[leader_buf[i]].push(i);
+            }
+            result
+                .into_iter()
+                .filter(|x| !x.is_empty())
+                .collect::<Vec<Vec<usize>>>()
+        }
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+
+        #[test]
+        fn dsu_works() {
+            let mut d = Dsu::new(4);
+            d.merge(0, 1);
+            assert_eq!(d.same(0, 1), true);
+            d.merge(1, 2);
+            assert_eq!(d.same(0, 2), true);
+            assert_eq!(d.size(0), 3);
+            assert_eq!(d.same(0, 3), false);
+            assert_eq!(d.groups(), vec![vec![0, 1, 2], vec![3]]);
         }
     }
 }

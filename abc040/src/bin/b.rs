@@ -2,15 +2,14 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: usize
+        n: usize,
     };
-    let mut ans = n;
-    for x in 1..=n {
-        let y = n / x;
-        if x * y > n {
-            break;
+    let mut min = n * n;
+    for h in 1..=n {
+        for w in 1..=n / h {
+            min = min.min((h.max(w) - h.min(w)) + (n - h * w));
         }
-        ans = std::cmp::min(ans, n - x * y + if x > y { x - y } else { y - x });
     }
+    let ans = min;
     println!("{}", ans);
 }
