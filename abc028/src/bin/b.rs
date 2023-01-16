@@ -1,14 +1,21 @@
-use proconio::input;
-use proconio::marker::Chars;
+use std::collections::HashMap;
+
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        s: Chars
+        s: Chars,
     };
-    let mut c = vec![0; 6];
-    for &s_i in s.iter() {
-        let i = s_i as usize - 'A' as usize;
-        c[i] += 1;
+    let mut map = HashMap::new();
+    for c in s {
+        *map.entry(c).or_insert(0) += 1_usize;
     }
-    println!("{} {} {} {} {} {}", c[0], c[1], c[2], c[3], c[4], c[5]);
+    println!(
+        "{}",
+        "ABCDEF"
+            .chars()
+            .map(|c| (*map.get(&c).unwrap_or(&0)).to_string())
+            .collect::<Vec<String>>()
+            .join(" ")
+    );
 }

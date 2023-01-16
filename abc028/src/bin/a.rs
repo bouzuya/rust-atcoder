@@ -10,10 +10,8 @@ fn main() {
         "Good"
     } else if n <= 99 {
         "Great"
-    } else if n <= 100 {
-        "Perfect"
     } else {
-        unreachable!();
+        "Perfect"
     };
     println!("{}", ans);
 }

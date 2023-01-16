@@ -1,23 +1,24 @@
+use std::collections::BTreeSet;
+
 use proconio::input;
 
 fn main() {
     input! {
-        abcde: [i64; 5],
+        abcde: [usize; 5],
     };
-    let mut n: Vec<i64> = vec![];
-    for bits in 0..1 << 5 {
-        let mut is = vec![];
-        for i in 0..5 {
-            if (bits >> i) & 1 == 1 {
-                is.push(i);
+    let mut set = BTreeSet::new();
+    for i in 0..5 {
+        for j in i + 1..5 {
+            for k in j + 1..5 {
+                let v = abcde[i] + abcde[j] + abcde[k];
+                set.insert(v);
             }
         }
-        if is.len() != 3 {
-            continue;
-        }
-        n.push(is.iter().map(|&i| abcde[i]).sum());
     }
-    n.sort_by_key(|n_i| -n_i);
-    let ans = n[2];
+
+    let mut iter = set.iter().rev();
+    iter.next();
+    iter.next();
+    let ans = *iter.next().unwrap();
     println!("{}", ans);
 }
