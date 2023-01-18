@@ -3,19 +3,27 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        a: [i64; n],
+        a: [usize; n],
     };
-    let mut ans = 1_u64;
-    let mut c = 0_u64;
-    let mut a_p = a[0];
-    for &a_i in a.iter().skip(1) {
-        if a_p < a_i {
-            c += 1;
+    let mut count = n;
+    let mut prev = a[0];
+    let mut len = 1;
+    for a_i in a.into_iter().skip(1) {
+        if prev < a_i {
+            len += 1;
         } else {
-            c = 0;
+            if len > 1 {
+                count += len * (len - 1) / 2;
+            }
+
+            len = 1;
         }
-        ans += c + 1;
-        a_p = a_i;
+        prev = a_i;
     }
+    if len > 1 {
+        count += len * (len - 1) / 2;
+    }
+
+    let ans = count;
     println!("{}", ans);
 }

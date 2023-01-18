@@ -1,10 +1,9 @@
 use proconio::input;
-use proconio::marker::Chars;
 
 fn main() {
     input! {
-        s: Chars,
+        s: String,
     };
-    let ans = s[s.len() - 1] == 'T';
+    let ans = s.ends_with('T');
     println!("{}", if ans { "YES" } else { "NO" });
 }
