@@ -5,18 +5,15 @@ fn main() {
         n: usize,
         mut a: [i64; n],
     };
-    let &max = a.iter().max().unwrap();
-    let mut r = max;
-    let mut d = 1_000_000_001;
-    for &a_i in a.iter() {
-        if a_i == max {
-            continue;
-        }
-        let d_i = (a_i - max / 2).abs();
-        if d_i < d {
-            r = a_i;
-            d = d_i;
+    a.sort();
+
+    let x = a[n - 1];
+    let mut k = (a[0], (x - 2 * a[0]).abs());
+    for a_i in a.into_iter().take(n - 1) {
+        let d = (x - 2 * a_i).abs();
+        if d <= k.1 {
+            k = (a_i, d);
         }
     }
-    println!("{} {}", max, r);
+    println!("{} {}", x, k.0);
 }
