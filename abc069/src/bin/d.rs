@@ -5,33 +5,28 @@ fn main() {
         h: usize,
         w: usize,
         n: usize,
-        a: [usize; n],
+        mut a: [usize; n],
     };
-    let mut x = 0;
-    let mut y = 0;
+    let mut index = 0_usize;
     let mut ans = vec![vec![0_usize; w]; h];
-    for (i, &a_i) in a.iter().enumerate() {
-        for _ in 0..a_i {
-            ans[y][x] = i + 1;
-            if y % 2 == 0 {
-                if x == w - 1 {
-                    y += 1;
-                } else {
-                    x += 1;
-                }
-            } else {
-                if x == 0 {
-                    y += 1;
-                } else {
-                    x -= 1;
-                }
+    for i in 0..h {
+        let range = if i % 2 == 0 {
+            (0..w).collect::<Vec<usize>>()
+        } else {
+            (0..w).rev().collect::<Vec<usize>>()
+        };
+        for j in range {
+            if a[index] == 0 {
+                index += 1;
             }
+            ans[i][j] = index + 1;
+            a[index] -= 1;
         }
     }
-    for a_i in ans.iter() {
-        for (x, &a_ij) in a_i.iter().enumerate() {
-            print!("{}{}", a_ij, if x == w - 1 { "" } else { " " });
+
+    for i in 0..h {
+        for j in 0..w {
+            print!("{}{}", ans[i][j], if j == w - 1 { '\n' } else { ' ' });
         }
-        println!();
     }
 }

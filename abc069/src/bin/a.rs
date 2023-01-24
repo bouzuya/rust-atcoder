@@ -2,9 +2,9 @@ use proconio::input;
 
 fn main() {
     input! {
-        a: u64,
-        b: u64,
+        n: usize,
+        m: usize,
     };
-    let ans = (a - 1) * (b - 1);
+    let ans = (n - 1) * (m - 1);
     println!("{}", ans);
 }

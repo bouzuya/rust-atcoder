@@ -1,9 +1,8 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         s: Chars,
     };
-    print!("{}{}{}", s[0], s.len() - 2, s[s.len() - 1]);
+    println!("{}{}{}", s.first().unwrap(), s.len() - 2, s.last().unwrap());
 }
