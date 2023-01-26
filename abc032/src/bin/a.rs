@@ -2,14 +2,14 @@ use proconio::input;
 
 fn main() {
     input! {
-        a: i64,
-        b: i64,
-        n: i64,
+        a: usize,
+        b: usize,
+        n: usize,
     };
-    for i in n.. {
-        if i % a == 0 && i % b == 0 {
-            println!("{}", i);
-            return;
+    for x in n.. {
+        if x % a == 0 && x % b == 0 {
+            println!("{}", x);
+            break;
         }
     }
 }

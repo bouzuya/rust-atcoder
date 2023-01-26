@@ -1,4 +1,7 @@
+use std::collections::BTreeMap;
+
 use proconio::input;
+use superslice::Ext;
 
 macro_rules! chmax {
     ($max_v: expr, $v: expr) => {
@@ -22,46 +25,31 @@ macro_rules! chmin {
     };
 }
 
-fn f(vw: &[(usize, usize)], w: usize) -> Vec<(usize, usize)> {
+fn f(w: usize, vw: &[(usize, usize)]) -> Vec<(usize, usize)> {
     let n = vw.len();
-    let mut map = std::collections::BTreeMap::new();
+    let mut map = BTreeMap::new();
     for bits in 0..1 << n {
-        let mut sum_w = 0;
-        let mut sum_v = 0;
+        let mut sum_v = 0_usize;
+        let mut sum_w = 0_usize;
         for i in 0..n {
-            if (bits >> i) & 1 == 1 {
+            if ((bits >> i) & 1) == 1 {
                 let (v_i, w_i) = vw[i];
-                sum_w += w_i;
                 sum_v += v_i;
+                sum_w += w_i;
             }
         }
-        if sum_w > w {
-            continue;
-        }
-        let entry = map.entry(sum_w).or_insert(0);
-        if *entry < sum_v {
-            *entry = sum_v;
+        if sum_w <= w {
+            let entry = map.entry(sum_w).or_insert(sum_v);
+            *entry = (*entry).max(sum_v);
         }
     }
-    let mut b = vec![true; map.len()];
-    for (i, (w_i, v_i)) in map.iter().enumerate() {
-        if !b[i] {
-            continue;
-        }
-        for (j, (w_j, v_j)) in map.iter().enumerate() {
-            if !b[j] {
-                continue;
-            }
-            if w_j > w_i && v_j <= v_i {
-                b[j] = false;
-            }
-        }
+    let mut res = vec![];
+    let mut maxv = 0;
+    for (k, v) in map {
+        maxv = v.max(maxv);
+        res.push((k, maxv));
     }
-    map.iter()
-        .zip(b)
-        .filter(|&(_, b_i)| b_i)
-        .map(|((&w_i, &v_i), _)| (w_i, v_i))
-        .collect::<Vec<_>>()
+    res
 }
 
 fn main() {
@@ -70,61 +58,59 @@ fn main() {
         w: usize,
         vw: [(usize, usize); n],
     };
-    if n <= 30 {
-        let wv1 = f(&vw[0..n / 2], w);
-        let wv2 = f(&vw[n / 2..n], w);
-        let mut ans = 0;
-        for &(w_i, v_i) in wv1.iter() {
-            // binary search
-            let mut l = 0;
-            let mut r = wv2.len();
-            while r - l > 1 {
-                let m = l + (r - l) / 2;
-                let (w_m, _) = wv2[m];
-                if w_m + w_i <= w {
-                    l = m;
-                } else {
-                    r = m;
+    let ans = if n <= 30 {
+        let wv1 = f(w, &vw[0..n / 2]);
+        let wv2 = f(w, &vw[n / 2..n]);
+        let mut ans = 0_usize;
+        for (w1, v1) in wv1 {
+            let i = wv2
+                .lower_bound_by_key(&(w + 1 - w1), |(w2, _)| *w2)
+                .saturating_sub(1);
+            if i < wv2.len() {
+                let (w2, v2) = wv2[i];
+                if w1 + w2 <= w {
+                    ans = ans.max(v1 + v2);
                 }
             }
-            let (w_j, v_j) = wv2[l];
-            if w_i + w_j <= w {
-                chmax!(ans, v_i + v_j);
-            }
         }
-        println!("{}", ans);
-    } else if vw.iter().all(|&(_, w_i)| w_i <= 1_000) {
-        let mut dp = vec![vec![0; w + 1]; n + 1];
-        for (i, &(v_i, w_i)) in vw.iter().enumerate() {
+        ans
+    } else if vw.iter().copied().all(|(_, w_i)| w_i <= 1_000) {
+        let mut dp = vec![0_usize; w + 1];
+        for (v_i, w_i) in vw {
+            let mut next = vec![0_usize; w + 1];
             for j in 0..=w {
-                chmax!(dp[i + 1][j], dp[i][j]);
+                chmax!(next[j], dp[j]);
                 if j + w_i <= w {
-                    chmax!(dp[i + 1][j + w_i], dp[i][j] + v_i);
+                    chmax!(next[j + w_i], dp[j] + v_i);
                 }
             }
+            dp = next;
         }
-        let ans = dp[n].iter().max().unwrap();
-        println!("{}", ans);
-    } else if vw.iter().all(|&(v_i, _)| v_i <= 1_000) {
-        let inf = 1_000_000_000_000;
-        let max_v = vw.iter().map(|&(v_i, _)| v_i).max().unwrap();
-        let mut dp = vec![vec![inf; max_v * n + 1]; n + 1];
-        dp[0][0] = 0;
-        for (i, &(v_i, w_i)) in vw.iter().enumerate() {
-            for j in 0..=max_v * n {
-                chmin!(dp[i + 1][j], dp[i][j]);
-                if j + v_i <= max_v * n {
-                    chmin!(dp[i + 1][j + v_i], dp[i][j] + w_i);
+        *dp.iter().max().unwrap()
+    } else if vw.iter().copied().all(|(v, _)| v <= 1_000) {
+        let inf = 1 << 60;
+        let mut dp = vec![inf; 1_000 * n + 1];
+        dp[0] = 0_usize;
+        for (v_i, w_i) in vw {
+            let mut next = vec![inf; 1_000 * n + 1];
+            next[0] = 0_usize;
+            for j in 0..=1_000 * n {
+                chmin!(next[j], dp[j]);
+                if j + v_i <= 1_000 * n {
+                    chmin!(next[j + v_i], dp[j] + w_i);
                 }
             }
+            dp = next;
         }
-        let ans = dp[n]
-            .iter()
+        dp.into_iter()
             .enumerate()
-            .filter(|&(_, &w_i)| w_i <= w)
-            .map(|(v_i, _)| v_i)
+            .filter(|&(_, w_i)| w_i <= w)
+            .map(|(v, _)| v)
             .max()
-            .unwrap();
-        println!("{}", ans);
-    }
+            .unwrap_or(0)
+    } else {
+        unreachable!()
+    };
+
+    println!("{}", ans);
 }
