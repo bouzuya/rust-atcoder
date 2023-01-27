@@ -7,6 +7,6 @@ fn main() {
         c: usize,
         d: usize,
     };
-    let ans = std::cmp::max(a * b, c * d);
+    let ans = (a * b).max(c * d);
     println!("{}", ans);
 }

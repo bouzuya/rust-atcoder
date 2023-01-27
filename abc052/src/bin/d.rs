@@ -5,14 +5,12 @@ fn main() {
         n: usize,
         a: usize,
         b: usize,
-        x: [usize; n]
+        x: [usize; n],
     };
     let mut sum = 0_usize;
-    let mut x_c = x[0];
-    for &x_i in x.iter().skip(1) {
-        let d = x_i - x_c;
-        sum += std::cmp::min(d * a, b);
-        x_c = x_i;
+    for i in 1..n {
+        let d = x[i] - x[i - 1];
+        sum += (d * a).min(b);
     }
     let ans = sum;
     println!("{}", ans);
