@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use proconio::input;
 
 fn main() {
@@ -5,52 +7,30 @@ fn main() {
         n: usize,
         a: [usize; n],
     };
-    // 8
-    // 1, 3, 5, 7
-    // 2, 2, 2, 2
-    // 7
-    // 0, 2, 4, 6
-    // 1, 2, 2, 2
-    let mut c = vec![0; n];
-    for &a_i in a.iter() {
-        c[a_i] += 1;
+
+    let mut map = HashMap::new();
+    for a_i in a {
+        *map.entry(a_i).or_insert(0) += 1;
     }
-    if n % 2 == 0 {
-        for (i, &c_i) in c.iter().enumerate() {
-            if c_i == 0 {
-                continue;
-            }
-            if c_i == 2 && i % 2 != 0 {
-                continue;
-            }
-            println!("{}", 0);
-            return;
-        }
-        let mut ans = 1;
-        for _ in 0..n / 2 {
-            ans *= 2;
-            ans %= 1_000_000_007;
-        }
-        println!("{}", ans);
+
+    let range = if n % 2 == 0 {
+        (1..n).step_by(2)
     } else {
-        for (i, &c_i) in c.iter().enumerate() {
-            if c_i == 0 {
-                continue;
-            }
-            if c_i == 1 && i == 0 {
-                continue;
-            }
-            if c_i == 2 && i % 2 == 0 {
-                continue;
-            }
-            println!("{}", 0);
+        (2..n).step_by(2)
+    };
+    let mut ans = 1_usize;
+    for i in range {
+        let count = *map.get(&i).unwrap_or(&0);
+        if count != 2 {
+            println!("0");
             return;
         }
-        let mut ans = 1;
-        for _ in 0..n / 2 {
-            ans *= 2;
-            ans %= 1_000_000_007;
-        }
-        println!("{}", ans);
+        ans *= 2;
+        ans %= 1_000_000_007;
     }
+    if n % 2 != 0 && *map.get(&0).unwrap_or(&0) != 1 {
+        println!("0");
+        return;
+    }
+    println!("{}", ans);
 }
