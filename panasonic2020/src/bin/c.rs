@@ -6,10 +6,10 @@ fn main() {
         b: usize,
         c: usize,
     };
-    let ans = if a + b < c && 4 * a * b < (c - a - b).pow(2) {
-        "Yes"
+    let ans = if a + b >= c {
+        false
     } else {
-        "No"
+        4 * a * b < (c - a - b) * (c - a - b)
     };
-    println!("{}", ans);
+    println!("{}", if ans { "Yes" } else { "No" });
 }

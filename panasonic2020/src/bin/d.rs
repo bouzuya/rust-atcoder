@@ -1,18 +1,20 @@
 use proconio::input;
 
-fn dfs(s: &mut String, n: usize, mb: u8) {
+fn f(s: &mut String, n: usize, c: u8) {
     if s.len() == n {
         println!("{}", s);
         return;
     }
-    for b in b'a'..=mb {
-        s.push(b as char);
-        dfs(s, n, mb + if b == mb { 1 } else { 0 });
+    for i in b'a'..=c {
+        s.push(i as char);
+        f(s, n, c + if i == c { 1 } else { 0 });
         s.pop();
     }
 }
 
 fn main() {
-    input! { n: usize }
-    dfs(&mut String::new(), n, b'a');
+    input! {
+        n: usize,
+    };
+    f(&mut String::new(), n, b'a');
 }
