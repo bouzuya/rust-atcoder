@@ -3,24 +3,27 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        h: u64,
-        mut ab: [(u64, u64); n],
+        h: usize,
+        ab: [(usize, usize); n],
     };
-
-    ab.sort_by_key(|&(_, b_i)| std::cmp::Reverse(b_i));
-    let max_a = ab.iter().map(|&(a_i, _)| a_i).max().unwrap();
-    let mut cnt = 0;
-    let mut sum = 0;
-    for &(_, b_i) in ab.iter() {
-        if b_i <= max_a || sum >= h {
-            break;
+    let max_a = ab.iter().copied().map(|(a, _)| a).max().unwrap();
+    let mut bs = ab
+        .iter()
+        .copied()
+        .filter(|&(_, b)| b > max_a)
+        .map(|(_, b)| b)
+        .collect::<Vec<usize>>();
+    bs.sort();
+    let mut count = 0_usize;
+    let mut sum = 0_usize;
+    for b in bs.into_iter().rev() {
+        count += 1;
+        sum += b;
+        if sum >= h {
+            println!("{}", count);
+            return;
         }
-        sum += b_i;
-        cnt += 1;
     }
-    if sum >= h {
-        println!("{}", cnt);
-        return;
-    }
-    println!("{}", cnt + ((h - sum) + (max_a - 1)) / max_a);
+    let ans = count + (((h - sum) + max_a - 1) / max_a);
+    println!("{}", ans);
 }

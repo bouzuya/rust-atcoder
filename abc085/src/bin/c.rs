@@ -2,17 +2,17 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: u64,
-        y: u64,
+        n: usize,
+        capital_y: usize,
     };
-    for a in 0..=n {
-        for b in 0..=n - a {
-            let c = n - (a + b);
-            if a + b + c == n && 10000 * a + 5000 * b + 1000 * c == y {
-                println!("{} {} {}", a, b, c);
+    for x in 0..=n {
+        for y in 0..=n - x {
+            let z = n - (x + y);
+            if 10_000 * x + 5_000 * y + 1_000 * z == capital_y {
+                println!("{} {} {}", x, y, z);
                 return;
             }
         }
     }
-    println!("{} {} {}", -1, -1, -1);
+    println!("-1 -1 -1");
 }

@@ -1,9 +1,9 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        s: Chars,
+        mut s: Chars,
     };
-    println!("2018{}", s[4..].iter().collect::<String>());
+    s[3] = '8';
+    println!("{}", s.into_iter().collect::<String>());
 }
