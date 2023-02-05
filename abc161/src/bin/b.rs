@@ -4,10 +4,9 @@ fn main() {
     input! {
         n: usize,
         m: usize,
-        av: [usize; n]
+        a: [usize; n],
     };
-    let sum = av.iter().sum::<usize>();
-    let count = av.iter().filter(|&a| a * 4 * m >= sum).count();
-    let ans = if count >= m { "Yes" } else { "No" };
-    println!("{}", ans);
+    let sum = a.iter().sum::<usize>();
+    let ans = a.into_iter().filter(|a_i| a_i * 4 * m >= sum).count() >= m;
+    println!("{}", if ans { "Yes" } else { "No" });
 }

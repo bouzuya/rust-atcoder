@@ -2,10 +2,10 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        k: usize
+        n: i64,
+        k: i64,
     };
-    let x = n % k;
-    let ans = std::cmp::min(x, k - x);
+    let m = n % k;
+    let ans = m.min(m + k).min((m - k).abs());
     println!("{}", ans);
 }
