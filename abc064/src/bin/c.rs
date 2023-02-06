@@ -3,27 +3,20 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        a: [i64; n],
+        a: [usize; n],
     };
-    let colors = vec![
-        (1..=399),
-        (400..=799),
-        (800..=1199),
-        (1200..=1599),
-        (1600..=1999),
-        (2000..=2399),
-        (2400..=2799),
-        (2800..=3199),
-    ];
-    let mut set = std::collections::BTreeSet::new();
-    let mut w = 0;
-    for &a_i in a.iter() {
-        match colors.iter().position(|r| r.contains(&a_i)) {
-            Some(p) => {
-                set.insert(p);
-            }
-            None => w += 1,
+    let colors = 8;
+    let mut counts = vec![0_usize; colors + 1];
+    for a_i in a.into_iter().map(|a_i| a_i.min(3200)) {
+        counts[a_i / 400] += 1;
+    }
+    let mut count = 0_usize;
+    for c in counts.iter().copied().take(colors) {
+        if c > 0 {
+            count += 1;
         }
     }
-    println!("{} {}", std::cmp::max(1, set.len()), set.len() + w);
+    let min = count.max(if counts[colors] > 0 { 1 } else { 0 });
+    let max = count + counts[colors];
+    println!("{} {}", min, max);
 }

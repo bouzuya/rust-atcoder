@@ -1,43 +1,61 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        _: usize,
-        s: Chars
+        _n: usize,
+        mut s: Chars,
     };
 
-    let (min, end) = {
-        // (((( ... 0, 4
-        // )))) ... -4, -4
-        // (()) ... 0, 0
-        // ((()) ... 0, 1
-        // (())) ... -1, -1
-        // ))(( ... -2, 0
-        let mut cur = 0;
-        let mut min = 0;
-        for &c in s.iter() {
-            match c {
-                '(' => cur += 1,
-                ')' => {
-                    cur -= 1;
-                    min = std::cmp::min(min, cur);
-                }
-                _ => unreachable!(),
-            }
-        }
-        (min, cur)
-    };
+    let mut stack = vec![];
     let mut t = vec![];
-    for _ in 0..-min {
-        t.push('(');
+    for (i, s_i) in s.iter().copied().enumerate() {
+        match s_i {
+            '(' => {
+                stack.push(i);
+            }
+            ')' => {
+                stack.pop();
+            }
+            _ => unreachable!(),
+        }
+        t.push(s_i);
     }
-    for &c in s.iter() {
-        t.push(c);
-    }
-    for _ in 0..-min + end {
+    while let Some(_) = stack.pop() {
         t.push(')');
     }
-    let ans = t.iter().collect::<String>();
+    t.reverse();
+    s = t
+        .into_iter()
+        .map(|t_i| match t_i {
+            '(' => ')',
+            ')' => '(',
+            _ => unreachable!(),
+        })
+        .collect::<Vec<char>>();
+    let mut t = vec![];
+    for (i, s_i) in s.iter().copied().enumerate() {
+        match s_i {
+            '(' => {
+                stack.push(i);
+            }
+            ')' => {
+                stack.pop();
+            }
+            _ => unreachable!(),
+        }
+        t.push(s_i);
+    }
+    while let Some(_) = stack.pop() {
+        t.push(')');
+    }
+    t.reverse();
+    let ans = t
+        .into_iter()
+        .map(|t_i| match t_i {
+            '(' => ')',
+            ')' => '(',
+            _ => unreachable!(),
+        })
+        .collect::<String>();
     println!("{}", ans);
 }

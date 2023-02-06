@@ -3,8 +3,9 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        a: [i64; n],
+        mut a: [usize; n],
     };
+    a.sort();
     let ans = a.iter().max().unwrap() - a.iter().min().unwrap();
     println!("{}", ans);
 }
