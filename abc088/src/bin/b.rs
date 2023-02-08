@@ -3,18 +3,19 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        mut a: [i64; n],
+        mut a: [usize; n],
     };
-    a.sort_by_key(|&a_i| -a_i);
-    let mut s_a = 0;
-    let mut s_b = 0;
-    for (i, &a_i) in a.iter().enumerate() {
+    a.sort();
+    a.reverse();
+    let mut alice = 0_usize;
+    let mut bob = 0_usize;
+    for (i, a_i) in a.iter().copied().enumerate() {
         if i % 2 == 0 {
-            s_a += a_i;
+            alice += a_i;
         } else {
-            s_b += a_i;
+            bob += a_i;
         }
     }
-    let ans = s_a - s_b;
+    let ans = alice - bob;
     println!("{}", ans);
 }
