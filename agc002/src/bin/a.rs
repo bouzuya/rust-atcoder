@@ -5,18 +5,15 @@ fn main() {
         a: i64,
         b: i64,
     };
-    let ans = if a == 0 || b == 0 || (a > 0 && b < 0) || (a < 0 && b > 0) {
-        "Zero"
-    } else if a > 0 && b > 0 {
-        "Positive"
-    } else if a < 0 && b < 0 {
-        if (b - a - 1) % 2 == 0 {
-            "Positive"
-        } else {
-            "Negative"
-        }
+
+    if (a..=b).contains(&0) {
+        println!("Zero");
+        return;
+    }
+
+    if (a > 0) || (((a - b).abs() + 1) % 2 == 0) {
+        println!("Positive");
     } else {
-        unreachable!()
-    };
-    println!("{}", ans);
+        println!("Negative");
+    }
 }
