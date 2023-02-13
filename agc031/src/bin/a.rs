@@ -1,22 +1,22 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        _: usize,
-        s: Chars
+        _n: usize,
+        s: Chars,
     };
-    let modp = 1_000_000_007_i64;
-    let mut c = vec![1_i64; 26];
-    for &s_i in s.iter() {
-        let c_i = (s_i as u8 - 'a' as u8) as usize;
-        c[c_i] += 1;
+
+    let mut count = vec![0_usize; 26];
+    for s_i in s {
+        count[(s_i as u8 - b'a') as usize] += 1;
     }
-    let mut ans = 1_i64;
-    for &c_i in c.iter() {
-        ans *= c_i;
-        ans %= modp;
+    let p = 1_000_000_007;
+    let mut ans = 1_usize;
+    for c in count {
+        ans *= c + 1;
+        ans %= p;
     }
-    ans -= 1;
+    ans += p - 1;
+    ans %= p;
     println!("{}", ans);
 }
