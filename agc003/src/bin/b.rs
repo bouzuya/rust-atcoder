@@ -3,21 +3,20 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        a: [i64; n],
+        a: [usize; n],
     };
-    let mut s = 0;
-    let mut c = 0;
-    for &a_i in a.iter() {
-        if a_i == 0 {
-            s += c / 2;
-            c = 0;
+
+    let mut count = 0_usize;
+    let mut prev = 0_usize;
+    for a_i in a {
+        if prev == 0 {
+            count += a_i / 2;
+            prev = a_i % 2;
         } else {
-            c += a_i;
+            count += (prev + a_i) / 2;
+            prev = if a_i > 0 { a_i - 1 } else { 0 } % 2;
         }
     }
-    if c > 0 {
-        s += c / 2;
-    }
-    let ans = s;
+    let ans = count;
     println!("{}", ans);
 }
