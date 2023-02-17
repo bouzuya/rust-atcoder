@@ -2,12 +2,12 @@ use proconio::input;
 
 fn main() {
     input! {
-        _: usize,
+        _k: usize,
         t: usize,
-        mut a: [i64; t]
+        mut a: [usize; t],
     };
     a.sort();
-    let mut l = 0;
+    let mut l = 0_usize;
     let mut r = t - 1;
     while l < r {
         a[l] -= 1;
@@ -19,6 +19,6 @@ fn main() {
             r -= 1;
         }
     }
-    let ans = std::cmp::max(0, a[l] - 1);
+    let ans = a[l].saturating_sub(1);
     println!("{}", ans);
 }

@@ -1,16 +1,13 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        s: Chars
+        s: Chars,
     };
-    match s
-        .iter()
-        .position(|&s_i| s_i == 'C')
-        .and_then(|i_c| s.iter().skip(i_c + 1).position(|&s_i| s_i == 'F'))
-    {
-        None => println!("No"),
-        Some(_) => println!("Yes"),
+    let ans = if let Some(i) = s.iter().position(|c| c == &'C') {
+        s[i + 1..].iter().any(|c| c == &'F')
+    } else {
+        false
     };
+    println!("{}", if ans { "Yes" } else { "No" });
 }
