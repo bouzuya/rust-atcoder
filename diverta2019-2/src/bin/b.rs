@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use proconio::input;
 
 fn main() {
@@ -5,20 +7,18 @@ fn main() {
         n: usize,
         xy: [(i64, i64); n],
     };
-    let mut map = std::collections::BTreeMap::new();
-    for (i, &(x_i, y_i)) in xy.iter().enumerate() {
-        for (j, &(x_j, y_j)) in xy.iter().enumerate() {
-            if i == j {
-                continue;
+
+    let mut map = HashMap::new();
+    for (x1, y1) in xy.iter().copied() {
+        for (x2, y2) in xy.iter().copied() {
+            let p = x1 - x2;
+            let q = y1 - y2;
+            if p != 0 || q != 0 {
+                *map.entry((p, q)).or_insert(0_usize) += 1;
             }
-            *map.entry((x_j - x_i, y_j - y_i)).or_insert(0) += 1;
         }
     }
-    let mut c = vec![];
-    for (&k, &v) in map.iter() {
-        c.push((v, k.0, k.1));
-    }
-    c.sort_by_key(|(c, _, _)| -c);
-    let ans = n as i64 - c.first().unwrap_or(&(0, 0, 0)).0;
-    println!("{:?}", ans);
+
+    let ans = n - *map.values().max().unwrap_or(&0);
+    println!("{}", ans);
 }
