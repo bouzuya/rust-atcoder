@@ -1,28 +1,32 @@
-use proconio::input;
-use proconio::marker::Chars;
+use std::iter;
+
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         s: Chars,
     };
-    let mut ans = 100;
-    for i in 0..26 {
-        let c = (i as u8 + 'a' as u8) as char;
-        let (l, r) = {
-            let mut max_l = 0;
-            let mut l = 0;
-            for &s_i in s.iter() {
-                if s_i == c {
-                    max_l = std::cmp::max(max_l, l);
-                    l = 0;
-                } else {
-                    l += 1;
-                }
-            }
-            (max_l, l)
-        };
-        let v = r + std::cmp::max(0, l - r);
-        ans = std::cmp::min(ans, v);
+
+    let n = s.len();
+    let mut pos = vec![vec![]; 26];
+    for (i, c) in s.into_iter().enumerate() {
+        let index = (c as u8 - b'a') as usize;
+        pos[index].push(i);
     }
+    let mut count = vec![n; 26];
+    for (i, p) in pos.into_iter().enumerate() {
+        if p.is_empty() {
+            continue;
+        }
+        let mut max = 0_usize;
+        let mut prev = 0_usize;
+        for p_j in p.into_iter().chain(iter::once(n)) {
+            let p_j = p_j + 1;
+            max = max.max(p_j - prev - 1);
+            prev = p_j;
+        }
+        count[i] = max;
+    }
+    let ans = count.into_iter().min().unwrap();
     println!("{}", ans);
 }
