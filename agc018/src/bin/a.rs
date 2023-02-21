@@ -1,9 +1,7 @@
 use proconio::input;
 
-fn gcd(n: u64, m: u64) -> u64 {
-    if n < m {
-        gcd(m, n)
-    } else if m == 0 {
+fn gcd(n: usize, m: usize) -> usize {
+    if m == 0 {
         n
     } else {
         gcd(m, n % m)
@@ -13,14 +11,14 @@ fn gcd(n: u64, m: u64) -> u64 {
 fn main() {
     input! {
         n: usize,
-        k: u64,
-        a: [u64; n],
+        k: usize,
+        a: [usize; n],
     };
-    let a_max = *a.iter().max().unwrap();
+    let max_a = a.iter().copied().max().unwrap();
     let mut g = a[0];
-    for &a_i in a.iter().skip(1) {
+    for a_i in a.iter().copied().skip(1) {
         g = gcd(g, a_i);
     }
-    let ans = k <= a_max && k % g == 0;
+    let ans = k <= max_a && k % g == 0;
     println!("{}", if ans { "POSSIBLE" } else { "IMPOSSIBLE" });
 }
