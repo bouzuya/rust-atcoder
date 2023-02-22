@@ -6,19 +6,13 @@ fn main() {
         k: usize,
         s: Chars,
     };
+    let mut t = vec!['x'; n];
     let mut count = 0_usize;
-    let mut ans = vec!['x'; n];
-    for (i, c) in s.into_iter().enumerate() {
-        match c {
-            'o' => {
-                count += 1;
-                if count <= k {
-                    ans[i] = 'o';
-                }
-            }
-            'x' => {}
-            _ => unreachable!(),
+    for (i, s_i) in s.into_iter().enumerate() {
+        if count < k && s_i == 'o' {
+            count += 1;
+            t[i] = 'o';
         }
     }
-    println!("{}", ans.iter().collect::<String>());
+    println!("{}", t.into_iter().collect::<String>());
 }

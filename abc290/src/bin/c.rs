@@ -1,4 +1,4 @@
-use std::collections::BTreeSet;
+use std::collections::HashSet;
 
 use proconio::input;
 
@@ -8,12 +8,8 @@ fn main() {
         k: usize,
         a: [usize; n],
     };
-    let set = a
-        .iter()
-        .copied()
-        .filter(|&a_i| a_i <= k)
-        .collect::<BTreeSet<_>>();
-    for i in 0..k {
+    let set = a.into_iter().collect::<HashSet<_>>();
+    for i in 0..=k {
         if !set.contains(&i) {
             println!("{}", i);
             return;
