@@ -3,26 +3,28 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        a: [usize; n],
+        mut a: [usize; n],
     };
+    let max = 1_000_000_usize;
+    a.sort();
 
-    let a_i_max = 1_000_000;
-    let mut map = std::collections::BTreeMap::new();
-    for &a_i in a.iter() {
-        *map.entry(a_i).or_insert(0) += 1;
+    let mut count = vec![0; max + 1];
+    for a_i in a.iter().copied() {
+        count[a_i] += 1;
     }
 
-    let mut b = vec![true; a_i_max + 1];
-    let mut x = vec![];
-    for (&a_i, &count) in map.iter() {
-        if b[a_i] {
-            x.push((a_i, count));
-            for j in (a_i + a_i..=a_i_max).step_by(a_i) {
-                b[j] = false;
+    let mut ans = 0_usize;
+    let mut ok = vec![false; max + 1];
+    for a_i in a {
+        if !ok[a_i] {
+            if count[a_i] == 1 {
+                ans += 1;
+            }
+            for j in (a_i..=max).step_by(a_i) {
+                ok[j] = true;
             }
         }
     }
 
-    let ans = x.iter().filter(|&&(_, count)| count == 1).count();
     println!("{}", ans);
 }
