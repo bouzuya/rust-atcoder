@@ -13,7 +13,7 @@ fn divisors(n: usize) -> Vec<usize> {
             }
         }
     }
-    d.sort();
+    // d.sort();
     d
 }
 
@@ -21,15 +21,14 @@ fn main() {
     input! {
         n: usize,
     };
-    let mut ds = vec![vec![]; n + 1];
+    let mut count = vec![0_usize; n + 1];
     for x in 1..=n {
-        ds[x] = divisors(x);
+        count[x] = divisors(x).len();
     }
-
     let mut ans = 0_usize;
-    for x in 0..=n {
+    for x in 1..=n {
         let y = n - x;
-        ans += ds[x].len() * ds[y].len();
+        ans += count[x] * count[y];
     }
     println!("{}", ans);
 }

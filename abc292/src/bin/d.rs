@@ -8,41 +8,26 @@ fn main() {
         uv: [(Usize1, Usize1); m],
     };
 
-    let mut count = vec![0_usize; n];
     let mut edges = vec![vec![]; n];
-    for (u, v) in uv.iter().copied() {
-        if u != v {
-            edges[u].push(v);
-            edges[v].push(u);
-        } else {
-            count[u] += 1;
-        }
-    }
-
     let mut dsu = Dsu::new(n);
     for (u, v) in uv.iter().copied() {
         dsu.merge(u, v);
+        edges[u].push(v);
+        edges[v].push(u);
     }
-
-    let mut ans = true;
     for group in dsu.groups() {
-        let mut c = 0_usize;
-        for u in group.iter().copied() {
-            c += edges[u].len();
+        let count_v = group.len();
+        let mut count_e = 0_usize;
+        for g in group {
+            count_e += edges[g].len();
         }
-
-        c /= 2;
-        for u in group.iter().copied() {
-            c += count[u];
-        }
-
-        if group.len() != c {
-            ans = false;
-            break;
+        if count_v * 2 != count_e {
+            println!("No");
+            return;
         }
     }
 
-    println!("{}", if ans { "Yes" } else { "No" });
+    println!("Yes");
 }
 
 //https://github.com/rust-lang-ja/ac-library-rs
