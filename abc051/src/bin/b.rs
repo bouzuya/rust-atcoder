@@ -2,19 +2,18 @@ use proconio::input;
 
 fn main() {
     input! {
-        k: i64,
-        s: i64
+        k: usize,
+        s: usize,
     };
-
-    let mut c = 0;
-    for x in 0..=k {
-        for y in 0..=k {
-            let z = s - x - y;
-            if (0..=k).contains(&z) {
-                c += 1;
+    let mut count = 0_usize;
+    for x in 0..=k.min(s) {
+        for y in 0..=k.min(s) {
+            let z = s.saturating_sub(x).saturating_sub(y);
+            if x + y + z == s && z <= k {
+                count += 1;
             }
         }
     }
-    let ans = c;
+    let ans = count;
     println!("{}", ans);
 }

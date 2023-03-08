@@ -2,24 +2,23 @@ use proconio::input;
 
 fn main() {
     input! {
-        s: (i64, i64),
-        t: (i64, i64),
+        (sx, sy): (i64, i64),
+        (tx, ty): (i64, i64),
     };
-
-    let mut c = vec![];
-    let (dx, dy) = ((t.0 - s.0) as usize, (t.1 - s.1) as usize);
-    c.append(&mut vec!['U'; dy]);
-    c.append(&mut vec!['R'; dx]);
-    c.append(&mut vec!['D'; dy]);
-    c.append(&mut vec!['L'; dx]);
-    c.push('L');
-    c.append(&mut vec!['U'; dy + 1]);
-    c.append(&mut vec!['R'; dx + 1]);
-    c.push('D');
-    c.push('R');
-    c.append(&mut vec!['D'; dy + 1]);
-    c.append(&mut vec!['L'; dx + 1]);
-    c.push('U');
-    let ans = c.iter().collect::<String>();
+    let dx = tx - sx;
+    let dy = ty - sy;
+    let mut ans = String::new();
+    ans.push_str(&"R".repeat(dx as usize));
+    ans.push_str(&"U".repeat(dy as usize));
+    ans.push_str(&"L".repeat(dx as usize));
+    ans.push_str(&"D".repeat(dy as usize));
+    ans.push_str("D");
+    ans.push_str(&"R".repeat((dx + 1) as usize));
+    ans.push_str(&"U".repeat((dy + 1) as usize));
+    ans.push_str("L");
+    ans.push_str("U");
+    ans.push_str(&"L".repeat((dx + 1) as usize));
+    ans.push_str(&"D".repeat((dy + 1) as usize));
+    ans.push_str("R");
     println!("{}", ans);
 }
