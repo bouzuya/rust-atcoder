@@ -2,9 +2,9 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        r: usize
+        n: i64,
+        r: i64,
     };
-    let ans = r + 100 * 10usize.saturating_sub(n);
+    let ans = if n >= 10 { r } else { r + (100 * (10 - n)) };
     println!("{}", ans);
 }
