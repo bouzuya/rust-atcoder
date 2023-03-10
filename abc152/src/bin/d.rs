@@ -5,16 +5,16 @@ fn main() {
         n: usize,
     };
     let mut count = vec![vec![0_usize; 10]; 10];
-    for i in 1..=n {
-        let chars = i.to_string().chars().collect::<Vec<char>>();
-        let first = (*chars.first().unwrap() as u8 - b'0') as usize;
-        let last = (*chars.last().unwrap() as u8 - b'0') as usize;
-        count[first][last] += 1;
+    for x in 1..=n {
+        let s = x.to_string().chars().collect::<Vec<char>>();
+        let h = (*s.first().unwrap() as u8 - b'0') as usize;
+        let t = (*s.last().unwrap() as u8 - b'0') as usize;
+        count[h][t] += 1;
     }
     let mut ans = 0_usize;
-    for i in 0..=9 {
-        for j in 0..=9 {
-            ans += count[i][j] * count[j][i];
+    for h in 1..10 {
+        for t in 1..10 {
+            ans += count[h][t] * count[t][h];
         }
     }
     println!("{}", ans);
