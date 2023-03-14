@@ -1,16 +1,16 @@
+use std::collections::HashSet;
+
 use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [i64; n],
+        a: [usize; n],
     };
-    let mut set = std::collections::BTreeSet::new();
-    for &a_i in a.iter() {
-        if set.contains(&a_i) {
+    let mut set = HashSet::new();
+    for a_i in a {
+        if !set.insert(a_i) {
             set.remove(&a_i);
-        } else {
-            set.insert(a_i);
         }
     }
     let ans = set.len();

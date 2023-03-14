@@ -1,60 +1,64 @@
-use proconio::input;
-use proconio::marker::Usize1;
-use superslice::*;
+use proconio::{input, marker::Usize1};
+use superslice::Ext;
 
-fn f(inf: i64, n: usize, e: &Vec<Vec<(i64, usize)>>, u: usize) -> Vec<i64> {
-    let mut sp = vec![inf; n];
-    let mut pq = std::collections::BinaryHeap::new();
-    pq.push(std::cmp::Reverse((0, u)));
-    while let Some(std::cmp::Reverse((c_u, u))) = pq.pop() {
-        if c_u < sp[u] {
-            sp[u] = c_u;
-            for &(c_v, v) in e[u].iter() {
-                pq.push(std::cmp::Reverse((c_u + c_v, v)));
+fn dijkstra(n: usize, inf: usize, edges: &[Vec<(usize, usize)>], s: usize) -> Vec<usize> {
+    use std::{cmp::Reverse, collections::BinaryHeap};
+    let mut d = vec![inf; n];
+    let mut pq = BinaryHeap::new();
+    d[s] = 0;
+    pq.push(Reverse((0, s)));
+    while let Some(Reverse((w_u, u))) = pq.pop() {
+        if w_u > d[u] {
+            continue;
+        }
+        for (v, w_v) in edges[u].iter().copied() {
+            let w = w_u + w_v;
+            if w < d[v] {
+                d[v] = w;
+                pq.push(Reverse((w, v)));
             }
         }
     }
-    sp
+    d
 }
 
 fn main() {
     input! {
-        n: usize,
-        m: usize,
-        n_r: usize,
-        r: [Usize1; n_r],
-        abc: [(Usize1, Usize1, i64); m],
+        capital_n: usize,
+        capital_m: usize,
+        capital_r: usize,
+        mut r: [Usize1; capital_r],
+        abc: [(Usize1, Usize1, usize); capital_m],
     };
-    let mut e = vec![vec![]; n];
-    for &(a, b, c) in abc.iter() {
-        e[a].push((c, b));
-        e[b].push((c, a));
+
+    let mut edges = vec![vec![]; capital_n];
+    for (a, b, c) in abc.iter().copied() {
+        edges[a].push((b, c));
+        edges[b].push((a, c));
     }
-    // p[i][j] 頂点 r[i] から頂点 j への最短距離
-    let inf = 1_000_000_000_000_000_i64;
-    let p = r
-        .iter()
-        .map(|&r_i| f(inf, n, &e, r_i))
-        .collect::<Vec<Vec<i64>>>();
-    // r の並びをすべて試して距離の合計が最小のものを選択する
-    let mut ans = inf;
-    let mut o = (0..r.len()).collect::<Vec<usize>>();
+
+    let inf = 1_usize << 60;
+
+    let mut dist = vec![];
+    for u in 0..capital_n {
+        dist.push(dijkstra(capital_n, inf, &edges, u));
+    }
+
+    let mut min = 1_usize << 60;
+    r.sort();
     loop {
-        ans = std::cmp::min(
-            ans,
-            o.windows(2)
-                .map(|w| {
-                    if let &[i, j] = w {
-                        p[i][r[j]]
-                    } else {
-                        unreachable!()
-                    }
-                })
-                .sum::<i64>(),
-        );
-        if !o.next_permutation() {
+        let mut sum = 0_usize;
+        let mut prev = r[0];
+        for next in r.iter().copied().skip(1) {
+            sum += dist[prev][next];
+            prev = next;
+        }
+        min = min.min(sum);
+        if !r.next_permutation() {
             break;
         }
     }
+
+    let ans = min;
     println!("{}", ans);
 }

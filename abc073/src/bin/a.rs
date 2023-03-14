@@ -4,10 +4,6 @@ fn main() {
     input! {
         n: usize,
     };
-    let ans = if n / 10 == 9 || n % 10 == 9 {
-        "Yes"
-    } else {
-        "No"
-    };
-    println!("{}", ans);
+    let ans = n.to_string().contains('9');
+    println!("{}", if ans { "Yes" } else { "No" });
 }

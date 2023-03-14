@@ -1,10 +1,18 @@
-use proconio::input;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
         n: usize,
-        lr: [(u64, u64); n],
+        lr: [(Usize1, Usize1); n],
     };
-    let ans = lr.iter().map(|&(l, r)| r - l + 1).sum::<u64>();
+    let mut seats = vec![0_i64; 100_000 + 1];
+    for (l, r) in lr {
+        seats[l] += 1;
+        seats[r + 1] -= 1;
+    }
+    for i in 0..100_000 {
+        seats[i + 1] += seats[i];
+    }
+    let ans = seats.iter().sum::<i64>();
     println!("{}", ans);
 }
