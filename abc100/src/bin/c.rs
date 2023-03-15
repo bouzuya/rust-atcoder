@@ -3,16 +3,18 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        a: [i64; n],
+        a: [usize; n],
     };
-    let mut count = 0;
-    for &a_i in a.iter() {
-        let mut m = a_i;
-        while m > 0 && m % 2 == 0 {
-            m /= 2;
-            count += 1;
+    let mut sum = 0_usize;
+    for a_i in a {
+        let mut x = a_i;
+        let mut c = 0_usize;
+        while x % 2 == 0 {
+            x /= 2;
+            c += 1;
         }
+        sum += c;
     }
-    let ans = count;
+    let ans = sum;
     println!("{}", ans);
 }
