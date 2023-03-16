@@ -1,12 +1,24 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         s: Chars,
     };
-    let zc = s.iter().filter(|&&c| c == '0').count();
-    let oc = s.len() - zc;
-    let ans = std::cmp::min(zc, oc) * 2;
+    let mut count = 0_usize;
+    let mut stack = vec![];
+    for s_i in s {
+        if stack.is_empty() {
+            stack.push(s_i);
+        } else {
+            let last = stack.pop().unwrap();
+            if last != s_i {
+                count += 1;
+            } else {
+                stack.push(last);
+                stack.push(s_i);
+            }
+        }
+    }
+    let ans = count * 2;
     println!("{}", ans);
 }

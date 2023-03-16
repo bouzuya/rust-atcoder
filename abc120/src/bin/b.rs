@@ -1,17 +1,17 @@
-use proconio::input;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
         a: usize,
         b: usize,
-        k: usize,
+        k: Usize1,
     };
+
     let mut ds = vec![];
-    for i in 1..=std::cmp::min(a, b) {
-        if a % i == 0 && b % i == 0 {
-            ds.push(i);
+    for x in 1..=a.max(b) {
+        if (a % x == 0) && (b % x == 0) {
+            ds.push(x);
         }
     }
-    ds.reverse();
-    println!("{}", ds[k - 1]);
+    println!("{}", ds.iter().rev().nth(k).unwrap());
 }

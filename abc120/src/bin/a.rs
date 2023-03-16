@@ -6,6 +6,6 @@ fn main() {
         b: usize,
         c: usize,
     };
-    let ans = std::cmp::min(c, b / a);
+    let ans = (b / a).min(c);
     println!("{}", ans);
 }
