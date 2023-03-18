@@ -1,35 +1,41 @@
+use std::collections::VecDeque;
+
 use proconio::input;
 
-// 01BFS
-fn shortest_path(wvv: &Vec<Vec<(usize, usize)>>, iv: usize, ev: usize) -> usize {
-    let mut uv = vec![false; wvv.len()];
-    let mut deque = std::collections::VecDeque::new();
-    deque.push_back((iv, 0));
-    while let Some((v, c)) = deque.pop_front() {
-        if v == ev {
-            return c;
+fn main() {
+    input! {
+        k: usize,
+    };
+
+    let mut edges = vec![vec![]; k];
+    for i in 0..k {
+        edges[i].push(((i + 1) % k, 1));
+        edges[i].push(((i * 10) % k, 0));
+    }
+
+    let inf = 1_usize << 60;
+    let mut dist = vec![inf; k];
+    let mut deque = VecDeque::new();
+    deque.push_back((1, 0));
+    dist[1] = 0;
+    while let Some((u, d_u)) = deque.pop_front() {
+        if u == 0 {
+            break;
         }
-        uv[v] = true;
-        for &(nv, w) in wvv[v].iter() {
-            if uv[nv] {
+        for (v, w_v) in edges[u].iter().copied() {
+            let d_v = d_u + w_v;
+            if d_v >= dist[v] {
                 continue;
             }
-            match w {
-                0 => deque.push_front((nv, c + w)),
-                1 => deque.push_back((nv, c + w)),
+            dist[v] = d_v;
+            match w_v {
+                0 => deque.push_front((v, d_v)),
+                1 => deque.push_back((v, d_v)),
                 _ => unreachable!(),
             }
         }
     }
-    wvv.len()
-}
 
-fn main() {
-    input! {
-        k: usize
-    };
-    let wvv: Vec<Vec<(usize, usize)>> = (0..k)
-        .map(|i| vec![((i + 1) % k, 1), ((i * 10) % k, 0)])
-        .collect();
-    println!("{}", shortest_path(&wvv, 1, 0) + 1);
+    let ans = dist[0] + 1;
+    println!("{}", ans);
 }

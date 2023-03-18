@@ -1,15 +1,17 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        c1: Chars,
-        c2: Chars
+        c: [Chars; 2],
     };
-    let ans = if c1[0] == c2[2] && c1[1] == c2[1] && c1[2] == c2[0] {
-        "YES"
-    } else {
-        "NO"
-    };
-    println!("{}", ans);
+    let mut ok = true;
+    for i in 0..2 {
+        for j in 0..3 {
+            if c[i][j] != c[2 - 1 - i][3 - 1 - j] {
+                ok = false;
+            }
+        }
+    }
+    let ans = ok;
+    println!("{}", if ans { "YES" } else { "NO" });
 }

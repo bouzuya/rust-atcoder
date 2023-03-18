@@ -2,12 +2,15 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: usize
+        n: usize,
     };
-    for i in 1.. {
-        if i * i > n {
-            println!("{}", (i - 1) * (i - 1));
+    let mut max = 0_usize;
+    for x in 1.. {
+        if x * x > n {
             break;
         }
+        max = x * x;
     }
+    let ans = max;
+    println!("{}", ans);
 }
