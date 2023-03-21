@@ -1,32 +1,38 @@
+use std::{cmp::Reverse, collections::BinaryHeap};
+
 use proconio::input;
 
 fn main() {
     input! {
         n: usize,
         k: usize,
-        vv: [i64; n],
+        v: [i64; n],
     };
-    let mut ans = 0;
-    for i in 0..=std::cmp::min(n, k) {
-        let i_l = i;
-        for j in i..=std::cmp::min(n, k) {
-            let i_r = n - (j - i);
-            let mut cv: Vec<i64> = vv[..i_l]
-                .iter()
-                .map(|&x| x)
-                .chain(vv[i_r..].iter().map(|&x| x))
-                .collect();
-            cv.sort();
-            let mut sum = cv.iter().sum();
-            ans = std::cmp::max(ans, sum);
-            for (l, &v) in cv.iter().enumerate() {
-                if l >= k - j {
-                    break;
-                }
-                sum -= v;
-                ans = std::cmp::max(ans, sum);
+
+    let mut max = 0_i64;
+    for left in 0..=k.min(n) {
+        for right in 0..=k.min(n) - left {
+            let mut sum = 0_i64;
+            let mut bag = BinaryHeap::new();
+            for i in 0..left {
+                sum += v[i];
+                bag.push(Reverse(v[i]));
             }
+            for i in 0..right {
+                sum += v[n - 1 - i];
+                bag.push(Reverse(v[n - 1 - i]));
+            }
+            for _ in 0..k.saturating_sub(left + right) {
+                if let Some(Reverse(x)) = bag.pop() {
+                    if x < 0_i64 {
+                        sum -= x;
+                    }
+                }
+            }
+            max = max.max(sum);
         }
     }
+
+    let ans = max;
     println!("{}", ans);
 }
