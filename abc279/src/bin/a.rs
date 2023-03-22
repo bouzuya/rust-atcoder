@@ -5,7 +5,7 @@ fn main() {
         s: Chars,
     };
     let ans = s
-        .iter()
+        .into_iter()
         .map(|c| match c {
             'v' => 1,
             'w' => 2,
