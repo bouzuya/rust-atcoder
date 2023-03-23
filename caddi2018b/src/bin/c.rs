@@ -1,4 +1,3 @@
-// 解説 AC
 use proconio::input;
 
 fn prime_factorization(n: usize) -> Vec<(usize, usize)> {
@@ -32,10 +31,10 @@ fn main() {
         p: usize,
     };
     let ps = prime_factorization(p);
-    let mut x = 1;
-    for (p_i, q_i) in ps {
-        x *= p_i.pow((q_i / n) as u32);
-    }
-    let ans = x;
+    let ans = ps
+        .into_iter()
+        .filter(|(_, q)| q >= &n)
+        .map(|(p, q)| p.pow((q / n) as u32))
+        .product::<usize>();
     println!("{}", ans);
 }

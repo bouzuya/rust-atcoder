@@ -5,11 +5,8 @@ fn main() {
         n: usize,
         h: usize,
         w: usize,
-        ab: [(usize, usize); n],
+        ab: [(usize, usize); n]
     };
-    let ans = ab
-        .iter()
-        .filter(|&&(a_i, b_i)| a_i >= h && b_i >= w)
-        .count();
+    let ans = ab.into_iter().filter(|&(a, b)| a >= h && b >= w).count();
     println!("{}", ans);
 }

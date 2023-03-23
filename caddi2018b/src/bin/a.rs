@@ -1,10 +1,9 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         n: Chars,
     };
-    let ans = n.iter().filter(|&&c| c == '2').count();
+    let ans = n.into_iter().filter(|c| c == &'2').count();
     println!("{}", ans);
 }
