@@ -13,7 +13,11 @@ fn main() {
         a.pop_front();
         a.push_back(0);
     }
-    for x in a {
-        println!("{}", x);
-    }
+
+    let ans = a
+        .into_iter()
+        .map(|a_i| a_i.to_string())
+        .collect::<Vec<String>>()
+        .join(" ");
+    println!("{}", ans);
 }

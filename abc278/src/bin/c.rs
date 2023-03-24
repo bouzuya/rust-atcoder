@@ -1,28 +1,28 @@
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::{HashMap, HashSet};
 
-use proconio::input;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
-        n: usize,
+        _n: usize,
         q: usize,
-        tab: [(usize, usize, usize); q],
+        tab: [(usize, Usize1, Usize1); q],
     };
-    let mut map = BTreeMap::new();
+    let mut follows = HashMap::new();
     for (t, a, b) in tab {
         match t {
             1 => {
-                map.entry(a).or_insert_with(BTreeSet::new).insert(b);
+                follows.entry(a).or_insert_with(HashSet::new).insert(b);
             }
             2 => {
-                if let Some(set) = map.get_mut(&a) {
-                    set.remove(&b);
+                if let Some(fa) = follows.get_mut(&a) {
+                    fa.remove(&b);
                 }
             }
             3 => {
-                let ans = match (map.get(&a), map.get(&b)) {
+                let ans = match (follows.get(&a), follows.get(&b)) {
                     (None, None) | (None, Some(_)) | (Some(_), None) => false,
-                    (Some(sa), Some(sb)) => sa.contains(&b) && sb.contains(&a),
+                    (Some(fa), Some(fb)) => fa.contains(&b) && fb.contains(&a),
                 };
                 println!("{}", if ans { "Yes" } else { "No" });
             }
