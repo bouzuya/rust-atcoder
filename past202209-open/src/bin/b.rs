@@ -1,10 +1,12 @@
-use proconio::{input, marker::Usize1};
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        n: Chars,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    if n.len() <= 2 {
+        println!("0");
+        return;
+    }
+    println!("{}", n[0..n.len() - 2].iter().collect::<String>());
 }
