@@ -1,22 +1,29 @@
-use proconio::input;
-use proconio::marker::Chars;
-
-fn dfs(d: &Vec<u64>, i: usize, s: u64, c: u64) -> u64 {
-    if i < d.len() {
-        dfs(d, i + 1, s + c, d[i]) + dfs(d, i + 1, s, c * 10 + d[i])
-    } else {
-        s + c
-    }
-}
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        s: Chars
+        s: Chars,
     };
-    let d = s
-        .iter()
-        .map(|&c| c.to_digit(10).unwrap() as u64)
-        .collect::<Vec<u64>>();
-    let ans = dfs(&d, 1, 0, d[0]);
+    let mut ans = 0_usize;
+    let n = s.len();
+    for bits in 0..1 << (n - 1) {
+        let mut ts = vec![];
+        let mut t = String::new();
+        for i in 0..n - 1 {
+            t.push(s[i]);
+            if (bits >> i) & 1 == 1 {
+                ts.push(t);
+                t = String::new();
+            }
+        }
+        t.push(s[n - 1]);
+        ts.push(t);
+
+        let sum = ts
+            .into_iter()
+            .map(|t| t.parse::<usize>().unwrap())
+            .sum::<usize>();
+        ans += sum;
+    }
     println!("{}", ans);
 }
