@@ -1,6 +1,3 @@
-// WIP
-use std::collections::HashMap;
-
 use proconio::{input, marker::Chars};
 
 fn main() {
@@ -8,24 +5,27 @@ fn main() {
         n: usize,
         s: [Chars; n],
     };
-    let edges = {
-        let mut map = HashMap::new();
-        for (i, s_i) in s.iter().enumerate() {
-            map.entry(s_i[0]).or_insert_with(Vec::new).push(i);
+    let fl = s
+        .iter()
+        .map(|s_i| {
+            (
+                ((*s_i.first().unwrap()) as u8 - b'a') as usize,
+                ((*s_i.last().unwrap()) as u8 - b'a') as usize,
+            )
+        })
+        .collect::<Vec<(usize, usize)>>();
+    let mut dp = vec![vec![false; 26]; 1 << n];
+    for used in (0..(1 << n) - 1).rev() {
+        for c in 0..26 {
+            dp[used][c] = fl
+                .iter()
+                .copied()
+                .enumerate()
+                .filter(|(i, _)| (used & (1_usize << i)) == 0)
+                .any(|(i, (f, l))| c == f && !dp[used ^ (1 << i)][l]);
         }
-        let mut edges = vec![];
-        for s_i in s.iter() {
-            edges.push(
-                map.get(&s_i.last().unwrap())
-                    .cloned()
-                    .unwrap_or_else(Vec::new),
-            );
-        }
-        edges
-    };
-    for start in 0..n {
-        //
     }
-    // let ans = n - a.len();
-    // println!("{}", ans);
+
+    let ans = dp[0].iter().copied().any(|b| b);
+    println!("{}", if ans { "First" } else { "Second" });
 }
