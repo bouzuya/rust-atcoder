@@ -2,14 +2,11 @@ use proconio::input;
 
 fn main() {
     input! {
-        d: i64,
+        d: usize,
     };
-    let ans = match d {
-        25 => "",
-        24 => " Eve",
-        23 => " Eve Eve",
-        22 => " Eve Eve Eve",
-        _ => unreachable!(),
-    };
-    println!("Christmas{}", ans);
+    print!("Christmas");
+    for _ in d..=24 {
+        print!(" Eve");
+    }
+    println!();
 }

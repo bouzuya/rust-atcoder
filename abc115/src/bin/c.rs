@@ -1,18 +1,16 @@
 use proconio::input;
-use proconio::marker::Usize1;
 
 fn main() {
     input! {
         n: usize,
-        k: Usize1,
-        mut h: [i64; n],
+        k: usize,
+        mut h: [usize; n],
     };
     h.sort();
-    let mut ans = 1_000_000_000_i64;
-    for i in k..n {
-        let h_max = h[i];
-        let h_min = h[i - k];
-        ans = std::cmp::min(ans, h_max - h_min);
+    let mut min = 1_usize << 60;
+    for i in 0..n - k + 1 {
+        min = min.min(h[i + k - 1] - h[i]);
     }
+    let ans = min;
     println!("{}", ans);
 }

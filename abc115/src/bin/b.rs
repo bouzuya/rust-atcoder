@@ -3,10 +3,10 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
-        p: [i64; n],
+        p: [usize; n],
     };
-    let sum = p.iter().sum::<i64>();
-    let max = p.iter().max().unwrap();
+    let sum = p.iter().copied().sum::<usize>();
+    let max = p.iter().copied().max().unwrap();
     let ans = sum - max + max / 2;
     println!("{}", ans);
 }
