@@ -1,10 +1,27 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        n: u128,
+        m: u128,
     };
-    let ans = n - a.len();
+
+    if n * n < m {
+        println!("-1");
+        return;
+    }
+
+    let mut min = n * n;
+    for a in 1.. {
+        let b = (m + a - 1) / a;
+        if a > b {
+            break;
+        }
+        if a <= n && b <= n {
+            min = min.min(a * b);
+        }
+    }
+
+    let ans = min;
     println!("{}", ans);
 }
