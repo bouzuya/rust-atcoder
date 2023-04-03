@@ -1,16 +1,14 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         s: Chars,
     };
-    let mut map = std::collections::HashMap::new();
-    for &s_i in s.iter() {
-        *map.entry(s_i).or_insert(0_i64) += 1_i64;
+    let mut count = vec![0_usize; 3];
+    for c in s {
+        count[(c as u8 - b'a') as usize] += 1;
     }
-    let mut counts = map.into_iter().collect::<Vec<(char, i64)>>();
-    counts.sort_by_key(|(_, v)| -v);
-    let ans = counts[0].0;
+    let max = count.iter().copied().max().unwrap();
+    let ans = (count.iter().copied().position(|v| v == max).unwrap() as u8 + b'a') as char;
     println!("{}", ans);
 }
