@@ -2,7 +2,7 @@ use proconio::input;
 
 fn main() {
     input! {
-        mut abcdef: [i64; 6],
+        mut abcdef: [usize; 6],
     };
     abcdef.sort();
     abcdef.reverse();
