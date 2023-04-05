@@ -1,0 +1,295 @@
+[package]
+name = "pastbook1"
+version = "0.1.0"
+edition = "2018"
+
+[package.metadata.cargo-compete.bin]
+62 = { alias = "past202004_b", problem = "https://atcoder.jp/contests/past202004-open/tasks/past202004_b" }
+67 = { alias = "past201912_c", problem = "https://atcoder.jp/contests/past201912-open/tasks/past201912_c" }
+76 = { alias = "abc157_b", problem = "https://atcoder.jp/contests/abc157/tasks/abc157_b" }
+84 = { alias = "abc088_c", problem = "https://atcoder.jp/contests/abc088/tasks/abc088_c" }
+88 = { alias = "past202004_c", problem = "https://atcoder.jp/contests/past202004-open/tasks/past202004_c" }
+95 = { alias = "arc046_a", problem = "https://atcoder.jp/contests/arc046/tasks/arc046_a" }
+98 = { alias = "abc165_a", problem = "https://atcoder.jp/contests/abc165/tasks/abc165_a" }
+102 = { alias = "past202004_d", problem = "https://atcoder.jp/contests/past202004-open/tasks/past202004_d" }
+112 = { alias = "past202005_e", problem = "https://atcoder.jp/contests/past202005-open/tasks/past202005_e" }
+123 = { alias = "past201912_e", problem = "https://atcoder.jp/contests/past201912-open/tasks/past201912_e" }
+141 = { alias = "past201912_h", problem = "https://atcoder.jp/contests/past201912-open/tasks/past201912_h" }
+159 = { alias = "abc007_3", problem = "https://atcoder.jp/contests/abc007/tasks/abc007_3" }
+167 = { alias = "dfs_a", problem = "https://atcoder.jp/contests/atc001/tasks/dfs_a" }
+171 = { alias = "abc114_c", problem = "https://atcoder.jp/contests/abc114/tasks/abc114_c" }
+175 = { alias = "dp_a", problem = "https://atcoder.jp/contests/dp/tasks/dp_a" }
+178 = { alias = "past202005_h", problem = "https://atcoder.jp/contests/past202005-open/tasks/past202005_h" }
+185 = { alias = "dp_d", problem = "https://atcoder.jp/contests/dp/tasks/dp_d" }
+191 = { alias = "tdpc_contest", problem = "https://atcoder.jp/contests/tdpc/tasks/tdpc_contest" }
+194 = { alias = "past202004_h", problem = "https://atcoder.jp/contests/past202004-open/tasks/past202004_h" }
+198 = { alias = "abc026_c", problem = "https://atcoder.jp/contests/abc026/tasks/abc026_c" }
+201 = { alias = "dp_g", problem = "https://atcoder.jp/contests/dp/tasks/dp_g" }
+210 = { alias = "past201912_g", problem = "https://atcoder.jp/contests/past201912-open/tasks/past201912_g" }
+215 = { alias = "past201912_i", problem = "https://atcoder.jp/contests/past201912-open/tasks/past201912_i" }
+219 = { alias = "typical_algorithm_c", problem = "https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_c" }
+223 = { alias = "arc017_3", problem = "https://atcoder.jp/contests/arc017/tasks/arc017_3" }
+226 = { alias = "past202005_c", problem = "https://atcoder.jp/contests/past202005-open/tasks/past202005_c" }
+232 = { alias = "abc179_c", problem = "https://atcoder.jp/contests/abc179/tasks/abc179_c" }
+238 = { alias = "arc107_a", problem = "https://atcoder.jp/contests/arc107/tasks/arc107_a" }
+247 = { alias = "arc098_a", problem = "https://atcoder.jp/contests/arc098/tasks/arc098_a" }
+255 = { alias = "past202004_f", problem = "https://atcoder.jp/contests/past202004-open/tasks/past202004_f" }
+260 = { alias = "typical_algorithm_b", problem = "https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_b" }
+263 = { alias = "nikkei2019_qual_c", problem = "https://atcoder.jp/contests/nikkei2019-qual/tasks/nikkei2019_qual_c" }
+268 = { alias = "typical_algorithm_a", problem = "https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_a" }
+275 = { alias = "abc146_c", problem = "https://atcoder.jp/contests/abc146/tasks/abc146_c" }
+278 = { alias = "arc050_b", problem = "https://atcoder.jp/contests/arc050/tasks/arc050_b" }
+282 = { alias = "arc079_a", problem = "https://atcoder.jp/contests/abc068/tasks/arc079_a" }
+295 = { alias = "typical_algorithm_d", problem = "https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_d" }
+304 = { alias = "typical_algorithm_e", problem = "https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_e" }
+315 = { alias = "typical_algorithm_f", problem = "https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_f" }
+326 = { alias = "abc129_c", problem = "https://atcoder.jp/contests/abc129/tasks/abc129_c" }
+328 = { alias = "dp_h", problem = "https://atcoder.jp/contests/dp/tasks/dp_h" }
+333 = { alias = "past202004_g", problem = "https://atcoder.jp/contests/past202004-open/tasks/past202004_g" }
+337 = { alias = "past201912_k", problem = "https://atcoder.jp/contests/past201912-open/tasks/past201912_k" }
+342 = { alias = "past202005_i", problem = "https://atcoder.jp/contests/past202005-open/tasks/past202005_i" }
+349 = { alias = "past202005_m", problem = "https://atcoder.jp/contests/past202005-open/tasks/past202005_m" }
+354 = { alias = "past202005_j", problem = "https://atcoder.jp/contests/past202005-open/tasks/past202005_j" }
+359 = { alias = "past201912_l", problem = "https://atcoder.jp/contests/past201912-open/tasks/past201912_l" }
+365 = { alias = "past201912_j", problem = "https://atcoder.jp/contests/past201912-open/tasks/past201912_j" }
+369 = { alias = "past202004_k", problem = "https://atcoder.jp/contests/past202004-open/tasks/past202004_k" }
+
+[[bin]]
+name = "62"
+path = "src/bin/62.rs"
+
+[[bin]]
+name = "67"
+path = "src/bin/67.rs"
+
+[[bin]]
+name = "76"
+path = "src/bin/76.rs"
+
+[[bin]]
+name = "84"
+path = "src/bin/84.rs"
+
+[[bin]]
+name = "88"
+path = "src/bin/88.rs"
+
+[[bin]]
+name = "95"
+path = "src/bin/95.rs"
+
+[[bin]]
+name = "98"
+path = "src/bin/98.rs"
+
+[[bin]]
+name = "102"
+path = "src/bin/102.rs"
+
+[[bin]]
+name = "112"
+path = "src/bin/112.rs"
+
+[[bin]]
+name = "123"
+path = "src/bin/123.rs"
+
+[[bin]]
+name = "141"
+path = "src/bin/141.rs"
+
+[[bin]]
+name = "159"
+path = "src/bin/159.rs"
+
+[[bin]]
+name = "167"
+path = "src/bin/167.rs"
+
+[[bin]]
+name = "171"
+path = "src/bin/171.rs"
+
+[[bin]]
+name = "175"
+path = "src/bin/175.rs"
+
+[[bin]]
+name = "178"
+path = "src/bin/178.rs"
+
+[[bin]]
+name = "185"
+path = "src/bin/185.rs"
+
+[[bin]]
+name = "191"
+path = "src/bin/191.rs"
+
+[[bin]]
+name = "194"
+path = "src/bin/194.rs"
+
+[[bin]]
+name = "198"
+path = "src/bin/198.rs"
+
+[[bin]]
+name = "201"
+path = "src/bin/201.rs"
+
+[[bin]]
+name = "210"
+path = "src/bin/210.rs"
+
+[[bin]]
+name = "215"
+path = "src/bin/215.rs"
+
+[[bin]]
+name = "219"
+path = "src/bin/219.rs"
+
+[[bin]]
+name = "223"
+path = "src/bin/223.rs"
+
+[[bin]]
+name = "226"
+path = "src/bin/226.rs"
+
+[[bin]]
+name = "232"
+path = "src/bin/232.rs"
+
+[[bin]]
+name = "238"
+path = "src/bin/238.rs"
+
+[[bin]]
+name = "247"
+path = "src/bin/247.rs"
+
+[[bin]]
+name = "255"
+path = "src/bin/255.rs"
+
+[[bin]]
+name = "260"
+path = "src/bin/260.rs"
+
+[[bin]]
+name = "263"
+path = "src/bin/263.rs"
+
+[[bin]]
+name = "268"
+path = "src/bin/268.rs"
+
+[[bin]]
+name = "275"
+path = "src/bin/275.rs"
+
+[[bin]]
+name = "278"
+path = "src/bin/278.rs"
+
+[[bin]]
+name = "282"
+path = "src/bin/282.rs"
+
+[[bin]]
+name = "295"
+path = "src/bin/295.rs"
+
+[[bin]]
+name = "304"
+path = "src/bin/304.rs"
+
+[[bin]]
+name = "315"
+path = "src/bin/315.rs"
+
+[[bin]]
+name = "326"
+path = "src/bin/326.rs"
+
+[[bin]]
+name = "328"
+path = "src/bin/328.rs"
+
+[[bin]]
+name = "333"
+path = "src/bin/333.rs"
+
+[[bin]]
+name = "337"
+path = "src/bin/337.rs"
+
+[[bin]]
+name = "342"
+path = "src/bin/342.rs"
+
+[[bin]]
+name = "349"
+path = "src/bin/349.rs"
+
+[[bin]]
+name = "354"
+path = "src/bin/354.rs"
+
+[[bin]]
+name = "359"
+path = "src/bin/359.rs"
+
+[[bin]]
+name = "365"
+path = "src/bin/365.rs"
+
+[[bin]]
+name = "369"
+path = "src/bin/369.rs"
+
+
+[dependencies]
+num = "=0.2.1"
+num-bigint = "=0.2.6"
+num-complex = "=0.2.4"
+num-integer = "=0.1.42"
+num-iter = "=0.1.40"
+num-rational = "=0.2.4"
+num-traits = "=0.2.11"
+num-derive = "=0.3.0"
+ndarray = "=0.13.0"
+nalgebra = "=0.20.0"
+alga = "=0.9.3"
+libm = "=0.2.1"
+rand = { version = "=0.7.3", features = ["small_rng"] }
+getrandom = "=0.1.14"
+rand_chacha = "=0.2.2"
+rand_core = "=0.5.1"
+rand_hc = "=0.2.0"
+rand_pcg = "=0.2.1"
+rand_distr = "=0.2.2"
+petgraph = "=0.5.0"
+indexmap = "=1.3.2"
+regex = "=1.3.6"
+lazy_static = "=1.4.0"
+ordered-float = "=1.0.2"
+ascii = "=1.0.0"
+permutohedron = "=0.2.4"
+superslice = "=1.0.0"
+itertools = "=0.9.0"
+itertools-num = "=0.1.3"
+maplit = "=1.0.2"
+either = "=1.5.3"
+im-rc = "=14.3.0"
+fixedbitset = "=0.2.0"
+bitset-fixed = "=0.1.0"
+proconio = { version = "=0.3.6", features = ["derive"] }
+text_io = "=0.1.8"
+whiteread = "=0.5.0"
+rustc-hash = "=1.1.0"
+smallvec = "=1.2.0"
+
+[dev-dependencies]

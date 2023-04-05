@@ -1,0 +1,51 @@
+# PAST 本
+
+- P.62 PAST #2 B - 多数決 (第二回 アルゴリズム実技検定 B問題) <https://atcoder.jp/contests/past202004-open/tasks/past202004_b>
+- P.67 PAST #1 C - 3番目 (第一回 アルゴリズム実技検定 C問題) <https://atcoder.jp/contests/past201912-open/tasks/past201912_c>
+- P.76 ABC157 B - Bingo (AtCoder Beginner Contest 157 B問題) <https://atcoder.jp/contests/abc157/tasks/abc157_b>
+- P.84 ABC088 C - Takahashi's Information (AtCoder Beginner Contest 088 C問題) <https://atcoder.jp/contests/abc088/tasks/abc088_c>
+- P.88 PAST #2 C - 山崩し (第二回 アルゴリズム実技検定 C問題) <https://atcoder.jp/contests/past202004-open/tasks/past202004_c>
+- P.95 ARC046 A - ゾロ目数 (AtCoder Regular Contest 046 A問題) <https://atcoder.jp/contests/arc046/tasks/arc046_a>
+- P.98 ABC165 A - We Love Golf (AtCoder Beginner Contest 165 A問題) <https://atcoder.jp/contests/abc165/tasks/abc165_a>
+- P.102 PAST #2 D - パターンマッチ (第二回 アルゴリズム実技検定 D問題) <https://atcoder.jp/contests/past202004-open/tasks/past202004_d>
+- P.112 PAST #3 E - スプリンクラー (第三回 アルゴリズム実技検定 E問題) <https://atcoder.jp/contests/past202005-open/tasks/past202005_e>
+- P.123 PAST #1 E - SNS のログ (第一回 アルゴリズム実技検定 E問題) <https://atcoder.jp/contests/past201912-open/tasks/past201912_e>
+- P.141 PAST #1 H - まとめ売り (第一回 アルゴリズム実技検定 H問題) <https://atcoder.jp/contests/past201912-open/tasks/past201912_h>
+- P.159 ABC007 C - 幅優先探索 (AtCoder Beginner Contest 007 C問題) <https://atcoder.jp/contests/abc007/tasks/abc007_3>
+- P.167 深さ優先探索 (AtCoder Typical Contest 001) <https://atcoder.jp/contests/atc001/tasks/dfs_a>
+- P.171 ABC114 C - 755 (AtCoder Beginner Contest 114 C問題) <https://atcoder.jp/contests/abc114/tasks/abc114_c>
+- P.175 EDPC A - Frog 1 (AtCoder Educational DP Contest A問題) <https://atcoder.jp/contests/dp/tasks/dp_a>
+- P.178 PAST #3 H - ハードル走 (第三回 アルゴリズム実技検定 H問題) <https://atcoder.jp/contests/past202005-open/tasks/past202005_h>
+- P.185 EDPC D - Knapsack 1 (AtCoder Educational DP Contest D問題) <https://atcoder.jp/contests/dp/tasks/dp_d>
+- P.191 コンテスト (AtCoder Typical DP Contest A問題) <https://atcoder.jp/contests/tdpc/tasks/tdpc_contest>
+- P.194 PAST #2 H - 1-9 Grid (第二回 アルゴリズム実技検定 H問題) <https://atcoder.jp/contests/past202004-open/tasks/past202004_h>
+- P.198 ABC026 C - 高橋君の給料 (AtCoder Beginner Contest 026 C問題) <https://atcoder.jp/contests/abc026/tasks/abc026_c>
+- P.201 EDPC G - Longest Path (AtCoder Educational DP Contest G問題) <https://atcoder.jp/contests/dp/tasks/dp_g>
+- P.210 PAST #1 G - 組分け (第一回 アルゴリズム実技検定 G問題) <https://atcoder.jp/contests/past201912-open/tasks/past201912_g>
+- P.215 PAST #1 I - 部品調達 (第一回 アルゴリズム実技検定 I 問題) <https://atcoder.jp/contests/past201912-open/tasks/past201912_i>
+- P.219 巡回セールスマン問題 (典型アルゴリズム問題集 C問題) <https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_c>
+- P.223 ARC017 C - 無駄なものが嫌いな人 (AtCoder Regular Contest 017 C問題) <https://atcoder.jp/contests/arc017/tasks/arc017_3>
+- P.226 PAST #3 C - 等比数列 (第三回 アルゴリズム実技検定 C問題) <https://atcoder.jp/contests/past202005-open/tasks/past202005_c>
+- P.232 ABC179 C - A x B + C (AtCoder Beginner Contest 179 C問題) <https://atcoder.jp/contests/abc179/tasks/abc179_c>
+- P.238 ARC107 A - Simple Math (AtCoder Regular Contest 107 A問題) <https://atcoder.jp/contests/arc107/tasks/arc107_a>
+- P.247 ARC098 C - Attention (AtCoder Regular Contest 098 C問題) <https://atcoder.jp/contests/arc098/tasks/arc098_a>
+- P.255 PAST #2 F - タスクの消化 (第二回 アルゴリズム実技検定 F問題) <https://atcoder.jp/contests/past202004-open/tasks/past202004_f>
+- P.260 区間スケジューリング問題 (典型アルゴリズム問題集 B問題) <https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_b>
+- P.263 Different Stroke (s 全国統一プログラミング王決定戦予選 C問題) <https://atcoder.jp/contests/nikkei2019-qual/tasks/nikkei2019_qual_c>
+- P.268 二分探索の練習問題 (典型アルゴリズム問題集 A問題) <https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_a>
+- P.275 ABC146 C - Buy an Integer (AtCoder Beginner Contest 146 C問題) <https://atcoder.jp/contests/abc146/tasks/abc146_c>
+- P.278 ARC050 B - 花束 (AtCoder Regular Contest 050 B問題) <https://atcoder.jp/contests/arc050/tasks/arc050_b>
+- P.282 ABC068 C - Cat Snuke and a Voyage (AtCoder Beginner Contest 068 問題) <https://atcoder.jp/contests/abc068/tasks/arc079_a>
+- P.295 単一始点最短経路問題 (典型アルゴリズム問題集 D問題) <https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_d>
+- P.304 全点対最短経路問題 (典型アルゴリズム問題集 E問題) <https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_e>
+- P.315 最小全域木問題 (典型アルゴリズム問題集 F問題) <https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_f>
+- P.326 Typical Stair (s AtCoder Beginner Contest 129 C問題) <https://atcoder.jp/contests/abc129/tasks/abc129_c>
+- P.328 EDPC H - Grid 1 (Educational DP Contest H問題) <https://atcoder.jp/contests/dp/tasks/dp_h>
+- P.333 PAST #2 G - ストリング・クエリ (第二回 アルゴリズム実技検定 G問題) <https://atcoder.jp/contests/past202004-open/tasks/past202004_g>
+- P.337 PAST #1 K - 巨大企業 (第一回 アルゴリズム実技検定 K問題) <https://atcoder.jp/contests/past201912-open/tasks/past201912_k>
+- P.342 PAST #3 I - 行列操作 (第三回 アルゴリズム実技検定 I問題) <https://atcoder.jp/contests/past202005-open/tasks/past202005_i>
+- P.349 PAST #3 M - 行商計画問題 (第三回アルゴリズム実技検定 M問題) <https://atcoder.jp/contests/past202005-open/tasks/past202005_m>
+- P.354 PAST #3 J - 回転寿司 (第三回アルゴリズム実技検定 J問題) <https://atcoder.jp/contests/past202005-open/tasks/past202005_j>
+- P.359 PAST #1 L - グラデーション (第一回アルゴリズム実技検定 L問題) <https://atcoder.jp/contests/past201912-open/tasks/past201912_l>
+- P.365 PAST #1 J - 地ならし(第一回アルゴリズム実技検定 J問題) <https://atcoder.jp/contests/past201912-open/tasks/past201912_j>
+- P.369 PAST #2 K - 括弧 (第二回アルゴリズム実技検定 K問題) <https://atcoder.jp/contests/past202004-open/tasks/past202004_k>
