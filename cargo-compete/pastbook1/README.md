@@ -39,7 +39,7 @@
 - P.295 単一始点最短経路問題 (典型アルゴリズム問題集 D問題) <https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_d>
 - P.304 全点対最短経路問題 (典型アルゴリズム問題集 E問題) <https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_e>
 - P.315 最小全域木問題 (典型アルゴリズム問題集 F問題) <https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_f>
-- P.326 Typical Stair (s AtCoder Beginner Contest 129 C問題) <https://atcoder.jp/contests/abc129/tasks/abc129_c>
+- P.326 Typical Stairs (AtCoder Beginner Contest 129 C問題) <https://atcoder.jp/contests/abc129/tasks/abc129_c>
 - P.328 EDPC H - Grid 1 (Educational DP Contest H問題) <https://atcoder.jp/contests/dp/tasks/dp_h>
 - P.333 PAST #2 G - ストリング・クエリ (第二回 アルゴリズム実技検定 G問題) <https://atcoder.jp/contests/past202004-open/tasks/past202004_g>
 - P.337 PAST #1 K - 巨大企業 (第一回 アルゴリズム実技検定 K問題) <https://atcoder.jp/contests/past201912-open/tasks/past201912_k>
