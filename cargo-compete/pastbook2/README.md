@@ -4,3 +4,4 @@
 - P.34 PAST #5 M - 棒の出荷 (第五回 アルゴリズム実技検定:M問題) <https://atcoder.jp/contests/past202012-open/tasks/past202012_m>
 - P.45 ABC236 E - Average and Median (AtCoder Beginner Contest 236:E問題) <https://atcoder.jp/contests/abc236/tasks/abc236_e>
 - P.56 EDPC D - ナップサック問題 (AtCoder Educational DP Contest:D問題) <https://atcoder.jp/contests/dp/tasks/dp_d>
+- P.61 typical90 H - AtCounter (競プロ典型90問:008) <https://atcoder.jp/contests/typical90/tasks/typical90_h>

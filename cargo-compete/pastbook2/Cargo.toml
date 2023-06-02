@@ -8,6 +8,7 @@ edition = "2018"
 034 = { alias = "past202012_m", problem = "https://atcoder.jp/contests/past202012-open/tasks/past202012_m" }
 045 = { alias = "abc236_e", problem = "https://atcoder.jp/contests/abc236/tasks/abc236_e" }
 056 = { alias = "dp_d", problem = "https://atcoder.jp/contests/dp/tasks/dp_d" }
+061 = { alias = "typical90_h", problem = "https://atcoder.jp/contests/typical90/tasks/typical90_h" }
 
 [[bin]]
 name = "027"
@@ -24,6 +25,10 @@ path = "src/bin/045.rs"
 [[bin]]
 name = "056"
 path = "src/bin/056.rs"
+
+[[bin]]
+name = "061"
+path = "src/bin/061.rs"
 
 [dependencies]
 num = "=0.2.1"
