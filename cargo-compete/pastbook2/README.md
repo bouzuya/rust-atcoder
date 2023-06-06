@@ -6,3 +6,4 @@
 - P.56 EDPC D - ナップサック問題 (AtCoder Educational DP Contest:D問題) <https://atcoder.jp/contests/dp/tasks/dp_d>
 - P.61 typical90 H - AtCounter (競プロ典型90問:008) <https://atcoder.jp/contests/typical90/tasks/typical90_h>
 - P.65 joi2014yo_d 部活のスケジュール表 (日本情報オリンピック 予選 2014:D問題) <https://atcoder.jp/contests/joi2014yo/tasks/joi2014yo_d>
+- P.70 括弧 (第二回 アルゴリズム実技検定:K問題) <https://atcoder.jp/contests/past202004-open/tasks/past202004_k>
