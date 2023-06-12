@@ -9,3 +9,4 @@
 - P.70 括弧 (第二回 アルゴリズム実技検定:K問題) <https://atcoder.jp/contests/past202004-open/tasks/past202004_k>
 - P.78 区間分割の仕方を最適化する問題 (オリジナル問題) <https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_a>
 - P.82 オレンジの出荷 (日本情報オリンピック 本選 2016:A問題) <https://atcoder.jp/contests/joi2016ho/tasks/joi2016ho_a>
+- P.85 編集距離 (オリジナル問題) <https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_b>
