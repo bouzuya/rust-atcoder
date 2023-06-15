@@ -12,3 +12,4 @@
 - P.85 編集距離 (オリジナル問題) <https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_b>
 - P.90 Slimes (Educational DP Contest:N問題) <https://atcoder.jp/contests/dp/tasks/dp_n>
 - P.94 イウィ (Typical DP Contest:I 問題) <https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi>
+- P.98 巡回セールスマン問題 (典型アルゴリズム問題集 C問題) <https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_c>
