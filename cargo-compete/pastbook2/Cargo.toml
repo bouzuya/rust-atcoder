@@ -17,6 +17,7 @@ edition = "2018"
 090 = { alias = "dp_n", problem = "https://atcoder.jp/contests/dp/tasks/dp_n" }
 094 = { alias = "tdpc_iwi", problem = "https://atcoder.jp/contests/tdpc/tasks/tdpc_iwi" }
 098 = { alias = "typical_algorithm_c", problem = "https://atcoder.jp/contests/typical-algorithm/tasks/typical_algorithm_c" }
+102 = { alias = "dp_o", problem = "https://atcoder.jp/contests/dp/tasks/dp_o" }
 
 [[bin]]
 name = "027"
@@ -65,6 +66,10 @@ path = "src/bin/090.rs"
 [[bin]]
 name = "094"
 path = "src/bin/094.rs"
+
+[[bin]]
+name = "102"
+path = "src/bin/102.rs"
 
 [dependencies]
 num = "=0.2.1"
