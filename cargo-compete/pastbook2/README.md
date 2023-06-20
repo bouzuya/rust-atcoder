@@ -16,3 +16,4 @@
 - P.102 Matching (Educational DP Contest:O問題) <https://atcoder.jp/contests/dp/tasks/dp_o>
 - P.105 ぬいぐるみの整理 (日本情報オリンピック 予選 2017:D問題) <https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d>
 - P.110 階段 (Stairs) (日本情報オリンピック 春合宿 2010 day1-3) <https://atcoder.jp/contests/joisc2010/tasks/joisc2010_stairs>
+- P.115 Candies (Educational DP Contest:M問題) <https://atcoder.jp/contests/dp/tasks/dp_m>

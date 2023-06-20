@@ -20,6 +20,7 @@ edition = "2018"
 102 = { alias = "dp_o", problem = "https://atcoder.jp/contests/dp/tasks/dp_o" }
 105 = { alias = "joi2017yo_d", problem = "https://atcoder.jp/contests/joi2017yo/tasks/joi2017yo_d" }
 110 = { alias = "joisc2010_stairs", problem = "https://atcoder.jp/contests/joisc2010/tasks/joisc2010_stairs" }
+115 = { alias = "dp_m", problem = "https://atcoder.jp/contests/dp/tasks/dp_m" }
 
 [[bin]]
 name = "027"
@@ -80,6 +81,10 @@ path = "src/bin/105.rs"
 [[bin]]
 name = "110"
 path = "src/bin/110.rs"
+
+[[bin]]
+name = "115"
+path = "src/bin/115.rs"
 
 [dependencies]
 num = "=0.2.1"
