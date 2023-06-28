@@ -21,3 +21,4 @@
 - P.123 Walk (Educational DP Contest:R問題) <https://atcoder.jp/contests/dp/tasks/dp_r>
 - P.128 家 (Typical DP Contest:M問題) <https://atcoder.jp/contests/tdpc/tasks/tdpc_house>
 - P.133 活動 (第六回 アルゴリズム実技検定:N問題) <https://atcoder.jp/contests/past202104-open/tasks/past202104_n>
+- P.137 Tower (Educational DP Contest:X問題) <https://atcoder.jp/contests/dp/tasks/dp_x>
