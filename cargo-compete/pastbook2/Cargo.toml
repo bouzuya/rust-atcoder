@@ -27,6 +27,7 @@ edition = "2018"
 133 = { alias = "past202104_n", problem = "https://atcoder.jp/contests/past202104-open/tasks/past202104_n" }
 137 = { alias = "dp_x", problem = "https://atcoder.jp/contests/dp/tasks/dp_x" }
 143 = { alias = "pastbook2022_c", problem = "https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_c" }
+146 = { alias = "dp_p", problem = "https://atcoder.jp/contests/dp/tasks/dp_p" }
 
 [[bin]]
 name = "027"
@@ -115,6 +116,10 @@ path = "src/bin/137.rs"
 [[bin]]
 name = "143"
 path = "src/bin/143.rs"
+
+[[bin]]
+name = "146"
+path = "src/bin/146.rs"
 
 [dependencies]
 num = "=0.2.1"
