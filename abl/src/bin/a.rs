@@ -4,8 +4,6 @@ fn main() {
     input! {
         k: usize,
     };
-    for _ in 0..k {
-        print!("ACL");
-    }
-    println!();
+    let ans = "ACL".repeat(k);
+    println!("{}", ans);
 }
