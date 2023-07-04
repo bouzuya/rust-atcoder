@@ -25,3 +25,4 @@
 - P.143 各部分木の大きさ (オリジナル問題) <https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_c>
 - P.146 Independent Set (Educational DP Contest:P問題) <https://atcoder.jp/contests/dp/tasks/dp_p>
 - P.149 Digit Sum (Educational DP Contest:S問題) <https://atcoder.jp/contests/dp/tasks/dp_s>
+- P.154 Grouping (Educational DP Contest:U問題) <https://atcoder.jp/contests/dp/tasks/dp_u>
