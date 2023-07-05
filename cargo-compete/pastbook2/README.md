@@ -26,3 +26,4 @@
 - P.146 Independent Set (Educational DP Contest:P問題) <https://atcoder.jp/contests/dp/tasks/dp_p>
 - P.149 Digit Sum (Educational DP Contest:S問題) <https://atcoder.jp/contests/dp/tasks/dp_s>
 - P.154 Grouping (Educational DP Contest:U問題) <https://atcoder.jp/contests/dp/tasks/dp_u>
+- P.158 的あて (第五回 アルゴリズム実技検定:K問題) <https://atcoder.jp/contests/past202012-open/tasks/past202012_k>
