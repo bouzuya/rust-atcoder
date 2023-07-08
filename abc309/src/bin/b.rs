@@ -14,23 +14,17 @@ fn main() {
             let (i, j) = cur;
             let (nr, nc) = (i as i64 + dr, j as i64 + dc);
             let (nr, nc) = (nr as usize, nc as usize);
-            pos.push((nr, nc));
             cur = (nr, nc);
+            pos.push(cur);
         }
     }
 
     let mut b = a.clone();
-
-    let mut cur = 0;
-    for _ in 0..pos.len() {
-        let next = (cur + 1) % pos.len();
-        b[pos[next].0][pos[next].1] = a[pos[cur].0][pos[cur].1];
-        cur += 1;
-        cur %= pos.len();
+    for (i, (cr, cc)) in pos.iter().copied().enumerate() {
+        let (nr, nc) = pos[(i + 1) % pos.len()];
+        b[nr][nc] = a[cr][cc];
     }
 
-    // println!("{:?}", pos);
-    // println!("{:?}", pos.len());
     for i in 0..n {
         for j in 0..n {
             print!("{}", b[i][j]);
