@@ -28,3 +28,4 @@
 - P.154 Grouping (Educational DP Contest:U問題) <https://atcoder.jp/contests/dp/tasks/dp_u>
 - P.158 的あて (第五回 アルゴリズム実技検定:K問題) <https://atcoder.jp/contests/past202012-open/tasks/past202012_k>
 - P.163 Permutation (Educational DP Contest:T問題) <https://atcoder.jp/contests/dp/tasks/dp_t>
+- P.168 Otoshidama (AtCoder Beginner Contest 085:C問題) <https://atcoder.jp/contests/abc085/tasks/abc085_c>
