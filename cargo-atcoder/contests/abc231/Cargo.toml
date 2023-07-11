@@ -8,7 +8,3 @@ edition = "2018"
 num = "=0.2.1"
 proconio = { version = "=0.3.6", features = ["derive"] }
 superslice = "=1.0.0"
-
-[profile.release]
-lto = true
-panic = 'abort'

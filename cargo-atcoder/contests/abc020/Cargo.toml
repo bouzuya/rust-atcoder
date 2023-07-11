@@ -8,6 +8,3 @@ edition = "2018"
 [dependencies]
 proconio = "*"
 
-[profile.release]
-lto = true
-panic = 'abort'

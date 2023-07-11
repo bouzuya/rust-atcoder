@@ -1,0 +1,6 @@
+[workspace]
+members = ["contests/*"]
+
+[profile.release]
+lto = true
+panic = 'abort'

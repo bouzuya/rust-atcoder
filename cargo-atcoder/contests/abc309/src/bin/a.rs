@@ -5,6 +5,7 @@ fn main() {
         a: usize,
         b: usize,
     };
+    let c = 2;
     let (a, b) = (a.min(b), a.max(b));
     let ans = (a + 1 == b) && (a % 3 != 0);
     println!("{}", if ans { "Yes" } else { "No" });

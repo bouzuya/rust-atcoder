@@ -6,6 +6,3 @@ authors = ['bouzuya <m@bouzuya.net>']
 edition = '2018'
 name = 'abc155'
 version = '0.1.0'
-[profile.release]
-lto = true
-panic = 'abort'

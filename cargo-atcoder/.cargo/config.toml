@@ -1,0 +1,19 @@
+[build]
+rustflags = [
+  "-A",
+  "dead_code",
+  "-A",
+  "redundant_semicolons",
+  "-A",
+  "unused_mut",
+  "-A",
+  "unreachable_patterns",
+  "-A",
+  "unused_assignments",
+  "-A",
+  "unused_imports",
+  "-A",
+  "unused_parens",
+  "-A",
+  "unused_variables"
+]
