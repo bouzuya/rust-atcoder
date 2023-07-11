@@ -3,7 +3,7 @@ rustflags = [
   "-A",
   "dead_code",
   "-A",
-  "redundant_semicolons",
+  "redundant_semicolon",
   "-A",
   "unused_mut",
   "-A",
