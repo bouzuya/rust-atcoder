@@ -1,10 +1,12 @@
 # rust-atcoder
 
-[AtCoder](https://atcoder.jp/)
+bouzuya の [AtCoder](https://atcoder.jp/) の提出記録です。
 
 ## Note
 
-```
+```console
+$ cd cargo-atcoder/
+$
 $ # See cargo-atcoder README
 $ # https://github.com/tanakh/cargo-atcoder
 $ contest_name=...
