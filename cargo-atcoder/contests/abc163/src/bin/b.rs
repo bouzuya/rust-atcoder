@@ -2,11 +2,11 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: i64,
+        n: usize,
         m: usize,
-        av: [i64;m],
+        a: [usize; m],
     };
-    let sum = av.iter().sum();
-    let ans = if n < sum { -1 } else { n - sum };
+    let sum = a.into_iter().sum::<usize>();
+    let ans = if n < sum { -1 } else { (n - sum) as i64 };
     println!("{}", ans);
 }
