@@ -30,3 +30,4 @@
 - P.163 Permutation (Educational DP Contest:T問題) <https://atcoder.jp/contests/dp/tasks/dp_t>
 - P.168 Otoshidama (AtCoder Beginner Contest 085:C問題) <https://atcoder.jp/contests/abc085/tasks/abc085_c>
 - P.171 Snuke Festival (AtCoder Beginner Contest 077:C問題) <https://atcoder.jp/contests/abc077/tasks/arc084_a>
+- P.174 バランス (第八回 アルゴリズム実技検定:M問題) <https://atcoder.jp/contests/past202109-open/tasks/past202109_m>
