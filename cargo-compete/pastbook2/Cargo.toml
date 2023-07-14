@@ -35,6 +35,8 @@ edition = "2018"
 168 = { alias = "abc085_c", problem = "https://atcoder.jp/contests/abc085/tasks/abc085_c" }
 171 = { alias = "arc084_a", problem = "https://atcoder.jp/contests/abc077/tasks/arc084_a" }
 174 = { alias = "past202109_m", problem = "https://atcoder.jp/contests/past202109-open/tasks/past202109_m" }
+179 = { alias = "abc032_c", problem = "https://atcoder.jp/contests/abc032/tasks/abc032_c" }
+
 
 [[bin]]
 name = "027"
@@ -155,6 +157,10 @@ path = "src/bin/171.rs"
 [[bin]]
 name = "174"
 path = "src/bin/174.rs"
+
+[[bin]]
+name = "179"
+path = "src/bin/179.rs"
 
 [dependencies]
 num = "=0.2.1"
