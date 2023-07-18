@@ -1,36 +1,6 @@
-use proconio::input;
-use proconio::marker::Chars;
-use std::{cmp::max, collections::VecDeque};
+use std::collections::VecDeque;
 
-fn f(h: usize, w: usize, s: &Vec<Vec<char>>, start: (usize, usize)) -> (usize, (usize, usize)) {
-    let inf = h * w + 1;
-    let mut d = vec![vec![inf; w]; h];
-    let mut q = VecDeque::new();
-    d[start.0][start.1] = 0;
-    q.push_back(start);
-    while let Some((r, c)) = q.pop_front() {
-        let dir = vec![(-1, 0), (0, -1), (0, 1), (1, 0)];
-        for (dr, dc) in dir {
-            let (nr, nc) = (r as i64 + dr, c as i64 + dc);
-            if (0..h as i64).contains(&nr) && (0..w as i64).contains(&nc) {
-                let (nr, nc) = (nr as usize, nc as usize);
-                if s[nr][nc] == '.' && d[nr][nc] == inf {
-                    d[nr][nc] = d[r][c] + 1;
-                    q.push_back((nr, nc));
-                }
-            }
-        }
-    }
-    let mut max_d = (0, start);
-    for r in 0..h {
-        for c in 0..w {
-            if d[r][c] != inf && d[r][c] > max_d.0 {
-                max_d = (d[r][c], (r, c));
-            }
-        }
-    }
-    max_d
-}
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
@@ -38,16 +8,64 @@ fn main() {
         w: usize,
         s: [Chars; h],
     };
-    let mut max_d = 0;
-    for r in 0..h {
-        for c in 0..w {
-            if s[r][c] == '#' {
-                continue;
+
+    let f = |start: (usize, usize)| -> Vec<Vec<usize>> {
+        let mut dist = vec![vec![h * w; w]; h];
+        let mut deque = VecDeque::new();
+        dist[start.0][start.1] = 0;
+        deque.push_back(start);
+        while let Some((i, j)) = deque.pop_front() {
+            let dir = vec![(-1, 0), (0, -1), (0, 1), (1, 0)];
+            for (dr, dc) in dir {
+                let (nr, nc) = (i as i64 + dr, j as i64 + dc);
+                if !(0..h as i64).contains(&nr) || !(0..w as i64).contains(&nc) {
+                    continue;
+                }
+                let (nr, nc) = (nr as usize, nc as usize);
+                if s[nr][nc] == '#' {
+                    continue;
+                }
+                let nd = dist[i][j] + 1;
+                if dist[nr][nc] <= nd {
+                    continue;
+                }
+                dist[nr][nc] = nd;
+                deque.push_back((nr, nc));
             }
-            let (d, _) = f(h, w, &s, (r, c));
-            max_d = max(max_d, d);
+        }
+        dist
+    };
+
+    let g = |dist: &[Vec<usize>]| -> ((usize, usize), usize) {
+        let mut pos = (0_usize, 0_usize);
+        let mut max = 0_usize;
+        for i in (0..h).rev() {
+            for j in (0..w).rev() {
+                if dist[i][j] == h * w {
+                    continue;
+                }
+                if dist[i][j] > max {
+                    max = dist[i][j];
+                    pos = (i, j);
+                }
+            }
+        }
+        (pos, max)
+    };
+
+    let mut start = (0, 0);
+    for i in 0..h {
+        for j in 0..w {
+            if s[i][j] == '.' {
+                start = (i, j);
+                break;
+            }
         }
     }
-    let ans = max_d;
+    let dist1 = f(start);
+    let (start, _) = g(&dist1);
+    let dist2 = f(start);
+    let (_, ans) = g(&dist2);
+
     println!("{}", ans);
 }

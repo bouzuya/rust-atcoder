@@ -1,5 +1,4 @@
-use proconio::input;
-use proconio::marker::Usize1;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
@@ -7,24 +6,31 @@ fn main() {
         m: usize,
         ps: [(Usize1, String); m],
     };
-    let mut status = vec![(false, 0); n];
-    for (p_i, s_i) in ps.iter() {
-        if status[*p_i].0 {
-            continue;
-        }
+
+    let mut ac = vec![false; n];
+    let mut wa = vec![0_usize; n];
+    for (p_i, s_i) in ps {
         match s_i.as_str() {
-            "AC" => status[*p_i].0 = true,
-            "WA" => status[*p_i].1 += 1,
-            _ => unreachable!("invalid S"),
+            "AC" => {
+                ac[p_i] = true;
+            }
+            "WA" => {
+                if ac[p_i] {
+                    continue;
+                }
+                wa[p_i] += 1;
+            }
+            _ => unreachable!(),
         }
     }
-    let mut count_ac = 0;
-    let mut count_penalty = 0;
-    for (ac, wa) in status {
-        if ac {
-            count_ac += 1;
-            count_penalty += wa;
-        }
-    }
-    println!("{} {}", count_ac, count_penalty);
+
+    let sum_ac = ac.iter().copied().filter(|&x| x).count();
+    let sum_wa = ac
+        .iter()
+        .copied()
+        .zip(wa.iter().copied())
+        .filter(|&(ac_i, _)| ac_i)
+        .map(|(_, wa_i)| wa_i)
+        .sum::<usize>();
+    println!("{} {}", sum_ac, sum_wa);
 }

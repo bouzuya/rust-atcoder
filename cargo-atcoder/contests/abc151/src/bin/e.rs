@@ -1,18 +1,7 @@
-use modint::*;
-use proconio::input;
+#![allow(dead_code)]
 
-fn ncr(
-    n: usize,
-    r: usize,
-    fact: &Vec<ModInt1000000007>,
-    finv: &Vec<ModInt1000000007>,
-) -> ModInt1000000007 {
-    if r > n {
-        ModInt1000000007::new(0)
-    } else {
-        fact[n] * finv[r] * finv[n - r]
-    }
-}
+use modint::ModInt1000000007 as ModInt;
+use proconio::input;
 
 fn main() {
     input! {
@@ -20,28 +9,36 @@ fn main() {
         k: usize,
         mut a: [i64; n],
     };
-    a.sort();
 
-    let max = n;
-    let mut fact = vec![ModInt1000000007::new(0); max + 1];
-    fact[0] = ModInt1000000007::new(1);
-    for i in 1..=max {
-        fact[i] = fact[i - 1] * i;
-    }
-    let mut finv = vec![ModInt1000000007::new(0); max + 1];
-    finv[max] = fact[max].inv();
-    for i in (1..=max).rev() {
-        finv[i - 1] = finv[i] * i;
-    }
+    let (fact, finv) = {
+        let maxn = n;
+        let mut fact = vec![ModInt::new(1); maxn + 1];
+        for i in 1..=maxn {
+            fact[i] = fact[i - 1] * ModInt::new(i);
+        }
+        let mut finv = vec![ModInt::new(1); maxn + 1];
+        finv[maxn] = fact[maxn].inv();
+        for i in (1..=maxn).rev() {
+            finv[i - 1] = finv[i] * ModInt::new(i);
+        }
+        (fact, finv)
+    };
+    let binom = |n: usize, k: usize| -> ModInt {
+        if n < k {
+            ModInt::new(0)
+        } else {
+            fact[n] * finv[k] * finv[n - k]
+        }
+    };
 
-    let mut ans = ModInt1000000007::new(0);
+    let mut ans = ModInt::new(0);
     a.sort();
-    for (i, &a_i) in a.iter().enumerate() {
-        ans += ncr(i, k - 1, &fact, &finv) * a_i;
+    for (i, a_i) in a.iter().copied().enumerate() {
+        ans += binom(i, k - 1) * a_i;
     }
     a.reverse();
-    for (i, &a_i) in a.iter().enumerate() {
-        ans -= ncr(i, k - 1, &fact, &finv) * a_i;
+    for (i, a_i) in a.iter().copied().enumerate() {
+        ans -= binom(i, k - 1) * a_i;
     }
 
     println!("{}", ans);
