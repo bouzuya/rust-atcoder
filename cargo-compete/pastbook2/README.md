@@ -33,3 +33,4 @@
 - P.174 バランス (第八回 アルゴリズム実技検定:M問題) <https://atcoder.jp/contests/past202109-open/tasks/past202109_m>
 - P.179 列 (AtCoder Beginner Contest 032:C問題) <https://atcoder.jp/contests/abc032/tasks/abc032_c>
 - P.184 Longest X (AtCoder Beginner Contest 229:D問題) <https://atcoder.jp/contests/abc229/tasks/abc229_d>
+- P.186 Xor Sum 2 (AtCoder Beginner Contest 098:D問題) <https://atcoder.jp/contests/abc098/tasks/arc098_b>
