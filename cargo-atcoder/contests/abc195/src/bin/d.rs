@@ -1,47 +1,36 @@
-use std::collections::BTreeSet;
-
-use proconio::input;
-use proconio::marker::Usize1;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
         n: usize,
         m: usize,
         q: usize,
-        wv: [(i64, i64); n],
-        x: [i64; m],
+        wv: [(usize, usize); n],
+        x: [usize; m],
         lr: [(Usize1, Usize1); q],
     };
-    for &(l_i, r_i) in lr.iter() {
-        let mut y = vec![];
-        for (j, &x_j) in x.iter().enumerate() {
-            if l_i <= j && j <= r_i {
-                continue;
-            }
-            y.push(x_j);
-        }
-        y.sort();
-        let mut sum = 0;
-        let mut set = BTreeSet::new();
-        for &y_j in y.iter() {
-            let mut max_k = 0;
-            let mut max_v = 0;
-            for (k, &(w_k, v_k)) in wv.iter().enumerate() {
-                if w_k > y_j {
-                    continue;
-                }
-                if set.contains(&k) {
-                    continue;
-                }
-                if v_k > max_v {
-                    max_k = k;
-                    max_v = v_k;
+    for (l, r) in lr {
+        let mut x = x
+            .iter()
+            .copied()
+            .enumerate()
+            .filter(|(i, _)| !(l..=r).contains(&i))
+            .map(|(_, x_i)| x_i)
+            .collect::<Vec<usize>>();
+        x.sort();
+        let mut sum = 0_usize;
+        let mut used = vec![false; n];
+        for x_i in x.iter().copied() {
+            let mut max = None;
+            for (j, (w_j, v_j)) in wv.iter().copied().enumerate() {
+                if !used[j] && w_j <= x_i && (v_j > max.map(|(_, v)| v).unwrap_or_default()) {
+                    max = Some((j, v_j));
                 }
             }
-            if max_v > 0 {
-                set.insert(max_k);
+            if let Some((j, v_j)) = max {
+                used[j] = true;
+                sum += v_j;
             }
-            sum += max_v;
         }
         println!("{}", sum);
     }

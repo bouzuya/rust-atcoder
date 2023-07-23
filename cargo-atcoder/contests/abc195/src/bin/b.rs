@@ -7,16 +7,12 @@ fn main() {
         w: usize,
     };
     let w = w * 1000;
-    if a > w {
+    let c = w / a;
+    if c * b < w {
         println!("UNSATISFIABLE");
         return;
     }
-    let n = w / a;
-    if n * a + n * (b - a) < w {
-        println!("UNSATISFIABLE");
-        return;
-    }
-    let max = n;
+    let max = c;
     let min = (w + b - 1) / b;
     println!("{} {}", min, max);
 }

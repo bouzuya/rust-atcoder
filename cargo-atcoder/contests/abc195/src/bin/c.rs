@@ -4,34 +4,15 @@ fn main() {
     input! {
         n: usize,
     };
-    let ans = if n < 1_000 {
-        0
-    } else if n < 1_000_000 {
-        let a = n - (1_000 - 1);
-        a * 1
-    } else if n < 1_000_000_000 {
-        let a = n - (1_000_000 - 1);
-        let b = n - a - (1_000 - 1);
-        a * 2 + b * 1
-    } else if n < 1_000_000_000_000 {
-        let a = n - (1_000_000_000 - 1);
-        let b = n - a - (1_000_000 - 1);
-        let c = n - a - b - (1_000 - 1);
-        a * 3 + b * 2 + c * 1
-    } else if n < 1_000_000_000_000_000 {
-        let a = n - (1_000_000_000_000 - 1);
-        let b = n - a - (1_000_000_000 - 1);
-        let c = n - a - b - (1_000_000 - 1);
-        let d = n - a - b - c - (1_000 - 1);
-        a * 4 + b * 3 + c * 2 + d * 1
-    } else if n == 1_000_000_000_000_000 {
-        let a = n - 1 - (1_000_000_000_000 - 1);
-        let b = n - 1 - a - (1_000_000_000 - 1);
-        let c = n - 1 - a - b - (1_000_000 - 1);
-        let d = n - 1 - a - b - c - (1_000 - 1);
-        a * 4 + b * 3 + c * 2 + d * 1 + 5
-    } else {
-        unreachable!("invalid")
-    };
+    let mut count = 0_usize;
+    for i in 0_usize..=5 {
+        // [min, max] のとき i 桁
+        let min = 10_usize.pow(3 * i as u32);
+        let max = 10_usize.pow(3 * (i + 1) as u32) - 1;
+        if n >= min {
+            count += i * (n.min(max) - min + 1_usize);
+        }
+    }
+    let ans = count;
     println!("{}", ans);
 }
