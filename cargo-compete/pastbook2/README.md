@@ -35,3 +35,4 @@
 - P.184 Longest X (AtCoder Beginner Contest 229:D問題) <https://atcoder.jp/contests/abc229/tasks/abc229_d>
 - P.186 Xor Sum 2 (AtCoder Beginner Contest 098:D問題) <https://atcoder.jp/contests/abc098/tasks/arc098_b>
 - P.191 Sorting Queries (AtCoder Beginner Contest 217:E問題) <https://atcoder.jp/contests/abc217/tasks/abc217_e>
+- P.195 Mandarin Orange (AtCoder Beginner Contest 189:C問題) <https://atcoder.jp/contests/abc189/tasks/abc189_c>
