@@ -1,47 +1,53 @@
-use num::integer::Roots;
-use proconio::input;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        x: String,
-        y: String,
-        r: String,
+        x: Chars,
+        y: Chars,
+        r: Chars,
     };
-    let f = |s: String| -> i128 {
-        let chars = s.chars().collect::<Vec<char>>();
+
+    let f = |chars: Vec<char>| -> i64 {
+        let n = chars.len();
         match chars.iter().position(|c| c == &'.') {
             Some(p) => chars
                 .into_iter()
                 .filter(|&c| c != '.')
-                .chain("0".repeat(4 - (s.len() - 1 - p)).chars())
+                .chain("0".repeat(4 - (n - 1 - p)).chars())
                 .collect::<String>(),
             None => chars
                 .into_iter()
                 .chain("0".repeat(4).chars())
                 .collect::<String>(),
         }
-        .parse::<i128>()
+        .parse::<i64>()
         .unwrap()
     };
 
-    let p = 10_000_i128;
+    let m = 10_000_i64;
     let cx = f(x) + 10_000_000_000;
     let cy = f(y) + 10_000_000_000;
     let r = f(r);
 
-    // let c = |n: i128, d: i128| -> i128 { (n + if n > 0 { d - 1 } else { 0 }) / d };
-    // let f = |n: i128, d: i128| -> i128 { (n - if n > 0 { 0 } else { d - 1 }) / d };
-
-    let left = (cx - r + p - 1) / p;
-    let right = (cx + r) / p;
-    let mut ans = 0;
-    for x in left..=right {
-        let dx = cx - x * p;
-        let dy = (r.pow(2) - dx.pow(2)).sqrt();
-        let top = (cy + dy) / p;
-        let bottom = (cy - dy + p - 1) / p;
-        let count = top - bottom + 1;
-        ans += count;
+    let mut ans = 0_i64;
+    for x in (cx - r + m - 1) / m..=(cx + r) / m {
+        let dx = (cx - x * m).abs();
+        let dy = {
+            let mut ok = 0;
+            let mut ng = r + 1;
+            while ng - ok > 1 {
+                let dy = ok + (ng - ok) / 2;
+                if dx.pow(2) + dy.pow(2) <= r.pow(2) {
+                    ok = dy;
+                } else {
+                    ng = dy;
+                }
+            }
+            ok
+        };
+        let top = (cy + dy) / m;
+        let bottom = (cy - dy + m - 1) / m;
+        ans += top - bottom + 1;
     }
 
     println!("{}", ans);
