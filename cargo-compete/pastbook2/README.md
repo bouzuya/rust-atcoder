@@ -37,3 +37,4 @@
 - P.191 Sorting Queries (AtCoder Beginner Contest 217:E問題) <https://atcoder.jp/contests/abc217/tasks/abc217_e>
 - P.195 Mandarin Orange (AtCoder Beginner Contest 189:C問題) <https://atcoder.jp/contests/abc189/tasks/abc189_c>
 - P.208 Union Find (Typical Contest 001:B問題) <https://atcoder.jp/contests/atc001/tasks/unionfind_a>
+- P.211 連結 (AtCoder Beginner Contest 065:D問題) <https://atcoder.jp/contests/arc065/tasks/arc065_b>
