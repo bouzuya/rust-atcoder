@@ -4,11 +4,11 @@ fn main() {
     input! {
         n: usize,
     };
-    let mut x = 1_usize;
+    let mut power = 1_usize;
     for i in 1..=n {
-        x *= i;
-        x %= 1_000_000_007_usize;
+        power *= i;
+        power %= 1_000_000_007;
     }
-    let ans = x;
+    let ans = power;
     println!("{}", ans);
 }
