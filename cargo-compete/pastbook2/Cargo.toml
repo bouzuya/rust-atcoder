@@ -42,6 +42,7 @@ edition = "2018"
 195 = { alias = "abc189_c", problem = "https://atcoder.jp/contests/abc189/tasks/abc189_c" }
 208 = { alias = "unionfind_a", problem = "https://atcoder.jp/contests/atc001/tasks/unionfind_a" }
 211 = { alias = "arc065_b", problem = "https://atcoder.jp/contests/arc065/tasks/arc065_b" }
+214 = { alias = "abc040_d", problem = "https://atcoder.jp/contests/abc040/tasks/abc040_d" }
 # xxx = { alias = "", problem = "" }
 
 
@@ -192,6 +193,10 @@ path = "src/bin/208.rs"
 [[bin]]
 name = "211"
 path = "src/bin/211.rs"
+
+[[bin]]
+name = "214"
+path = "src/bin/214.rs"
 
 [dependencies]
 num = "=0.2.1"
