@@ -1,5 +1,6 @@
+use std::collections::HashMap;
+
 use proconio::input;
-use std::collections::BTreeMap;
 use superslice::Ext;
 
 fn prime_factorization(n: usize) -> Vec<(usize, usize)> {
@@ -27,104 +28,46 @@ fn prime_factorization(n: usize) -> Vec<(usize, usize)> {
     p
 }
 
+fn dfs(cs: &[usize], qs: &[usize], count: &mut usize, depth: usize, start: usize) {
+    if depth == cs.len() {
+        *count += 1;
+        return;
+    }
+    for i in start..qs.len() {
+        if qs[i] + 1 < cs[depth] {
+            continue;
+        }
+        dfs(cs, qs, count, depth + 1, i + 1);
+    }
+}
+
 fn main() {
     input! {
         n: usize,
     };
-    let mut map = BTreeMap::new();
-    for i in 1..=n {
-        for (p, c) in prime_factorization(i) {
-            *map.entry(p).or_insert(0) += c;
-        }
-    }
-    let qs = map.iter().map(|(_, &v)| v).collect::<Vec<usize>>();
-
-    // 75 = 3 * 5 * 5
-    let mut count = 0;
-
-    {
-        let mut ds = vec![3, 5, 5];
-        ds.sort();
-        loop {
-            for (i, &q1) in qs.iter().enumerate() {
-                if q1 < ds[0] - 1 {
-                    continue;
-                }
-                for (j, &q2) in qs.iter().enumerate().skip(i + 1) {
-                    if q2 < ds[1] - 1 {
-                        continue;
-                    }
-                    for (_, &q3) in qs.iter().enumerate().skip(j + 1) {
-                        if q3 < ds[2] - 1 {
-                            continue;
-                        }
-                        count += 1;
-                    }
-                }
+    let qs = {
+        let mut pqs = HashMap::new();
+        for i in 1..=n {
+            for (p, c) in prime_factorization(i) {
+                *pqs.entry(p).or_insert(0) += c;
             }
-            if !ds.next_permutation() {
+        }
+        pqs.values().copied().collect::<Vec<usize>>()
+    };
+
+    let f = |mut cs: Vec<usize>| -> usize {
+        let mut count = 0_usize;
+        cs.sort();
+        loop {
+            dfs(&cs, &qs, &mut count, 0, 0);
+            if !cs.next_permutation() {
                 break;
             }
         }
-    }
+        count
+    };
 
-    {
-        let mut ds = vec![3 * 5, 5];
-        ds.sort();
-        loop {
-            for (i, &q1) in qs.iter().enumerate() {
-                if q1 < ds[0] - 1 {
-                    continue;
-                }
-                for (_, &q2) in qs.iter().enumerate().skip(i + 1) {
-                    if q2 < ds[1] - 1 {
-                        continue;
-                    }
-                    count += 1;
-                }
-            }
-            if !ds.next_permutation() {
-                break;
-            }
-        }
-    }
-
-    {
-        let mut ds = vec![3, 5 * 5];
-        ds.sort();
-        loop {
-            for (i, &q1) in qs.iter().enumerate() {
-                if q1 < ds[0] - 1 {
-                    continue;
-                }
-                for (_, &q2) in qs.iter().enumerate().skip(i + 1) {
-                    if q2 < ds[1] - 1 {
-                        continue;
-                    }
-                    count += 1;
-                }
-            }
-            if !ds.next_permutation() {
-                break;
-            }
-        }
-    }
-
-    {
-        let mut ds = vec![3 * 5 * 5];
-        ds.sort();
-        loop {
-            for (_, &q1) in qs.iter().enumerate() {
-                if q1 < ds[0] - 1 {
-                    continue;
-                }
-                count += 1;
-            }
-            if !ds.next_permutation() {
-                break;
-            }
-        }
-    }
-
-    println!("{}", count);
+    // p1^3 * p2^5 * p3^5
+    let ans = f(vec![3, 5, 5]) + f(vec![3 * 5, 5]) + f(vec![3, 5 * 5]) + f(vec![3 * 5 * 5]);
+    println!("{}", ans);
 }
