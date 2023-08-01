@@ -43,6 +43,7 @@ edition = "2018"
 208 = { alias = "unionfind_a", problem = "https://atcoder.jp/contests/atc001/tasks/unionfind_a" }
 211 = { alias = "arc065_b", problem = "https://atcoder.jp/contests/arc065/tasks/arc065_b" }
 214 = { alias = "abc040_d", problem = "https://atcoder.jp/contests/abc040/tasks/abc040_d" }
+218 = { alias = "arc036_d", problem = "https://atcoder.jp/contests/arc036/tasks/arc036_d" }
 # xxx = { alias = "", problem = "" }
 
 
