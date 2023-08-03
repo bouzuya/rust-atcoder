@@ -4,18 +4,18 @@ fn main() {
     input! {
         n: usize,
     };
-    let p = 1_000_000_007_usize;
+    let p = 1_000_000_007;
     let mut all = 1_usize;
-    let mut x = 1_usize;
-    let mut y = 1_usize;
+    let mut c9 = 1_usize;
+    let mut c8 = 1_usize;
     for _ in 0..n {
-        all *= 10_usize;
+        all *= 10;
         all %= p;
-        x *= 9_usize;
-        x %= p;
-        y *= 8_usize;
-        y %= p;
+        c9 *= 9;
+        c9 %= p;
+        c8 *= 8;
+        c8 %= p;
     }
-    let ans = (((((all + p - x) % p) + p - x) % p) + y) % p;
+    let ans = (((p + ((p + all - c9) % p) - c9) % p) + c8) % p;
     println!("{}", ans);
 }
