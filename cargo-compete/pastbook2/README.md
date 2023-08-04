@@ -40,3 +40,4 @@
 - P.211 連結 (AtCoder Beginner Contest 065:D問題) <https://atcoder.jp/contests/arc065/tasks/arc065_b>
 - P.214 道路の老朽化対策について (AtCoder Beginner Contest 040:D問題) <https://atcoder.jp/contests/abc040/tasks/abc040_d>
 - P.218 偶数メートル (AtCoder Regular Contest 036:D問題) <https://atcoder.jp/contests/arc036/tasks/arc036_d>
+- P.222 最小共通祖先 (オリジナル問題) <https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_d>
