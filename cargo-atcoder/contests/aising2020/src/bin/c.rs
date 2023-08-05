@@ -4,18 +4,19 @@ fn main() {
     input! {
         n: usize,
     };
-    let mut count = vec![0; n + 1];
-    for x in 1..=100 {
-        for y in 1..=100 {
-            for z in 1..=100 {
-                let v = x * x + y * y + z * z + x * y + y * z + z * x;
-                if v < n + 1 {
-                    count[v] += 1;
+    let mut count = vec![0_usize; n + 1];
+    for x in 1_usize..=100 {
+        for y in 1_usize..=100 {
+            for z in 1_usize..=100 {
+                let v = x.pow(2) + y.pow(2) + z.pow(2) + (x * y) + (y * z) + (z * x);
+                if v > n {
+                    break;
                 }
+                count[v] += 1;
             }
         }
     }
-    for count_i in count.into_iter().skip(1) {
-        println!("{}", count_i);
+    for c in count.iter().skip(1) {
+        println!("{}", c);
     }
 }

@@ -6,12 +6,6 @@ fn main() {
         r: usize,
         d: usize,
     };
-    let mut count = 0;
-    for x in l..=r {
-        if x % d == 0 {
-            count += 1;
-        }
-    }
-    let ans = count;
+    let ans = (r / d) - ((l - 1) / d);
     println!("{}", ans);
 }
