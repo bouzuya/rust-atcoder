@@ -1,5 +1,22 @@
-use proconio::input;
-use proconio::marker::Usize1;
+use proconio::{input, marker::Usize1};
+
+fn bellman_ford(n: usize, inf: i64, edges: &[Vec<(usize, i64)>], start: usize) -> Option<Vec<i64>> {
+    let mut dist = vec![inf; n];
+    dist[start] = 0_i64;
+    for i in 0..n {
+        for (u, e_u) in edges.iter().enumerate() {
+            for (v, w) in e_u.iter().copied() {
+                if dist[u] + w < dist[v] {
+                    dist[v] = dist[u] + w;
+                    if i == n - 1 && v == n - 1 {
+                        return None;
+                    }
+                }
+            }
+        }
+    }
+    Some(dist)
+}
 
 fn main() {
     input! {
@@ -7,40 +24,14 @@ fn main() {
         m: usize,
         abc: [(Usize1, Usize1, i64); m],
     };
-    let abc = abc
-        .iter()
-        .map(|&(a_i, b_i, c_i)| (a_i, b_i, -c_i))
-        .collect::<Vec<_>>();
-    let inf = 1_000_000_000_000_000_000_i64;
-    // bellman_ford
-    let mut d = vec![inf; n];
-    d[0] = 0_i64;
-    for _ in 0..n - 1 {
-        for &(u, v, w) in abc.iter() {
-            if d[u] != inf && d[u] + w < d[v] {
-                d[v] = d[u] + w;
-            }
-        }
+
+    let mut edges = vec![vec![]; n];
+    for (a, b, c) in abc {
+        edges[a].push((b, -c));
     }
-    let ans = -d[n - 1];
-    let mut c = vec![false; n];
-    for _ in 0..n {
-        for &(u, v, w) in abc.iter() {
-            if d[u] == inf {
-                continue;
-            }
-            if d[u] + w < d[v] {
-                d[v] = d[u] + w;
-                c[v] = true;
-            }
-            if c[u] {
-                c[v] = true;
-            }
-        }
-    }
-    if c[n - 1] {
-        println!("inf");
-    } else {
-        println!("{}", ans);
+
+    match bellman_ford(n, 1_i64 << 60, &edges, 0) {
+        None => println!("inf"),
+        Some(dist) => println!("{}", -dist[n - 1]),
     }
 }

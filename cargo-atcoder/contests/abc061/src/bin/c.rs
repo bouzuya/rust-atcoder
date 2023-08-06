@@ -1,16 +1,23 @@
+use std::collections::BTreeMap;
+
 use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        mut k: i64,
-        mut ab: [(i64, i64); n],
+        k: usize,
+        ab: [(usize, usize); n],
     };
-    ab.sort();
-    for &(a_i, b_i) in ab.iter() {
-        k -= b_i;
-        if k <= 0 {
-            println!("{}", a_i);
+    let mut map = BTreeMap::new();
+    for (a, b) in ab {
+        *map.entry(a).or_insert(0) += b;
+    }
+
+    let mut count = 0_usize;
+    for (a, b) in map {
+        count += b;
+        if count >= k {
+            println!("{}", a);
             return;
         }
     }
