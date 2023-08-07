@@ -42,3 +42,4 @@
 - P.218 偶数メートル (AtCoder Regular Contest 036:D問題) <https://atcoder.jp/contests/arc036/tasks/arc036_d>
 - P.222 最小共通祖先 (オリジナル問題) <https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_d>
 - P.229 巨大企業 (第一回 アルゴリズム実技検定:K問題) <https://atcoder.jp/contests/past201912-open/tasks/past201912_k>
+- P.232 閉路 (AtCoder Beginner Contest 014:D問題) <https://atcoder.jp/contests/abc014/tasks/abc014_4>

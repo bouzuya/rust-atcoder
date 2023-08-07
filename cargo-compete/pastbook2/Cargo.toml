@@ -46,6 +46,7 @@ edition = "2018"
 218 = { alias = "arc036_d", problem = "https://atcoder.jp/contests/arc036/tasks/arc036_d" }
 222 = { alias = "pastbook2022_d", problem = "https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_d" }
 229 = { alias = "past201912_k", problem = "https://atcoder.jp/contests/past201912-open/tasks/past201912_k" }
+232 = { alias = "abc014_4", problem = "https://atcoder.jp/contests/abc014/tasks/abc014_4" }
 # xxx = { alias = "", problem = "" }
 
 
