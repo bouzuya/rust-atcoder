@@ -1,34 +1,20 @@
 use proconio::input;
 
-macro_rules! chmax {
-    ($max_v: expr, $v: expr) => {
-        if $v > $max_v {
-            $max_v = $v;
-            true
-        } else {
-            false
-        }
-    };
-}
-
 fn main() {
     input! {
         n: usize,
-        a: [i64; n],
+        a: [usize; n],
     };
-    let mut max = 0;
-    let mut max_value = a[0];
-    for k in 2..=1000 {
-        let mut count = 0;
-        for &a_i in a.iter() {
-            if a_i % k == 0 {
-                count += 1;
-            }
-        }
-        if chmax!(max, count) {
-            max_value = k;
+    let mut max_count = 0_usize;
+    let mut max_k = 0_usize;
+    let max_a = a.iter().copied().max().unwrap();
+    for k in 2..=max_a {
+        let count = a.iter().copied().filter(|a_i| a_i % k == 0).count();
+        if count >= max_count {
+            max_count = count;
+            max_k = k;
         }
     }
-    let ans = max_value;
+    let ans = max_k;
     println!("{}", ans);
 }

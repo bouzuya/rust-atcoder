@@ -1,38 +1,31 @@
 use proconio::input;
-use proconio::marker::Chars;
 
 fn main() {
     input! {
-        n: Chars,
+        n: usize,
     };
-    let digits = n
-        .iter()
-        .map(|&c| (c as u8 - '0' as u8) as usize)
+    let n = n
+        .to_string()
+        .chars()
+        .map(|c| c.to_digit(10).unwrap() as usize)
         .collect::<Vec<usize>>();
-    let mut min_count = None;
-    for bits in 0..1 << n.len() {
-        let bs = (0..n.len())
-            .map(|i| (bits >> i) & 1 == 1)
-            .collect::<Vec<bool>>();
-        let sum = digits
-            .iter()
-            .zip(bs.iter())
-            .filter(|&(_, &b)| b)
-            .map(|(i, _)| i)
-            .sum::<usize>();
-        if sum >= 3 && sum % 3 == 0 {
-            let count = n.len() - bs.iter().filter(|&&b| b).count();
-            min_count = match min_count {
-                Some(c) => {
-                    if c < count {
-                        Some(c)
-                    } else {
-                        Some(count)
-                    }
-                }
-                None => Some(count),
-            };
+    let k = n.len();
+    let mut ans = k + 1;
+    for bits in 1_usize..1 << k {
+        let mut sum = 0_usize;
+        for i in 0..k {
+            if (bits >> i) & 1 == 1 {
+                sum += n[i];
+                sum %= 3;
+            }
+        }
+        if sum == 0 {
+            ans = ans.min(k - bits.count_ones() as usize);
         }
     }
-    println!("{}", min_count.map(|c| c as i64).unwrap_or(-1));
+    if ans >= k {
+        println!("-1");
+    } else {
+        println!("{}", ans);
+    }
 }
