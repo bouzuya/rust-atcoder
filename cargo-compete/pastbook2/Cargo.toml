@@ -47,7 +47,7 @@ edition = "2018"
 222 = { alias = "pastbook2022_d", problem = "https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_d" }
 229 = { alias = "past201912_k", problem = "https://atcoder.jp/contests/past201912-open/tasks/past201912_k" }
 232 = { alias = "abc014_4", problem = "https://atcoder.jp/contests/abc014/tasks/abc014_4" }
-# xxx = { alias = "", problem = "" }
+235 = { alias = "past202010_m", problem = "https://atcoder.jp/contests/past202010-open/tasks/past202010_m" }
 
 
 [dependencies]

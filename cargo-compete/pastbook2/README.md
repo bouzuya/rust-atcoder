@@ -43,3 +43,4 @@
 - P.222 最小共通祖先 (オリジナル問題) <https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_d>
 - P.229 巨大企業 (第一回 アルゴリズム実技検定:K問題) <https://atcoder.jp/contests/past201912-open/tasks/past201912_k>
 - P.232 閉路 (AtCoder Beginner Contest 014:D問題) <https://atcoder.jp/contests/abc014/tasks/abc014_4>
+- P.235 筆塗り (第四回 アルゴリズム実技検定:M問題) <https://atcoder.jp/contests/past202010-open/tasks/past202010_m>
