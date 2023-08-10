@@ -7,101 +7,78 @@ fn main() {
         w: usize,
         n: usize,
         m: usize,
-        ab: [(Usize1,Usize1); n],
-        cd: [(Usize1,Usize1); m],
+        ab: [(Usize1, Usize1); n],
+        cd: [(Usize1, Usize1); m],
     };
-    let mut tbl = vec![vec![' '; w]; h];
-    for (a_i, b_i) in ab {
-        tbl[a_i][b_i] = '.';
+    let mut light = vec![vec![false; w]; h];
+    // 0: none, 1: light, 2: block
+    let mut board = vec![vec![0; w]; h];
+    for (a, b) in ab {
+        board[a][b] = 1;
     }
-    for (c_i, d_i) in cd {
-        tbl[c_i][d_i] = '#';
+    for (c, d) in cd {
+        board[c][d] = 2;
     }
+
     for i in 0..h {
-        let mut l = false;
+        let mut is_light = false;
         for j in 0..w {
-            match tbl[i][j] {
-                '.' => {
-                    l = true;
-                }
-                '#' => {
-                    l = false;
-                }
-                ' ' => {
-                    if l {
-                        tbl[i][j] = ',';
-                    }
-                }
-                ',' => {}
-                _ => unreachable!(),
+            if board[i][j] == 1 {
+                is_light = true;
+            } else if board[i][j] == 2 {
+                is_light = false;
+            }
+            if is_light {
+                light[i][j] = true;
             }
         }
-        let mut l = false;
+        let mut is_light = false;
         for j in (0..w).rev() {
-            match tbl[i][j] {
-                '.' => {
-                    l = true;
-                }
-                '#' => {
-                    l = false;
-                }
-                ' ' => {
-                    if l {
-                        tbl[i][j] = ',';
-                    }
-                }
-                ',' => {}
-                _ => unreachable!(),
+            if board[i][j] == 1 {
+                is_light = true;
+            } else if board[i][j] == 2 {
+                is_light = false;
+            }
+            if is_light {
+                light[i][j] = true;
             }
         }
     }
-    for i in 0..w {
-        let mut l = false;
-        for j in 0..h {
-            match tbl[j][i] {
-                '.' => {
-                    l = true;
-                }
-                '#' => {
-                    l = false;
-                }
-                ' ' => {
-                    if l {
-                        tbl[j][i] = ',';
-                    }
-                }
-                ',' => {}
-                _ => unreachable!(),
+
+    for j in 0..w {
+        let mut is_light = false;
+        for i in 0..h {
+            if board[i][j] == 1 {
+                is_light = true;
+            } else if board[i][j] == 2 {
+                is_light = false;
+            }
+            if is_light {
+                light[i][j] = true;
             }
         }
-        let mut l = false;
-        for j in (0..h).rev() {
-            match tbl[j][i] {
-                '.' => {
-                    l = true;
-                }
-                '#' => {
-                    l = false;
-                }
-                ' ' => {
-                    if l {
-                        tbl[j][i] = ',';
-                    }
-                }
-                ',' => {}
-                _ => unreachable!(),
+        let mut is_light = false;
+        for i in (0..h).rev() {
+            if board[i][j] == 1 {
+                is_light = true;
+            } else if board[i][j] == 2 {
+                is_light = false;
+            }
+            if is_light {
+                light[i][j] = true;
             }
         }
     }
-    let mut count = 0;
+
+    let mut count = 0_usize;
     for i in 0..h {
         for j in 0..w {
-            match tbl[i][j] {
-                '.' | ',' => count += 1,
-                _ => {}
+            if light[i][j] {
+                count += 1;
             }
         }
     }
+
     let ans = count;
     println!("{}", ans);
 }
