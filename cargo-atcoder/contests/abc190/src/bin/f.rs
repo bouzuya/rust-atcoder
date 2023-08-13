@@ -1,6 +1,5 @@
-// 解説 AC
-use proconio::input;
 use fenwicktree::*;
+use proconio::input;
 
 fn main() {
     input! {
@@ -9,22 +8,25 @@ fn main() {
     };
 
     let mut count = 0;
-    let mut ft = FenwickTree::new(n, 0);
-    for &a_i in a.iter() {
-        count += ft.sum(a_i, n);
+    let mut ft = FenwickTree::new(a.len(), 0);
+    for (i, &a_i) in a.iter().enumerate() {
         ft.add(a_i, 1);
+        count += i - ft.accum(a_i);
     }
 
-    for &a_i in a.iter() {
-        println!("{}", count);
-        count -= a_i;
-        count += n - a_i - 1;
+    let mut ans = count;
+    for a_i in a {
+        println!("{}", ans);
+        ans -= a_i;
+        ans += n - 1 - a_i;
     }
 }
 
 //https://github.com/rust-lang-ja/ac-library-rs
 
 pub mod fenwicktree {
+    use std::ops::{Bound, RangeBounds};
+
     // Reference: https://en.wikipedia.org/wiki/Fenwick_tree
     pub struct FenwickTree<T> {
         n: usize,
@@ -61,10 +63,21 @@ pub mod fenwicktree {
             }
         }
         /// Returns data[l] + ... + data[r - 1].
-        pub fn sum(&self, l: usize, r: usize) -> T
+        pub fn sum<R>(&self, range: R) -> T
         where
             T: std::ops::Sub<Output = T>,
+            R: RangeBounds<usize>,
         {
+            let r = match range.end_bound() {
+                Bound::Included(r) => r + 1,
+                Bound::Excluded(r) => *r,
+                Bound::Unbounded => self.n,
+            };
+            let l = match range.start_bound() {
+                Bound::Included(l) => *l,
+                Bound::Excluded(l) => l + 1,
+                Bound::Unbounded => return self.accum(r),
+            };
             self.accum(r) - self.accum(l)
         }
     }
@@ -72,6 +85,7 @@ pub mod fenwicktree {
     #[cfg(test)]
     mod tests {
         use super::*;
+        use std::ops::Bound::*;
 
         #[test]
         fn fenwick_tree_works() {
@@ -80,9 +94,16 @@ pub mod fenwicktree {
             for i in 0..5 {
                 bit.add(i, i as i64 + 1);
             }
-            assert_eq!(bit.sum(0, 5), 15);
-            assert_eq!(bit.sum(0, 4), 10);
-            assert_eq!(bit.sum(1, 3), 5);
+            assert_eq!(bit.sum(0..5), 15);
+            assert_eq!(bit.sum(0..4), 10);
+            assert_eq!(bit.sum(1..3), 5);
+
+            assert_eq!(bit.sum(..), 15);
+            assert_eq!(bit.sum(..2), 3);
+            assert_eq!(bit.sum(..=2), 6);
+            assert_eq!(bit.sum(1..), 14);
+            assert_eq!(bit.sum(1..=3), 9);
+            assert_eq!(bit.sum((Excluded(0), Included(2))), 5);
         }
     }
 }

@@ -1,6 +1,4 @@
-use proconio::input;
-use proconio::marker::Usize1;
-use std::cmp::max;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
@@ -10,15 +8,24 @@ fn main() {
         k: usize,
         cd: [(Usize1, Usize1); k],
     };
-    let mut max_count = 0;
+    let mut max = 0;
     for bits in 0..1 << k {
-        let mut s = vec![false; n];
-        for (i, &(c_i, d_i)) in cd.iter().enumerate() {
-            s[if (bits >> i) & 1 == 1 { c_i } else { d_i }] = true;
-        }
-        let count = ab.iter().filter(|&&(a_i, b_i)| s[a_i] && s[b_i]).count();
-        max_count = max(max_count, count);
+        let selected = cd
+            .iter()
+            .copied()
+            .enumerate()
+            .map(|(i, (c, d))| if (bits >> i) & 1 == 1 { c } else { d })
+            .fold(vec![false; n], |mut selected, j| {
+                selected[j] = true;
+                selected
+            });
+        let count = ab
+            .iter()
+            .copied()
+            .filter(|&(a, b)| selected[a] && selected[b])
+            .count();
+        max = max.max(count);
     }
-    let ans = max_count;
+    let ans = max;
     println!("{}", ans);
 }

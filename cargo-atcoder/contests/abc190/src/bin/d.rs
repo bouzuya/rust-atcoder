@@ -1,8 +1,8 @@
 use proconio::input;
 
-fn divisors(n: i64) -> Vec<i64> {
+fn divisors(n: usize) -> Vec<usize> {
     let mut d = vec![];
-    for i in 1_i64.. {
+    for i in 1.. {
         if i * i > n {
             break;
         }
@@ -19,12 +19,12 @@ fn divisors(n: i64) -> Vec<i64> {
 
 fn main() {
     input! {
-        n: i64,
+        n: usize,
     };
-    let mut count = 0;
+    let mut count = 0_usize;
     for x in divisors(2 * n) {
         let y = 2 * n / x;
-        if (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0) {
+        if x % 2 != y % 2 {
             count += 1;
         }
     }
