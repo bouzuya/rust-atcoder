@@ -5,18 +5,27 @@ fn main() {
         n: usize,
         a: [i64; n],
     };
-    let mut x_0 = 0;
-    let mut s = true;
-    for &a_i in a.iter() {
-        x_0 += if s { 1 } else { -1 } * a_i;
-        s = !s;
+
+    let x_0 = a
+        .iter()
+        .copied()
+        .enumerate()
+        .map(|(i, a_i)| if i % 2 == 0 { 1 } else { -1 } * a_i)
+        .sum::<i64>();
+    let mut ans = vec![x_0];
+    let mut cur = x_0;
+    for a_i in a.iter().copied().take(n - 1) {
+        cur = (a_i - cur / 2) * 2;
+        ans.push(cur);
     }
 
-    print!("{} ", x_0);
-    let mut p = x_0;
-    for (i, &a_i) in a.iter().enumerate().take(n - 1) {
-        let x_i = (a_i - p / 2) * 2;
-        print!("{}{}", x_i, if i == n - 1 { "\n" } else { " " });
-        p = x_i;
+    let mut s = String::new();
+    for (i, a_i) in ans.iter().copied().enumerate() {
+        s.push_str(&format!(
+            "{}{}",
+            a_i,
+            if i == ans.len() - 1 { '\n' } else { ' ' }
+        ));
     }
+    print!("{}", s);
 }

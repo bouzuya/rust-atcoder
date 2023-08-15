@@ -1,21 +1,27 @@
 use proconio::input;
-use std::cmp;
 
 fn main() {
     input! {
         l: usize,
         r: usize,
     };
-    let mut min_x = 2019 - 1;
+    if l % 2019 == 0 || r % 2019 == 0 {
+        println!("0");
+        return;
+    }
+
+    if r / 2019 - l / 2019 > 1 {
+        println!("0");
+        return;
+    }
+
+    let mut min = (l * r) % 2019;
     for i in l..=r {
         for j in i + 1..=r {
-            let x = ((i % 2019) * (j % 2019)) % 2019;
-            min_x = cmp::min(min_x, x);
-            if min_x == 0 {
-                println!("{}", x);
-                return;
-            }
+            min = min.min((i * j) % 2019);
         }
     }
-    println!("{}", min_x);
+
+    let ans = min;
+    println!("{}", ans);
 }
