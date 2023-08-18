@@ -45,4 +45,5 @@
 - P.232 閉路 (AtCoder Beginner Contest 014:D問題) <https://atcoder.jp/contests/abc014/tasks/abc014_4>
 - P.235 筆塗り (第四回 アルゴリズム実技検定:M問題) <https://atcoder.jp/contests/past202010-open/tasks/past202010_m>
 - P.246 最大流問題 (オリジナル問題) <https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_e>
-- P.252 Grid and Tokens (AtCoder Beginner Contest 205:F問題) <https://atcoder.jp/contests/abc205/tasks/abc205_f>
+- P.256 Grid and Tokens (AtCoder Beginner Contest 205:F問題) <https://atcoder.jp/contests/abc205/tasks/abc205_f>
+- P.261 最小費用流問題 (オリジナル問題) <https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_f>
