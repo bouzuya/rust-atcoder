@@ -1,21 +1,22 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        n: usize,
+        _n: usize,
         k: usize,
         s: Chars,
     };
-    let mut c = 0_i64;
-    for (i, &s_i) in s.iter().enumerate().skip(1) {
-        if s_i != s[i - 1] {
-            c += 1;
+    let mut prev = s[0];
+    let mut eq = 0_usize;
+    let mut ne = 0_usize;
+    for s_i in s.into_iter().skip(1) {
+        if prev == s_i {
+            eq += 1;
+        } else {
+            ne += 1;
         }
+        prev = s_i;
     }
-    for _ in 0..k {
-        c -= 2;
-    }
-    let ans = n as i64 - 1 - std::cmp::max(c, 0);
+    let ans = eq + ne.min(2 * k);
     println!("{}", ans);
 }
