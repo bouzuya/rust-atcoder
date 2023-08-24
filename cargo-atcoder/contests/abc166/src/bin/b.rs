@@ -1,21 +1,20 @@
-use proconio::input;
-use proconio::marker::Usize1;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
         n: usize,
         k: usize,
     };
-    let mut ss = vec![false; n];
+    let mut snuke = vec![false; n];
     for _ in 0..k {
         input! {
             d: usize,
             a: [Usize1; d],
         };
-        for ai in a {
-            ss[ai] = true;
+        for a_i in a {
+            snuke[a_i] = true;
         }
     }
-    let ans = ss.iter().filter(|&s| !s).count();
+    let ans = snuke.into_iter().filter(|b| !b).count();
     println!("{}", ans);
 }

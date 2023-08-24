@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use proconio::input;
 
 fn main() {
@@ -5,12 +7,25 @@ fn main() {
         n: usize,
         a: [i64; n],
     };
-    // i + a[i] = j - a[j] (i < j) を満たす (i, j) の個数
-    let mut ans = 0_usize;
-    let mut m = std::collections::BTreeMap::new();
-    for (i, &a_i) in a.iter().enumerate() {
-        ans += m.get(&(i as i64 - a_i)).unwrap_or(&0);
-        *m.entry(i as i64 + a_i).or_insert(0) += 1;
+
+    let b = a
+        .iter()
+        .copied()
+        .enumerate()
+        .map(|(j, a_j)| -a_j + j as i64)
+        .collect::<Vec<i64>>();
+    let mut map = HashMap::new();
+    for b_j in b {
+        *map.entry(b_j).or_insert(0) += 1;
     }
+
+    let mut count = 0_usize;
+    for (i, a_i) in a.iter().copied().enumerate() {
+        if let Some(c) = map.get(&(a_i + i as i64)) {
+            count += c;
+        }
+    }
+
+    let ans = count;
     println!("{}", ans);
 }

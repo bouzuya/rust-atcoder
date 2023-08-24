@@ -2,13 +2,11 @@ use proconio::input;
 
 fn main() {
     input! {
-        x: i64
+        x: i64,
     };
-    let min_a = -118;
-    let max_a = 119;
-    for a in min_a..=max_a {
-        for b in min_a - 1..=max_a - 1 {
-            if a * a * a * a * a - b * b * b * b * b == x {
+    for a in -1000_i64..=1000 {
+        for b in -1000_i64..=1000 {
+            if a.pow(5) - b.pow(5) == x {
                 println!("{} {}", a, b);
                 return;
             }

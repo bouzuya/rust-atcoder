@@ -1,9 +1,13 @@
-use proconio::input;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        s: String,
+        s: Chars,
     };
-    let ans = if s == "ABC" { "ARC" } else { "ABC" };
-    println!("{}", ans);
+    let ans = match s[1] {
+        'B' => 'R',
+        'R' => 'B',
+        _ => unreachable!(),
+    };
+    println!("A{}C", ans);
 }
