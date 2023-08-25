@@ -49,3 +49,4 @@
 - P.261 最小費用流問題 (オリジナル問題) <https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_f>
 - P.270 輪投げ (第三回 アルゴリズム実技検定:O問題) <https://atcoder.jp/contests/past202005-open/tasks/past202005_o>
 - P.277 ニワトリのお見合い (第八回 アルゴリズム実技検定:K問題) <https://atcoder.jp/contests/past202109-open/tasks/past202109_k>
+- P.283 分割 (第七回 アルゴリズム実技検定:M問題) <https://atcoder.jp/contests/past202107-open/tasks/past202107_m>
