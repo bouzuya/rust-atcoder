@@ -54,6 +54,7 @@ edition = "2018"
 270 = { alias = "past202005_o", problem = "https://atcoder.jp/contests/past202005-open/tasks/past202005_o" }
 277 = { alias = "past202109_k", problem = "https://atcoder.jp/contests/past202109-open/tasks/past202109_k" }
 283 = { alias = "past202107_m", problem = "https://atcoder.jp/contests/past202107-open/tasks/past202107_m" }
+290 = { alias = "pastbook2022_g", problem = "https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_g" }
 
 [dependencies]
 num = "=0.2.1"
