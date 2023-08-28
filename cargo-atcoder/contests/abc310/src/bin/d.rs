@@ -1,43 +1,25 @@
 use proconio::{input, marker::Usize1};
 
-fn dfs(
-    n: usize,
-    t: usize,
-    ab: &[(usize, usize)],
-    count: &mut usize,
-    team_num: usize,
-    team: &mut Vec<usize>,
-    i: usize,
-) {
-    if i == n {
-        if team_num != t {
+fn dfs(n: usize, t: usize, ng: &[Vec<bool>], count: &mut usize, a: &mut Vec<usize>) {
+    if a.len() == n {
+        if a.iter().copied().max().unwrap() + 1 != t {
             return;
         }
-        let mut ok = true;
-        for (a, b) in ab.iter().copied() {
-            if team[a] == team[b] {
-                ok = false;
-                break;
+        for j in 0..n {
+            for k in j + 1..n {
+                if a[j] == a[k] && ng[j][k] {
+                    return;
+                }
             }
         }
-        if ok {
-            *count += 1;
-        }
+        *count += 1;
         return;
     }
 
-    for j in 0..team_num + 1 {
-        team.push(j);
-        dfs(
-            n,
-            t,
-            ab,
-            count,
-            team_num + if j == team_num { 1 } else { 0 },
-            team,
-            i + 1,
-        );
-        team.pop();
+    for j in 0..=(t - 1).min(a.iter().copied().max().unwrap() + 1) {
+        a.push(j);
+        dfs(n, t, ng, count, a);
+        a.pop();
     }
 }
 
@@ -49,9 +31,15 @@ fn main() {
         ab: [(Usize1, Usize1); m],
     };
 
-    let mut team = vec![0];
+    let mut ng = vec![vec![false; n]; n];
+    for (a, b) in ab {
+        ng[a][b] = true;
+        ng[b][a] = true;
+    }
+
     let mut count = 0_usize;
-    dfs(n, t, &ab, &mut count, 1, &mut team, 1);
+    dfs(n, t, &ng, &mut count, &mut vec![0]);
+
     let ans = count;
     println!("{}", ans);
 }

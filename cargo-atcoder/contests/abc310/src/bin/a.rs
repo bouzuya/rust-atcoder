@@ -5,8 +5,8 @@ fn main() {
         n: usize,
         p: usize,
         q: usize,
-        d: [usize; n],
+        a: [usize; n],
     };
-    let ans = p.min(q + d.iter().min().unwrap());
+    let ans = p.min(q + a.into_iter().min().unwrap());
     println!("{}", ans);
 }

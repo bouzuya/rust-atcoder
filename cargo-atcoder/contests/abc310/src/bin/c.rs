@@ -7,24 +7,17 @@ fn main() {
         n: usize,
         s: [Chars; n],
     };
-    let mut pal = 0_usize;
+
+    let mut count = 0_usize;
     let mut set = HashSet::new();
-    for s_i in s.iter() {
-        let mut s_j = s_i.clone();
-        s_j.reverse();
-
-        if set.contains(s_i) || set.contains(&s_j) {
-            continue;
+    for s_i in s {
+        let s_j = s_i.iter().copied().rev().collect::<Vec<char>>();
+        if !set.contains(&s_i) && !set.contains(&s_j) {
+            count += 1;
         }
-
-        if s_i == &s_j {
-            pal += 1;
-        }
-
-        set.insert(s_i.clone());
+        set.insert(s_i);
         set.insert(s_j);
     }
-
-    let ans = (set.len() + pal) / 2;
+    let ans = count;
     println!("{}", ans);
 }
