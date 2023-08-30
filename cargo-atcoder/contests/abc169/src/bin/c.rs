@@ -1,12 +1,17 @@
-use proconio::input;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        a: u64,
-        mut b: String,
+        a: usize,
+        b: Chars,
     };
-    b.retain(|c| c != '.');
-    let d = b.parse::<u64>().unwrap();
-    let ans = a * d / 100_u64;
+    let b100 = b
+        .iter()
+        .copied()
+        .filter(|b_i| b_i != &'.')
+        .collect::<String>()
+        .parse::<usize>()
+        .unwrap();
+    let ans = a * b100 / 100;
     println!("{}", ans);
 }

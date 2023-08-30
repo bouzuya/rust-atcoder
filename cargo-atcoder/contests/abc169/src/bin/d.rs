@@ -27,20 +27,21 @@ fn prime_factorization(n: usize) -> Vec<(usize, usize)> {
 
 fn main() {
     input! {
-        n: u64,
+        n: usize,
     };
-    let pq = prime_factorization(n as usize);
-    let mut count = 0;
-    for &(_, q_i) in pq.iter() {
-        let mut c = 0;
-        for i in 1.. {
-            c += i;
-            if c > q_i {
+    let ps = prime_factorization(n);
+    let mut ans = 0_usize;
+    for (_, q) in ps {
+        let mut count = 0_usize;
+        let mut sum = 0_usize;
+        for i in 1..=q {
+            sum += i;
+            if sum > q {
                 break;
             }
             count += 1;
         }
+        ans += count;
     }
-    let ans = count;
     println!("{}", ans);
 }
