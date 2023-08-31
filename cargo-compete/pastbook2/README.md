@@ -52,3 +52,4 @@
 - P.283 分割 (第七回 アルゴリズム実技検定:M問題) <https://atcoder.jp/contests/past202107-open/tasks/past202107_m>
 - P.290 一点更新・区間最小値 (オリジナル問題) <https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_g>
 - P.300 Range Xor Query (AtCoder Beginner Contest 185:F問題) <https://atcoder.jp/contests/abc185/tasks/abc185_f>
+- P.302 Shift and Inversions (AtCoder Beginner Contest 190:F問題) <https://atcoder.jp/contests/abc190/tasks/abc190_f>
