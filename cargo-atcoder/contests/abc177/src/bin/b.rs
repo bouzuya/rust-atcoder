@@ -1,20 +1,20 @@
-use proconio::input;
-use proconio::marker::Chars;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         s: Chars,
         t: Chars,
     };
-    let ans = s
-        .windows(t.len())
-        .map(|s_i| {
-            s_i.iter()
-                .zip(t.iter())
-                .filter(|(s_ij, t_j)| s_ij != t_j)
-                .count()
-        })
-        .min()
-        .unwrap();
+    let mut min = t.len();
+    for i in 0..s.len() - t.len() + 1 {
+        let mut count = 0_usize;
+        for (j, t_j) in t.iter().copied().enumerate() {
+            if s[i + j] != t_j {
+                count += 1;
+            }
+        }
+        min = min.min(count);
+    }
+    let ans = min;
     println!("{}", ans);
 }

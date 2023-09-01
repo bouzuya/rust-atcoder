@@ -1,13 +1,38 @@
+use std::collections::HashSet;
+
 use proconio::input;
 
 fn gcd(n: usize, m: usize) -> usize {
-    if n < m {
-        gcd(m, n)
-    } else if m == 0 {
+    if m == 0 {
         n
     } else {
         gcd(m, n % m)
     }
+}
+
+fn prime_factorization(n: usize) -> Vec<(usize, usize)> {
+    let mut p = vec![];
+    if n < 2 {
+        return p;
+    }
+    let mut n = n; // shadowing
+    for i in 2.. {
+        if i * i > n {
+            break;
+        }
+        let mut c = 0;
+        while n % i == 0 {
+            c += 1;
+            n /= i;
+        }
+        if c > 0 {
+            p.push((i, c));
+        }
+    }
+    if n != 1 {
+        p.push((n, 1));
+    }
+    p
 }
 
 fn main() {
@@ -16,38 +41,26 @@ fn main() {
         a: [usize; n],
     };
 
-    // SPF: Smallest Prime Factor 最小の素因数
-    let max_a_i = 1_000_000_usize;
-    let mut spf = vec![1_usize; max_a_i + 1];
-    for i in 2..=max_a_i {
-        if spf[i] == 1 {
-            for j in (i..=max_a_i).step_by(i) {
-                spf[j] = i;
-            }
-        }
-    }
-
     let mut pairwise = true;
-    let mut pairwise_set = std::collections::BTreeSet::new();
-    let mut setwise = 0;
-    for &a_i in a.iter() {
-        let mut set = std::collections::BTreeSet::new();
-        let mut x = a_i;
-        while x != 1 && set.insert(spf[x]) {
-            x /= spf[x];
-        }
-        for &p in set.iter() {
-            if !pairwise_set.insert(p) {
+    let mut set = HashSet::new();
+    for a_i in a.iter().copied() {
+        for (p, _) in prime_factorization(a_i) {
+            if !set.insert(p) {
                 pairwise = false;
+                break;
             }
         }
-
-        setwise = if setwise == 0 { a_i } else { gcd(setwise, a_i) };
     }
+
+    let mut g_a = a[0];
+    for a_i in a.iter().copied() {
+        g_a = gcd(g_a, a_i);
+    }
+    let setwise = !pairwise && g_a == 1;
 
     let ans = if pairwise {
         "pairwise coprime"
-    } else if !pairwise && setwise == 1 {
+    } else if setwise {
         "setwise coprime"
     } else {
         "not coprime"

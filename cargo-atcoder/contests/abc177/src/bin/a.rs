@@ -6,6 +6,6 @@ fn main() {
         t: usize,
         s: usize,
     };
-    let ans = (d + s - 1) / s <= t;
+    let ans = s * t >= d;
     println!("{}", if ans { "Yes" } else { "No" });
 }
