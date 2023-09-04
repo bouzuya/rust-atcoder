@@ -136,3 +136,9 @@ toolchain = "1.42.0"
 #kind = "command"
 #args = ["cargo", "equip", "--exclude-atcoder-crates", "--resolve-cfgs", "--remove", "docs", "--minify", "libs", "--rustfmt", "--check", "--bin", "{{ bin_name }}"]
 ##language_id = ""
+
+[submit]
+kind = "file"
+path = "{{ src_path }}"
+language_id = "5054"
+
