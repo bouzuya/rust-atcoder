@@ -59,6 +59,7 @@ edition = "2018"
 302 = { alias = "abc190_f", problem = "https://atcoder.jp/contests/abc190/tasks/abc190_f" }
 307 = { alias = "past202109_j", problem = "https://atcoder.jp/contests/past202109-open/tasks/past202109_j" }
 311 = { alias = "abc217_d", problem = "https://atcoder.jp/contests/abc217/tasks/abc217_d" }
+315 = { alias = "pastbook2022_h", problem = "https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_h" }
 
 [dependencies]
 num = "=0.2.1"
