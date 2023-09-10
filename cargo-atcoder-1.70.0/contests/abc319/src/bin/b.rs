@@ -5,19 +5,9 @@ fn main() {
         n: usize,
     };
     for i in 0..=n {
-        let mut found = false;
-        for j in 1..=9 {
-            if n % j != 0 {
-                continue;
-            }
-            if i % (n / j) == 0 {
-                print!("{}", j);
-                found = true;
-                break;
-            }
-        }
-        if !found {
-            print!("-");
+        match (1..=9).find(|j| ((n % j) == 0) && ((i % (n / j)) == 0)) {
+            Some(j) => print!("{}", j),
+            None => print!("-"),
         }
     }
     println!();

@@ -19,66 +19,50 @@ fn main() {
         c2
     };
 
-    let all = (1..=9).product::<usize>() as f64;
+    let lines = vec![
+        // -
+        vec![0, 1, 2],
+        vec![3, 4, 5],
+        vec![6, 7, 8],
+        // |
+        vec![0, 3, 6],
+        vec![1, 4, 7],
+        vec![2, 5, 8],
+        // \
+        vec![0, 4, 8],
+        // /
+        vec![2, 4, 6],
+    ];
+
     let mut count = 0_f64;
     let mut ks = (0..9).collect::<Vec<usize>>();
     loop {
         let mut opened = vec![false; 9];
-        let mut ok = true;
+        let mut disappointed = false;
         for k in ks.iter().copied() {
             opened[k] = true;
-            let oi = k / 3;
-            let oj = k % 3;
-            // |
-            if (0..3).all(|i| opened[i * 3 + oj]) && {
-                c[((oi + 1) % 3) * 3 + oj] == c[((oi + 2) % 3) * 3 + oj]
-                    && c[((oi + 1) % 3) * 3 + oj] != c[oi * 3 + oj]
-            } {
-                ok = false;
-            }
-            // -
-            if (0..3).all(|j| opened[oi * 3 + j]) && {
-                c[oi * 3 + ((oj + 1) % 3)] == c[oi * 3 + ((oj + 2) % 3)]
-                    && c[oi * 3 + ((oj + 1) % 3)] != c[oi * 3 + oj]
-            } {
-                ok = false;
-            }
-            // \
-            if [0, 4, 8].into_iter().all(|x| opened[x])
-                && [0, 4, 8].into_iter().any(|x| x == k)
-                && {
-                    match k {
-                        0 => c[4] == c[8] && c[0] != c[4],
-                        4 => c[0] == c[8] && c[4] != c[0],
-                        8 => c[0] == c[4] && c[8] != c[0],
-                        _ => unreachable!(),
-                    }
+            for line in lines.iter() {
+                if !line.iter().copied().all(|x| opened[x]) {
+                    continue;
                 }
-            {
-                ok = false;
-            }
-            // \
-            if [2, 4, 6].into_iter().all(|x| opened[x])
-                && [2, 4, 6].into_iter().any(|x| x == k)
-                && {
-                    match k {
-                        2 => c[4] == c[6] && c[2] != c[4],
-                        4 => c[2] == c[6] && c[4] != c[2],
-                        6 => c[2] == c[4] && c[6] != c[2],
-                        _ => unreachable!(),
-                    }
+                let l1 = match line.iter().copied().position(|x| x == k) {
+                    None => continue,
+                    Some(index) => index,
+                };
+                let (l2, l3) = ((l1 + 1) % 3, (l1 + 2) % 3);
+                if c[line[l2]] == c[line[l3]] && c[line[l2]] != c[line[l1]] {
+                    disappointed = true;
                 }
-            {
-                ok = false;
             }
         }
-        if ok {
+        if !disappointed {
             count += 1_f64;
         }
         if !ks.next_permutation() {
             break;
         }
     }
+    let all = (1..=9).product::<usize>() as f64;
     let ans = count / all;
     println!("{}", ans);
 }

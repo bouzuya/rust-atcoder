@@ -4,7 +4,7 @@ fn main() {
     input! {
         s: String,
     };
-    let player = vec![
+    let (_, ans) = vec![
         ("tourist", 3858),
         ("ksun48", 3679),
         ("Benq", 3658),
@@ -16,10 +16,8 @@ fn main() {
         ("newbiedmy", 3516),
         ("semiexp", 3481),
     ]
-    .iter()
-    .copied()
+    .into_iter()
     .find(|(name, _)| name == &s)
     .unwrap();
-    let ans = player.1;
     println!("{}", ans);
 }
