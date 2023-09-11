@@ -6,44 +6,26 @@ fn main() {
         m: usize,
         l: [usize; n],
     };
-    let mut ok = 1_000_000_000_000_000_000;
+    let l = l.into_iter().map(|l_i| l_i + 1).collect::<Vec<usize>>();
+    let mut ok = l.iter().copied().sum::<usize>();
     let mut ng = l.iter().copied().max().unwrap() - 1;
     while ok - ng > 1 {
-        let mid = (ok + ng) / 2;
-        let mut count = 1_usize;
-        let mut sum = 0_usize;
+        let mid = ng + (ok - ng) / 2;
+        let mut rows = 1_usize;
+        let mut cols = 0_usize;
         for l_i in l.iter().copied() {
-            sum += l_i;
-            if sum == mid {
-                count += 1;
-                sum = 0;
-                continue;
-            }
-            sum += 1;
-            if sum == mid {
-                count += 1;
-                sum = 0;
-                continue;
-            }
-            if sum > mid {
-                count += 1;
-                if l_i == mid {
-                    count += 1;
-                    sum = 0;
-                } else {
-                    sum = l_i + 1;
-                }
+            cols += l_i;
+            if cols > mid {
+                rows += 1;
+                cols = l_i;
             }
         }
-        if sum == 0 {
-            count -= 1;
-        }
-        if count <= m {
+        if rows <= m {
             ok = mid;
         } else {
             ng = mid;
         }
     }
-    let ans = ok;
+    let ans = ok - 1;
     println!("{}", ans);
 }
