@@ -57,3 +57,4 @@
 - P.311 Cutting Woods (AtCoder Beginner Contest 217:D問題) <https://atcoder.jp/contests/abc217/tasks/abc217_d>
 - P.315 区間加算・区間最小値 (オリジナル問題) <https://atcoder.jp/contests/pastbook2022/tasks/pastbook2022_h>
 - P.325 Replace Digits (ACL Beginner Contest:E問題) <https://atcoder.jp/contests/abl/tasks/abl_e>
+- P.330 Range Affine Range Sum (AtCoder Library Practice Contest:K問題) <https://atcoder.jp/contests/practice2/tasks/practice2_k>
