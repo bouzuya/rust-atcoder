@@ -1,10 +1,12 @@
-use proconio::{input, marker::Usize1};
+use std::collections::HashSet;
+
+use proconio::input;
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        st: [(String, String); n],
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    let ans = st.into_iter().collect::<HashSet<_>>().len() != n;
+    println!("{}", if ans { "Yes" } else { "No" });
 }
