@@ -59,3 +59,4 @@
 - P.325 Replace Digits (ACL Beginner Contest:E問題) <https://atcoder.jp/contests/abl/tasks/abl_e>
 - P.330 Range Affine Range Sum (AtCoder Library Practice Contest:K問題) <https://atcoder.jp/contests/practice2/tasks/practice2_k>
 - P.334 Lazy Segment Tree (AtCoder Library Practice Contest:L問題) <https://atcoder.jp/contests/practice2/tasks/practice2_l>
+- P.340 ジグザグな数列 (第八回 アルゴリズム実技検定:N問題) <https://atcoder.jp/contests/past202109-open/tasks/past202109_n>
