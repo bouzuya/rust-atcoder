@@ -1,10 +1,35 @@
-use proconio::{input, marker::Usize1};
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        _m: usize,
+        s: Chars,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+
+    let mut player = 0_usize;
+    let mut count = vec![0_usize; n];
+    let mut field = 0_usize;
+    for s_i in s {
+        count[player] += 1;
+        match s_i {
+            '+' => {
+                count[player] += field;
+                field = 0;
+            }
+            '0' => {
+                // do nothing
+            }
+            '-' => {
+                field += count[player];
+                count[player] = 0;
+            }
+            _ => unreachable!(),
+        }
+        player = (player + 1) % n;
+    }
+
+    for c in count {
+        println!("{}", c);
+    }
 }
