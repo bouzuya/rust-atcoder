@@ -15,28 +15,27 @@ fn main() {
         edges[b].push((a, -x, -y));
     }
 
-    let mut ans = vec![None; n];
-    ans[0] = Some((0_i64, 0_i64));
-    let mut q = VecDeque::new();
-    q.push_back(0_usize);
-    while let Some(u) = q.pop_front() {
-        let (x, y) = ans[u].unwrap();
+    let mut deque = VecDeque::new();
+    let mut pos = vec![None; n];
+    pos[0] = Some((0_i64, 0_i64));
+    deque.push_back(0);
+    while let Some(u) = deque.pop_front() {
+        let (x, y) = pos[u].unwrap();
         for (v, dx, dy) in edges[u].iter().copied() {
-            let (nx, ny) = (x + dx, y + dy);
-            match ans[v] {
+            match pos[v] {
                 Some(_) => continue,
                 None => {
-                    ans[v] = Some((nx, ny));
-                    q.push_back(v);
+                    pos[v] = Some((x + dx, y + dy));
+                    deque.push_back(v);
                 }
             }
         }
     }
 
-    for ans_i in ans.iter().copied() {
-        match ans_i {
-            None => println!("undecidable"),
+    for pos_i in pos {
+        match pos_i {
             Some((x, y)) => println!("{} {}", x, y),
+            None => println!("undecidable"),
         }
     }
 }
