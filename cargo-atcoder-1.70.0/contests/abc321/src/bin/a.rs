@@ -4,15 +4,14 @@ fn main() {
     input! {
         n: Chars,
     };
-    let mut ok = true;
+
     let mut p = n[0];
-    for i in 1..n.len() {
-        if p <= n[i] {
-            ok = false;
-            break;
+    for d in n.into_iter().skip(1) {
+        if p <= d {
+            println!("No");
+            return;
         }
-        p = n[i];
+        p = d;
     }
-    let ans = ok;
-    println!("{}", if ans { "Yes" } else { "No" });
+    println!("Yes");
 }
