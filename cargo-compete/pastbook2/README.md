@@ -61,3 +61,4 @@
 - P.334 Lazy Segment Tree (AtCoder Library Practice Contest:L問題) <https://atcoder.jp/contests/practice2/tasks/practice2_l>
 - P.340 ジグザグな数列 (第八回 アルゴリズム実技検定:N問題) <https://atcoder.jp/contests/past202109-open/tasks/past202109_n>
 - P.344 宝箱 (第四回 アルゴリズム実技検定:O問題) <https://atcoder.jp/contests/past202010-open/tasks/past202010_o>
+- P.348 コンピュータ (第七回 アルゴリズム実技検定:O問題) <https://atcoder.jp/contests/past202107-open/tasks/past202107_o>
