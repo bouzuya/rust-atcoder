@@ -66,6 +66,7 @@ edition = "2018"
 340 = { alias = "past202109_n", problem = "https://atcoder.jp/contests/past202109-open/tasks/past202109_n" }
 344 = { alias = "past202010_o", problem = "https://atcoder.jp/contests/past202010-open/tasks/past202010_o" }
 348 = { alias = "past202107_o", problem = "https://atcoder.jp/contests/past202107-open/tasks/past202107_o" }
+354 = { alias = "abc038_d", problem = "https://atcoder.jp/contests/abc038/tasks/abc038_d" }
 
 [dependencies]
 num = "=0.2.1"
