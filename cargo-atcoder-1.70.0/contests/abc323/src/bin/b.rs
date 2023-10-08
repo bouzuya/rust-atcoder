@@ -8,22 +8,13 @@ fn main() {
         s: [Chars; n],
     };
 
-    let mut win = vec![0_usize; n];
-    for i in 0..n {
-        for j in 0..n {
-            if s[i][j] == 'o' {
-                win[i] += 1;
-            }
-        }
-    }
-    let mut v = win
+    let mut players = s
         .iter()
-        .copied()
         .enumerate()
-        .map(|(i, c)| (c, i))
+        .map(|(i, s_i)| (i, s_i.iter().copied().filter(|s_ij| s_ij == &'o').count()))
         .collect::<Vec<(usize, usize)>>();
-    v.sort_by_key(|&(c, i)| (Reverse(c), i));
-    for (_, rank) in v {
-        println!("{}", rank + 1);
+    players.sort_by_key(|&(i, win_count)| (Reverse(win_count), i));
+    for (i, _) in players {
+        println!("{}", i + 1);
     }
 }

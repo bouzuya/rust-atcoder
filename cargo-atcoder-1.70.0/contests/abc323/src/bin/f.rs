@@ -1,33 +1,21 @@
 use proconio::input;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum D {
-    TC,
-    TR,
-    MR,
-    BR,
-    BC,
-    BL,
-    ML,
-    TL,
-}
-
-fn f((x_a, y_a): (i64, i64), (x_b, y_b): (i64, i64)) -> D {
-    match (x_b - x_a, y_b - y_a) {
-        (0, y) if y > 0 => D::TC,
-        (x, y) if x > 0 && y > 0 => D::TR,
-        (x, 0) if x > 0 => D::MR,
-        (x, y) if x > 0 && y < 0 => D::BR,
-        (0, y) if y < 0 => D::BC,
-        (x, y) if x < 0 && y < 0 => D::BL,
-        (x, 0) if x < 0 => D::ML,
-        (x, y) if x < 0 && y > 0 => D::TL,
-        _ => unreachable!(),
+fn f((x_a, y_a): (i64, i64), (x_b, y_b): (i64, i64), (x, y): (i64, i64)) -> i64 {
+    if x_a == x && y_a == y {
+        return 0;
     }
-}
-
-fn g((x_a, y_a): (i64, i64), (x_b, y_b): (i64, i64)) -> i64 {
-    (x_b - x_a).abs() + (y_b - y_a).abs()
+    (x_a - x).abs()
+        + (y_a - y).abs()
+        + if x_a == x && x_a == x_b && (y_a < y_b) != (y < y_b) {
+            2
+        } else {
+            0
+        }
+        + if y_a == y && y_a == y_b && (x_a < x_b) != (x < x_b) {
+            2
+        } else {
+            0
+        }
 }
 
 fn main() {
@@ -37,82 +25,35 @@ fn main() {
         c: (i64, i64),
     };
 
-    let dir_ab = f(a, b);
-    let dir_bc = f(b, c);
-    let dist_ab = g(a, b);
-    let dist_bc = g(b, c);
-    let x = match (dir_ab, dir_bc) {
-        (D::TC, D::TC) | (D::BC, D::BC) | (D::MR, D::MR) | (D::ML, D::ML) => 0,
+    // c が原点になるよう平行移動
+    let a = (a.0 - c.0, a.1 - c.1);
+    let b = (b.0 - c.0, b.1 - c.1);
 
-        (D::TC, D::TR) => 1,
-        (D::TC, D::MR) => 1,
-        (D::TC, D::BR) => 2,
-        (D::TC, D::BC) => 2,
-        (D::TC, D::BL) => 2,
-        (D::TC, D::ML) => 1,
-        (D::TC, D::TL) => 1,
-
-        (D::TR, D::TC) => 0,
-        (D::TR, D::TR) => 1,
-        (D::TR, D::MR) => 0,
-        (D::TR, D::BR) => 1,
-        (D::TR, D::BC) => 1,
-        (D::TR, D::BL) => 2,
-        (D::TR, D::ML) => 1,
-        (D::TR, D::TL) => 1,
-
-        (D::MR, D::TC) => 1,
-        (D::MR, D::TR) => 1,
-        (D::MR, D::BR) => 1,
-        (D::MR, D::BC) => 1,
-        (D::MR, D::BL) => 2,
-        (D::MR, D::ML) => 2,
-        (D::MR, D::TL) => 2,
-
-        (D::BR, D::TC) => 1,
-        (D::BR, D::TR) => 1,
-        (D::BR, D::MR) => 0,
-        (D::BR, D::BR) => 1,
-        (D::BR, D::BC) => 0,
-        (D::BR, D::BL) => 1,
-        (D::BR, D::ML) => 1,
-        (D::BR, D::TL) => 2,
-
-        (D::BC, D::TC) => 2,
-        (D::BC, D::TR) => 2,
-        (D::BC, D::MR) => 1,
-        (D::BC, D::BR) => 1,
-        (D::BC, D::BL) => 1,
-        (D::BC, D::ML) => 1,
-        (D::BC, D::TL) => 2,
-
-        (D::BL, D::TC) => 1,
-        (D::BL, D::TR) => 2,
-        (D::BL, D::MR) => 1,
-        (D::BL, D::BR) => 1,
-        (D::BL, D::BC) => 0,
-        (D::BL, D::BL) => 1,
-        (D::BL, D::ML) => 0,
-        (D::BL, D::TL) => 1,
-
-        (D::ML, D::TC) => 1,
-        (D::ML, D::TR) => 2,
-        (D::ML, D::MR) => 2,
-        (D::ML, D::BR) => 2,
-        (D::ML, D::BC) => 1,
-        (D::ML, D::BL) => 1,
-        (D::ML, D::TL) => 1,
-
-        (D::TL, D::TC) => 0,
-        (D::TL, D::TR) => 1,
-        (D::TL, D::MR) => 1,
-        (D::TL, D::BR) => 2,
-        (D::TL, D::BC) => 1,
-        (D::TL, D::BL) => 1,
-        (D::TL, D::ML) => 0,
-        (D::TL, D::TL) => 1,
+    // b.0 >= 0 になるよう移動
+    let (a, b) = if b.0 < 0 {
+        ((-a.0, a.1), (-b.0, b.1))
+    } else {
+        (a, b)
     };
 
-    let ans = dist_ab - 1 + dist_bc + x * 2;
+    // b.1 >= 0 になるよう移動
+    let (a, b) = if b.1 < 0 {
+        ((a.0, -a.1), (b.0, -b.1))
+    } else {
+        (a, b)
+    };
+
+    // b.1 > 0 になるよう移動
+    let (a, b) = if b.1 == 0 {
+        ((a.1, a.0), (b.1, b.0))
+    } else {
+        (a, b)
+    };
+
+    let ans = if b.0 == 0 {
+        b.1 + f(a, b, (b.0, b.1 + 1))
+    } else {
+        b.0 + b.1 + 2 + f(a, b, (b.0, b.1 + 1)).min(f(a, b, (b.0 + 1, b.1)))
+    };
     println!("{}", ans);
 }

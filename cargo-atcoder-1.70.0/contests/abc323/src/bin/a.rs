@@ -4,14 +4,10 @@ fn main() {
     input! {
         s: Chars,
     };
-    for i in 1..16 {
-        if i % 2 == 0 {
-            continue;
-        }
-        if s[i] != '0' {
-            println!("No");
-            return;
-        }
-    }
-    println!("Yes");
+    let ans = s
+        .iter()
+        .copied()
+        .enumerate()
+        .all(|(i, s_i)| i % 2 == 0 || s_i == '0');
+    println!("{}", if ans { "Yes" } else { "No" });
 }

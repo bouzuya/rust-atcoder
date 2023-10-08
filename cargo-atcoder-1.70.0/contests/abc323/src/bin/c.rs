@@ -6,42 +6,55 @@ fn main() {
     input! {
         n: usize,
         m: usize,
-        mut a: [usize; m],
+        a: [usize; m],
         s: [Chars; n],
     };
 
-    let mut max = 0_usize;
-    let mut score = vec![0_usize; n];
-    for i in 0..n {
-        score[i] += i + 1;
-        for j in 0..m {
-            if s[i][j] == 'o' {
-                score[i] += a[j];
-            }
-        }
+    let score = s
+        .iter()
+        .enumerate()
+        .map(|(i, s_i)| {
+            i + 1
+                + s_i
+                    .iter()
+                    .copied()
+                    .zip(a.iter().copied())
+                    .filter(|(s_ij, _)| s_ij == &'o')
+                    .map(|(_, a_i)| a_i)
+                    .sum::<usize>()
+        })
+        .collect::<Vec<usize>>();
+    let max = score.iter().copied().max().unwrap();
 
-        max = max.max(score[i]);
-    }
+    let mut ordered_a = a
+        .iter()
+        .copied()
+        .enumerate()
+        .collect::<Vec<(usize, usize)>>();
+    ordered_a.sort_by_key(|&(_, a)| Reverse(a));
 
-    let mut js = (0..m).map(|j| (j, a[j])).collect::<Vec<(usize, usize)>>();
-    js.sort_by_key(|&(_, a)| Reverse(a));
-    for i in 0..n {
-        if score[i] == max {
-            println!("0");
-        } else {
-            let mut cur = score[i];
-            let mut count = 0_usize;
-            for (j, a_j) in js.iter().copied() {
-                if s[i][j] == 'o' {
-                    continue;
-                }
-                cur += a_j;
-                count += 1;
-                if cur > max {
-                    break;
-                }
-            }
-            println!("{}", count);
-        }
+    let ans = score
+        .iter()
+        .copied()
+        .enumerate()
+        .map(|(i, score_i)| {
+            std::iter::once(score_i)
+                .chain(
+                    ordered_a
+                        .iter()
+                        .copied()
+                        .filter_map(|(j, a_j)| (s[i][j] == 'x').then_some(a_j)),
+                )
+                .scan(0, |acc, x| {
+                    *acc += x;
+                    Some(*acc)
+                })
+                .take_while(|sum| sum < &max)
+                .count()
+        })
+        .collect::<Vec<usize>>();
+
+    for a in ans {
+        println!("{}", a);
     }
 }
