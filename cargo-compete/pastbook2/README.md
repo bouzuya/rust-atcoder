@@ -64,3 +64,4 @@
 - P.348 コンピュータ (第七回 アルゴリズム実技検定:O問題) <https://atcoder.jp/contests/past202107-open/tasks/past202107_o>
 - P.354 プレゼント (AtCoder Beginner Contest 038:D問題) <https://atcoder.jp/contests/abc038/tasks/abc038_d>
 - P.358 Range Set Query (AtCoder Begineer Contest 174:F問題) <https://atcoder.jp/contests/abc174/tasks/abc174_f>
+- P.362 ビルの建設 (第二回 アルゴリズム実技検定:N問題) <https://atcoder.jp/contests/past202004-open/tasks/past202004_n>
