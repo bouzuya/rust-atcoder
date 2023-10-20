@@ -68,3 +68,4 @@
 - P.367 モノクロデザイン (第七回 アルゴリズム実技検定:N問題) <https://atcoder.jp/contests/past202107-open/tasks/past202107_n>
 - P.372 K番目の絶対値 (第八回 アルゴリズム実技検定:L問題) <https://atcoder.jp/contests/past202109-open/tasks/past202109_l>
 - P.377 急ぎ旅 (第七回 アルゴリズム実技検定:K問題) <https://atcoder.jp/contests/past202107-open/tasks/past202107_k>
+- P.383 都市計画 (第六回 アルゴリズム実技検定:L問題) <https://atcoder.jp/contests/past202104-open/tasks/past202104_l>
