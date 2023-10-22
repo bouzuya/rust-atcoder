@@ -69,3 +69,4 @@
 - P.372 K番目の絶対値 (第八回 アルゴリズム実技検定:L問題) <https://atcoder.jp/contests/past202109-open/tasks/past202109_l>
 - P.377 急ぎ旅 (第七回 アルゴリズム実技検定:K問題) <https://atcoder.jp/contests/past202107-open/tasks/past202107_k>
 - P.383 都市計画 (第六回 アルゴリズム実技検定:L問題) <https://atcoder.jp/contests/past202104-open/tasks/past202104_l>
+- P.389 最短距離クエリ (第六回 アルゴリズム実技検定:O問題) <https://atcoder.jp/contests/past202104-open/tasks/past202104_o>

@@ -73,6 +73,7 @@ edition = "2018"
 372 = { alias = "past202109_l", problem = "https://atcoder.jp/contests/past202109-open/tasks/past202109_l" }
 377 = { alias = "past202107_k", problem = "https://atcoder.jp/contests/past202107-open/tasks/past202107_k" }
 383 = { alias = "past202104_l", problem = "https://atcoder.jp/contests/past202104-open/tasks/past202104_l" }
+389 = { alias = "past202104_o", problem = "https://atcoder.jp/contests/past202104-open/tasks/past202104_o" }
 
 [dependencies]
 num = "=0.2.1"
