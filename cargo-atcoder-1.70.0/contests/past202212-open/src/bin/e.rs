@@ -1,10 +1,22 @@
-use proconio::{input, marker::Usize1};
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        s: Chars,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    let mut stack = vec![];
+    for s_i in s {
+        match s_i {
+            '(' => stack.push(s_i),
+            ')' => {
+                if stack.pop().is_none() {
+                    println!("No");
+                    return;
+                }
+            }
+            _ => unreachable!(),
+        }
+    }
+    let ans = stack.is_empty();
+    println!("{}", if ans { "Yes" } else { "No" });
 }
