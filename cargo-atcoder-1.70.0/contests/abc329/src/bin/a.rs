@@ -4,12 +4,10 @@ fn main() {
     input! {
         s: Chars,
     };
-    let mut t = vec![];
-    for s_i in s {
-        t.push(s_i);
-        t.push(' ');
-    }
-    t.pop();
-    let ans = t.into_iter().collect::<String>();
+    let ans = s
+        .into_iter()
+        .map(|s_i| s_i.to_string())
+        .collect::<Vec<String>>()
+        .join(" ");
     println!("{}", ans);
 }

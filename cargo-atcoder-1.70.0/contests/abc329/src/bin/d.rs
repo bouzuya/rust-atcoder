@@ -1,4 +1,4 @@
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 use proconio::{input, marker::Usize1};
 
@@ -11,20 +11,19 @@ fn main() {
 
     let mut ans = vec![];
     let mut count = vec![0_usize; n];
-    let mut map = vec![BTreeSet::new(); 200_000 + 1];
-    let mut keys = BTreeSet::new();
+    let mut map: BTreeMap<usize, BTreeSet<usize>> = BTreeMap::new();
     for a_i in a {
-        let entry = &mut map[count[a_i]];
-        entry.remove(&a_i);
-        if entry.is_empty() {
-            keys.remove(&count[a_i]);
+        if let Some(set) = map.get_mut(&count[a_i]) {
+            set.remove(&a_i);
+            if set.is_empty() {
+                map.remove(&count[a_i]);
+            }
         }
 
         count[a_i] += 1;
-        keys.insert(count[a_i]);
-        map[count[a_i]].insert(a_i);
+        map.entry(count[a_i]).or_insert(BTreeSet::new()).insert(a_i);
 
-        let top = *map[*keys.iter().rev().next().unwrap()].first().unwrap();
+        let top = *map.iter().rev().next().unwrap().1.first().unwrap();
         ans.push(top);
     }
 

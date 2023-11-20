@@ -1,5 +1,3 @@
-use std::collections::BTreeSet;
-
 use proconio::input;
 
 fn main() {
@@ -7,9 +5,7 @@ fn main() {
         n: usize,
         a: [usize; n],
     };
-    let set = a.into_iter().collect::<BTreeSet<usize>>();
-    let mut it = set.iter().rev();
-    it.next();
-    let ans = it.next().unwrap();
+    let max = *a.iter().max().unwrap();
+    let ans = a.into_iter().filter(|a_i| a_i != &max).max().unwrap();
     println!("{}", ans);
 }
