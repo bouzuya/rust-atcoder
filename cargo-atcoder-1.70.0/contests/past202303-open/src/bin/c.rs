@@ -3,8 +3,13 @@ use proconio::{input, marker::Usize1};
 fn main() {
     input! {
         n: usize,
-        a: [Usize1; n],
+        p: [Usize1; n],
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    let mut ans = vec![n; n];
+    for (i, p_i) in p.iter().copied().enumerate() {
+        ans[p_i] = i;
+    }
+    for a in ans {
+        println!("{}", a + 1);
+    }
 }
