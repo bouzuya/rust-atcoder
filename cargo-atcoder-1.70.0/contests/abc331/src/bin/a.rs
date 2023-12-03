@@ -9,20 +9,12 @@ fn main() {
         d: usize,
     };
 
-    let nd = if d == capital_d { 1 } else { d + 1 };
-    let nm = if d == capital_d {
-        if m == capital_m {
-            1
-        } else {
-            m + 1
+    let mut ans = (y, m, d + 1);
+    if ans.2 > capital_d {
+        ans = (y, m + 1, 1);
+        if ans.1 > capital_m {
+            ans = (y + 1, 1, 1);
         }
-    } else {
-        m
-    };
-    let ny = if d == capital_d && m == capital_m {
-        y + 1
-    } else {
-        y
-    };
-    println!("{} {} {}", ny, nm, nd);
+    }
+    println!("{} {} {}", ans.0, ans.1, ans.2);
 }
