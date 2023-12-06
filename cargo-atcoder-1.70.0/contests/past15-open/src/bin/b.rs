@@ -1,10 +1,10 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        _c: usize,
+        h: usize,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    let ans = h >= 2800;
+    println!("{}", if ans { "o" } else { "x" });
 }
