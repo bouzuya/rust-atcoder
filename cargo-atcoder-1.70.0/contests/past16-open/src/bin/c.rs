@@ -5,6 +5,10 @@ fn main() {
         n: usize,
         a: [Usize1; n],
     };
-    let ans = n - a.len();
+    let mut count = vec![0_usize; 8];
+    for a_i in a {
+        count[a_i] += 1;
+    }
+    let ans = count.into_iter().min().unwrap();
     println!("{}", ans);
 }
