@@ -1,10 +1,24 @@
-use proconio::{input, marker::Usize1};
+use ac_library::ModInt998244353 as ModInt;
+use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        s: Chars,
     };
-    let ans = n - a.len();
+
+    let mut prev = ModInt::new(1);
+    let mut curr = ModInt::new(0);
+    for c in s {
+        if c == '*' {
+            prev *= curr;
+            curr = ModInt::new(0);
+        } else {
+            curr *= 10;
+            curr += (c as u8 - b'0') as u64;
+        }
+    }
+    prev *= curr;
+
+    let ans = prev;
     println!("{}", ans);
 }
