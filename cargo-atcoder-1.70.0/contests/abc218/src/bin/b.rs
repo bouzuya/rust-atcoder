@@ -2,9 +2,9 @@ use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        p: [Usize1; 26],
     };
-    let ans = n - a.len();
+    let cs = "abcdefghijklmnopqrstuvwxyz".chars().collect::<Vec<char>>();
+    let ans = p.into_iter().map(|p_i| cs[p_i]).collect::<String>();
     println!("{}", ans);
 }
