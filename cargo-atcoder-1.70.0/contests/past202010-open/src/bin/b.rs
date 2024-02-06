@@ -1,10 +1,14 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        a: [Usize1; n],
+        x: i64,
+        y: i64,
     };
-    let ans = n - a.len();
-    println!("{}", ans);
+    if y == 0 {
+        println!("ERROR");
+        return;
+    }
+    let n = x * 100 / y;
+    println!("{}.{:02}", n / 100, n % 100);
 }
