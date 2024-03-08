@@ -1,0 +1,15 @@
+[package]
+name = "adt_easy_20240306_3"
+version = "0.1.0"
+edition = "2021"
+
+# dependencies added to new project
+[dependencies]
+ac-library-rs = "=0.1.1"
+num = "=0.4.0"
+proconio = { version = "=0.4.3", features = ["derive"] }
+superslice = "=1.0.0"
+
+[profile.release]
+lto = true
+panic = 'abort'
